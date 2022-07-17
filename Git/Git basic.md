@@ -40,14 +40,31 @@
 
 ## Git의 3가지 공간
 1. Working directory - 내가 작업하고 있는 실제 디렉토리<br/>
-   * `git add <폴더명>` - Staging area 로 파일을 올리고 tracked 시작
+   * `git add <폴더명>` - **Staging area 로 파일을 올리고 tracked 시작**
 2. Staging area - commit 으로 남기고 싶은, 특정 버전으로 관리하고 싶은 파일이 있는 곳
-   * `git commit -m <제목>` - Repository 로 커밋
+   * `git commit -m <메시지명>` - **Repository 로 커밋**
 3. Repository - 최종적으로 commit 들이 저장되는 곳
+
+## 간단한 명령어
+* `git status` - 변경사항을 확인
+   * **untracked 파일**이 나올 수 있으며 Git의 관리에 들어간 적 없는 파일을 의미
+* `git log` - git의 commit history 를 살펴볼 수 있음
+* `git diff <해시1> <해시2>` - 두 개의 커밋을 비교해서 확인할 수 있음
+* `git remote add origin <레포주소>` - local 과 remote 를 연결 **(최초 1회만 등록)**
+* `git push origin <브랜치명>` - 최종 remote 저장소에 업로드
+* `git clone <레포주소>` - 다운로드 받을 레포 주소를 적어 다른 컴퓨터에 복사 가능
+   * clone 은 git 설정이 있는 폴더를 같이 복제하기 때문에 `git init`, `git remote add` 를 할 필요가 없다. **(최초 1회만 진행)**
+* `git pull origin <브랜치명>` - GitHub에 있는 최신 버전을 다운로드한다.
+   * pull 은 remote repository 가 있는 버전과 동일한 버전으로 다운로드 = remote 정보가 필요함 **(즉 .git 폴더가 미리 존재하고 있어야 한다.)**
+
+## Sync 의 중요성
+* Sync 를 맞추지 않으면 충돌이 일어난다 - 충돌과 그 해결법은 나중에 또 배워보자
+* **항상 GitHub을 기준**으로 순서를 지킨다면 충돌이 일어나지 않는다!
+
+--------------------
 
 # GitHub 서비스
 
 ## GitHub 서비스를 사용하는 이유
 * 프로그래머로서 내가 얼마나 활동하고 있는지 나타냄
 * 활동한 부분의 대해 증거자료로서 사용 가능
-
