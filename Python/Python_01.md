@@ -174,7 +174,7 @@
   
   * or 연산 - 첫 번째 값이 True면 무조건 True -> 첫 번째 값 반환
     
-    ```
+    ```python
     print(3 and 5) # 5, print(3 and 0) # 0,
     print(0 and 3) # 0, print(0 and 0) # 0,
     print(5 or 3) # 5, print(3 or 0) # 3,
