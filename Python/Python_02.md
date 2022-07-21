@@ -72,7 +72,7 @@ else:
 
 ```python
 num = int(input())
-result = '홀수' if num % 2 else '짝'
+result = '홀수' if num % 2 else '짝수'
 ```
 
 ## ✅ 반복문
@@ -436,7 +436,7 @@ print_family_name('아부지', '어무이', dog='멍멍이', cat='냥냥이')
    
    * 함수가 만든 scope = **함수 내부에서만 참조 가능**
    
-   * **<u>함수가 호출될 때 생성되고, 함수가 종료될 때까지 유지</u>**
+   * **❗<u>함수가 호출될 때 생성되고, 함수가 종료 시 사라짐</u>❗**
 
 3. **global variable**- global scope에 정의된 변수
 
