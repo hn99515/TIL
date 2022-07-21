@@ -5,5 +5,7 @@
 1. [git basic 정리](./Git/Git%20basic.md)
 
 ### Python 정리
-1. [데이터와 자료형](./Python/Python_01.md)
-2. [제어문과 함수](./Python/Python_02.md)
+1. [데이터](./Python/data.md)
+2. [컨테이너](./Python/container.md)
+3. [제어문](./Python/control.md)
+4. [함수](./Python/function.md)
