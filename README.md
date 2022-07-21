@@ -6,3 +6,4 @@
 
 ### Python 정리
 1. [데이터와 자료형](./Python/Python_01.md)
+2. [제어문과 함수](./Python/Python_02.md)
