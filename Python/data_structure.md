@@ -118,8 +118,6 @@ print(numbers.index(100)) # ValueError
 number = [1, 2, 3, 1, 1, 1, 2, 2]
 print(number.count(1)) # 4
 print(number.count(100)) # 0
-
-
 ```
 
 * <u>**sort와 sorted 차이 확인!**</u>
@@ -292,5 +290,3 @@ print(a, b) # [1, 2, ['a', 'b']] [1, 2, ['a', 'b']]
 b[2][0] = 0
 print(a, b) # [1, 2, ['a', 'b']] [1, 2, [0, 'b']]
 ```
-
-
