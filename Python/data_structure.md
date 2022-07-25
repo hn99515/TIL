@@ -12,7 +12,7 @@
 
 ### 1️⃣ 순서가 있는 데이터 구조
 
-#### ① 문자열 - <u>변경 불가능한 immutable</u>
+#### ① 문자열 - <u>변경 불가능 (immutable)</u>
 
 ##### 문자열 조회/탐색 메서드
 
@@ -20,10 +20,10 @@
 | ----------------- |:------------------------------------- |
 | **`s.find(x)`**   | **x의 첫 번째 위치를 반환.** <u>없으면 -1을 반환</u> |
 | **`s.index(x)`**  | **x의 첫 번째 위치를 반환.** <u>없으면 오류 발생</u>  |
-| `s.isalpha()`     | 알파벳 문자 여부 <u>*유니코드상 Letter</u>        |
+| `s.isalpha()`     | 알파벳 문자 여부 <u>*유니코드상 Letter면 확인 가능</u> |
 | **`s.isupper()`** | 대문자 여부                                |
 | **`s.islower()`** | 소문자 여부                                |
-| `s.istitle()`     | 타이틀 형식 여부(첫 번째 대문자 + 소문자)             |
+| `s.istitle()`     | 타이틀 형식 여부 = 첫 번째 대문자 + 나머지 소문자        |
 
 ```python
 print('apple'.find('p')) # 1
@@ -67,16 +67,16 @@ print(msg.title()) # Hi, Everyone, I'M Ssafy
 print(msg.swapcase()) # Hi! eVERYONE, i'M SSAFY
 ```
 
-##### ⁉ 문자열은 immutable인데... 문자열 변경이 되는 이유는?
+##### ⁉ 문자열은 immutable인데... 문자열 변경이 되는 이유는 ⁉
 
-* **기존의 문자열을 변경하는 것이 아니라, 변경된 문자열을 새롭게 만들어서 반환!**
+* **기존의 문자열을 변경하는 것이 아니라, <u>변경된 문자열을 새롭게 만들어서 반환!</u>**
 
 ```python
 word = 'python'
 print(word) # python
-print(id(word)) # 2006262763184
+print(id(word)) # 2006262763184 (주소 값을 가리키고 있다가)
 print(word.upper()) # PYTHON
-print(id(word.upper()) # 2006262763120
+print(id(word.upper()) # 2006262763120 (다른 주소 값을 가리)
 ```
 
 #### ② 리스트 - 여러 개의 값을 <u>순서가 있는 구조로 저장하고 싶을 때 사용</u>
@@ -90,7 +90,7 @@ print(id(word.upper()) # 2006262763120
 | `L.pop(i)`               | 리스트의 인덱스 i에 있는 항목을 반환 후 제거                                   |
 | **`L.extend(m)`**        | **순회형 m의 모든 항목들이 리스트 끝에 추가**<u>(+=과 같음)</u>                  |
 | `L.index(x, start, end)` | 리스트에 있는 항목 중 가장 왼쪽에 있는 항목 x의 인덱스를 반환                         |
-| **`L.reverse()`**        | **리스트를 거꾸로 정렬**                                              |
+| **`L.reverse()`**        | **리스트를 거꾸로 정렬** <u>(크기 역순으로 정렬한다는 의미 X)</u>                  |
 | **`L.sort()`**           | **리스트를 정렬**<u>(매개변수 이용가능)</u>                                |
 | **`L.count(x)`**         | **리스트에서 항목 x가 몇 개 존재하는지 갯수를 반환**                             |
 
@@ -120,13 +120,13 @@ print(number.count(1)) # 4
 print(number.count(100)) # 0
 ```
 
-* <u>**sort와 sorted 차이 확인!**</u>
+💥 <u>**sort vs sorted**</u>
 
 ```python
 numbers = [3, 2, 5, 1]
-result = numbers.sort() # sort는 원본을 변경
+result = numbers.sort() # sort는 원본을 변경!
 print(numbers, result) # [1, 2, 3, 5] None
-re = sorted(numbers) # sorted는 원본 변경 없고 새로운 리스트 반
+re = sorted(numbers) # sorted는 원본 변경 없고, 새로운 리스트 반환
 print(numbers, re) # [3, 2, 5, 1] [1, 2, 3, 5]
 ```
 
@@ -191,7 +191,7 @@ print(a) # KeyError
 a.discard('애플') # 없는 값을 삭제해도 에러가 발생하지 않음!
 print(a) # {'참외', '바나나', '딸기', '수박', '사과'}
 a.pop()
-print(a) # 임의의 원소 하를 제거해 반환
+print(a) # 임의의 원소 하나를 제거해 반환
 ```
 
 ```python
@@ -206,7 +206,7 @@ print(a.issuperset(c)) # False, a가 c의 상위 집합인가?
 
 #### ② 딕셔너리 - key는 변경 불가능한 데이터(immutable)만 활용 가능
 
-* **immutable data - string, integer, float, boolean, tuple, range**
+* **immutable data = string, integer, float, boolean, tuple, range**
 
 * value - 어떠한 형태든 관계 없음
 
@@ -255,7 +255,7 @@ print(original_list, copy_list) # ['hello', 2, 3] ['hello', 2, 3]
 
 ### 2️⃣ 얕은 복사(shallow copy)
 
-* slice 연산자 활용하여 같은 원소를 가진 리스트지만 연산된 결과를 복사 (다른 주소)
+* **slice 연산자 활용**하여 같은 원소를 가진 리스트지만 연산된 결과를 복사 (다른 주소)
 
 ```python
 # 얕은 복사를 해결할 수 있는 방법 - slice
@@ -271,7 +271,7 @@ print(a, b) # [1, 2, 3] [5, 2, 3]
 
 ```python
 a = [1, 2, ['a', 'b']] # 2차원 리스트일 때 얕은 복사의 문제가 또 발생
-b = a[:]
+b = a[:] # 2차원 리스트인 경우 슬라이싱을 하더라도 문제 발생
 print(a, b) # [1, 2, ['a', 'b']] [1, 2, ['a', 'b']]
 
 b[2][0] = 0
@@ -284,7 +284,7 @@ print(a, b) # [1, 2, [0, 'b']] [1, 2, [0, 'b']]
 import copy
 
 a = [1, 2, ['a', 'b']]
-b = copy.deepcopy(a)
+b = copy.deepcopy(a) # deepcopy를 통해 해결 가능
 print(a, b) # [1, 2, ['a', 'b']] [1, 2, ['a', 'b']]
 
 b[2][0] = 0
