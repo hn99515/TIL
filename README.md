@@ -4,6 +4,9 @@
 ### GIT 정리
 * [git basic 정리](./Git/Git%20basic.md)
 
+### SQL 정리
+* [SQL 기초](./SQL/sql_basic.md)
+
 ### Python 정리
 * [데이터(변수, 자료형, 연산자)](./Python/data.md)
 * [컨테이너(자료구조, 형변환, 슬라이싱)](./Python/container.md)
