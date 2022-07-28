@@ -402,3 +402,18 @@ User.logout() # 로그아웃 기능이 어떻게 작동하는지 몰라도 사�
     * setter 메서드 - 변수의 값을 설정하는 메서드
       
       `@변수.setter` 사용
+
+```python
+class Person:
+
+    def __init__(self, age):
+        self._age = age 
+
+    @property # 변수의 값을 읽는 메서드
+    def age(self):
+        return self._age
+
+    @age.setter # 변수의 값을 설정하는 메서드
+    def age(self, new_age):
+        self._age = new_age
+```
