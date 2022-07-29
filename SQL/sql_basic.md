@@ -2,17 +2,17 @@
 
 | 이름  | 번호  | 주소  |
 |:---:|:---:| --- |
-| A   |     |     |
+| A   | -   | -   |
 | B   |     |     |
 | C   |     |     |
 
-* 행(row) - 데이터 한 개를 의미 - A
+* 행(row) - 데이터 한 개를 의미 - A - -
 
 * 열(column) - 데이터의 특성을 표현 - 이름
 
 # 2. 보고 싶은 데이터 꺼내오기
 
-✔ `SELECT`
+**✔ `SELECT`**
 
 ```sql
 SELECT * FROM customers
@@ -122,11 +122,9 @@ SELECT * FROM orders
 WHERE customerorder BETWEEN '2019-01-01' AND '2020-01-01';
 ```
 
-**✔`IS NULL` - 테이블에 값이 없는 경우를 찾을 때** (반대 - `IS NOT NULL`)
+**✔`IS NULL` - 테이블에 값이 없는 경우를 찾을 때** **(반대 - `IS NOT NULL`)**
 
 ```sql
 SELECT * FROM customers
 WHERE customerID IS NULL
 ```
-
-
