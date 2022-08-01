@@ -326,7 +326,56 @@ p {
   * 일반적으로 하나의 문서에 1번만 사용 = 단일 id 사용을 권장
 
 ```html
+<style>
+      * {
+        color: red;
+      }
+      
+      h2 {
+        color: orange;
+      }
 
+      h3,
+      h4 {
+        font-size: 10px
+      }
+
+      .green {
+        color: green;
+      }
+
+      #puple {
+        color: purple;
+      }
+
+      .box > p {
+        font-size: 30px;
+      }
+
+      .box p {
+        color: blue;
+      }
+    </style>
+</head>
+<body>
+  <h1 class="green">SSAFY</h1>
+  <h2>선택자 연습</h2>
+  <div class="green box">
+    box contents
+    <div>
+        <p>지역 목록</p>
+        <ul>
+            <li>서울</li>
+            <li id="puple">인천</li>
+            <li>강원</li>
+            <li>경기</li>
+        </ul>
+    </div>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque reiciendis voluptatem quas nulla odit deserunt, necessitatibus doloribus! Velit alias culpa mollitia asperiores, sapiente est nobis sint illum beatae voluptas veritatis.</p>
+  </div>
+  <h3>HELLO</h3>
+  <h4>CSS</h4>  
+</body>
 ```
 
 ### ✔ 적용 우선순위 (cascading order)
@@ -386,6 +435,32 @@ p {
   
   * **Box model 요소**(width, height, margin, padding, border, box-sizing, display), **position 요소**(position, top, right, bottom, left, z-index)
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    p {
+      /* 상속됨 */
+      color: red; 
+      /* 상속 안됨 */
+      border: 3px solid black;
+    }
+
+    span {
+      /* border: 3px solid blue; */
+    }
+  </style>
+</head>
+<body>
+  <p>안녕하세요 <span>테스트</span> 입니다.</p>
+</body>
+</html>
+```
+
 ## ✅ CSS 기본 스타일
 
 ### ✔ 크기 단위
@@ -398,13 +473,37 @@ p {
   
   * **(바로 위 부모 요소에 대한) 상속의 영향을 받음**
   
-  * 배수 단위, 요소에 지정된 사이즈에 상대적이 사이즈를 가짐
+  * 배수 단위, 요소에 지정된 사이즈에 상대적인 사이즈를 가짐
 
 * **`rem`**
   
-  * 상속의 영향을 받지 않음
+  * **상속의 영향을 받지 않음**
   
   * **최상위 요소(html)의 사이즈를 기준으로 배수 단위 사이즈를 가짐**
+    
+    ```html
+    <body>
+      <ul class="font-big">
+        <li class="em">2em</li>
+        <li class="rem">2rem</li>
+        <li>no class</li>
+      </ul>    
+    </body>
+    ```
+    
+    ```css
+    .font-big {
+      font-size: 36px
+    }
+    .em {
+      font-size: 2em;
+    }
+    .rem {
+      font-size: 2rem;
+    }
+    ```
+    
+    
 
 * **viewport**
   
@@ -422,7 +521,7 @@ p {
 
 * **RGB 색상 - 16진수 표기법 or 함수형 표기법을 사용해서 특정 색을 표현**
   
-  **`rgb(0, 255, 0);`** **`rgba(0, 0, 0, 0.5);`** a는 투명도(alpha)
+  **`rgb(0, 255, 0);`** **`rgba(0, 0, 0, 0.5);`** a는 투명도(alpha)를 의미
 
 * HSL 색상 - 색상, 채도, 명도를 통해 특정 색을 표현
   
@@ -437,6 +536,58 @@ p {
 * **일반 형제 결합자 (`~`) - 선택자A의 형제 요소 중 뒤에 위치하는 선택자B 요소를 모두 선택**
 
 * **인접 형제 결합자 (`+`) - 선택자A의 형제 요소 중 바로 뒤에 위치하는 선택자B 요소를 선택**
+
+```html
+<body>
+  <!-- 일반 형제 결합자 -->
+  <span>1</span>
+  <p>2</p>
+  <b>3</b>
+  <span>4</span>
+  <b>5</b>
+  <span>6</span>
+</body>
+```
+
+```css
+/* p 요소의 형제 요소 중에서 p 요소 뒤에 위치하는 span 요소를 모두 선택 */
+p ~ span {
+  color: red;
+}
+```
+
+```html
+<body>
+  <!-- 인접 형제 결합자 -->
+  <p>1</p> 
+  <p>2</p>
+  <p>3</p>
+  <div>4</div>
+  <div class="title">
+    <p>5</p>
+  </div>
+  <b>얘가 있으면 아래 리스트가 파랗게 안됨!!!</b>
+  <ul>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+  </ul>
+</body>
+```
+
+```css
+/* p 의 형제 요소 중 p 바로 뒤에 위치하는 p 요소를 선택 */
+    p + p {
+      color: red;
+    }
+
+    /* title 클래스 요소 중 title 클래스 바로 뒤에 위치하는 ul 요소 선택 */
+    .title + ul {
+      color: blue;
+    }
+```
+
+
 
 ## ✅ Box model
 
