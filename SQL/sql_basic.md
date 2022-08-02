@@ -6,9 +6,9 @@
 | B   |     |     |
 | C   |     |     |
 
-* 행(row) - 데이터 한 개를 의미 - A - -
+* **행(row) - 데이터 한 개를 의미** - A - -
 
-* 열(column) - 데이터의 특성을 표현 - 이름
+* **열(column) - 데이터의 특성을 표현** - 이름
 
 # 2. 원하는 데이터 불러오기
 
@@ -127,4 +127,63 @@ WHERE customerorder BETWEEN '2019-01-01' AND '2020-01-01';
 ```sql
 SELECT * FROM customers
 WHERE customerID IS NULL
+```
+
+# 4. 데이터 정렬
+
+**✔ `ORDER BY` - 데이터를 정렬한다. (default = 오름차순)** 
+
+```sql
+SELECT * FROM customers
+ORDER BY customerid DESC --내림차순--
+```
+
+* **순서 - SELECT ~ FROM ~ WHERE ~ ORDER BY ~**
+
+```sql
+SELECT name FROM employee
+WHERE months < 10         --조건 1--
+AND salary > 2000         --조건 2--
+ORDER BY employee_id
+```
+
+* **데이터를 가져와서 보여줄 때만 순서 변경됨❗ = 원본 데이터는 변경 ❌**
+
+**✔ 다중 정렬 - 정렬 기준이 2개 이상일 때 (`,`로 연결)**
+
+```sql
+/* ORDER BY ~ 조건 1, 조건 2 */
+
+SELECT name FROM students
+WHERE marks > 75
+ORDER BY RIGHT(name, 3), id
+```
+
+# 5. 문자열 자르기
+
+**✔ `LEFT(컬럼명 또는 문자열, 문자열의 길이)`**
+
+**✔ `RIGHT(컬럼명 또는 문자열, 문자열의 길이)`**
+
+**✔ `SUBSTRING(컬럼명 또는 문자열, 시작 위치, 길이)`**
+
+```sql
+SELECT LEFT("20140323", 4) --2014--
+SELECT RIGHT("20140323", 4) --0323--
+SUBSTR("20140323", 1, 4)  --2014--
+SUBSTR("20140323", 5)     --0323 (5에서 끝까--
+```
+
+# 6. 소수점 처리
+
+**✔ `CEIL() - 올림`**
+
+**✔ `FLOOR() - 내림`**
+
+**✔ `ROUND() - 반올림`**
+
+```sql
+SELECT CEIL(5.5)         --6--
+SELECT FLOOR(5.5)        --5--
+SELECT ROUND(5.556901, 4)--5.5569--
 ```
