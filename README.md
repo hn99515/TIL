@@ -9,7 +9,7 @@
 
 ### ✅ Web
 * [Web(HTML, CSS)](./Web/Web.md)
-* [Web_adv(CSS, Bootstrap)](./Web/web_adv.md)
+* [Web_adv(flex, Bootstrap)](./Web/web_adv.md)
 
 ### ✅ Python
 * [데이터(변수, 자료형, 연산자)](./Python/data.md)
