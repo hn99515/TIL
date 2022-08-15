@@ -51,8 +51,6 @@
       - MIN - 32bit / MAX - 32bit (4 Byte * 1)
   - Python 인코딩 - 3.x 버전에서는 유니코드 UTF-8 (생략 가능)
 
-
-
 ## ✅ 문자열의 분류
 
 <img src="String_assets/2022-08-12-10-03-01-image.png" title="" alt="" width="712">
@@ -167,8 +165,6 @@ def BruteForce(p, t):
 
 * 최악의 경우 - 텍스트의 모든 위치에서 패턴을 비교해야 함
 
-
-
 ## ✅ KMP 알고리즘
 
 > **불일치가 발생한 텍스트 스트링의 앞 부분에 어떤 문자가 있는지를 미리 알고 있으므로, 불일치가 발생한 앞 부분에 대하여 다시 비교하지 않고 매칭을 수행**
@@ -236,7 +232,7 @@ def KMP(text, pattern):
 
         if j == len(pattern):           # pattern이 전부 일치할 때
             return i - j                # text의 위치
-    
+
     return -1                           # 일치하는 문장이 없는 경우
 
 text = 'ABC ABCDAB ABCDABCDABDE'
@@ -244,8 +240,6 @@ pattern='ABCDABC'
 ```
 
 ### ▶ 시간 복잡도 = O(M + N)
-
-
 
 ## ✅ 보이어-무어 알고리즘
 
@@ -264,8 +258,6 @@ pattern='ABCDABC'
 * **최악의 경우 - O(mn)**
 
 * **평균 - O(n) 보다 시간이 덜 든다.**
-
-
 
 * **패턴에 오른쪽 끝에 있는 문자가 불일치 하고, 이 문자가 패턴 내에 존재하지 않는 경우 이동 거리는 패턴의 길이만큼 된다.**
 
@@ -286,7 +278,6 @@ def pre_process(pattern):
         skip_table[pattern[i]] = M - i - 1      # 패턴의 길이 - 인덱스 - 1 해야 원하는 위치
 
     return skip_table
-
 ```
 
 ### ✔ 기존 문자열과 비교
@@ -318,5 +309,3 @@ def boyer_moore(text, pattern):
 text = 'ABC ABCDAB ABCDABCDABDE'
 pattern='ABCDABC'
 ```
-
-
