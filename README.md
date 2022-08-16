@@ -19,3 +19,8 @@
 * [데이터 구조(메서드, 얕은복사, 깊은복사)](./Python/data_structure.md)
 * [객체지향프로그래밍(클래스, 인스턴스, OOP메서드)](./Python/oop.md)
 * [에러와 예외(디버깅, 문법에러, 예외처리)](./Python/error.md)
+
+### ✅ Algorithm
+* [Array(Big-O, array, Bubble sort, Counting sort, Greedy)](./Algorithm/Array_1.md)
+* [Array2(array_2D, subset, bit, Binary search, Selection sort)](./Algorithm/Array_2.md)
+* [String(Brute Force, KMP, Boyer-Moore)](./Algorithm/String.md)
