@@ -24,3 +24,4 @@
 * [Array(Big-O, array, Bubble sort, Counting sort, Greedy)](./Algorithm/Array_1.md)
 * [Array2(array_2D, subset, bit, Binary search, Selection sort)](./Algorithm/Array_2.md)
 * [String(Brute Force, KMP, Boyer-Moore)](./Algorithm/String.md)
+* [Stack(Stack, Memoization, DFS)](./Algorithm/Stack_1.md)
