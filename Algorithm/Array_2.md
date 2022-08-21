@@ -80,8 +80,6 @@ for i in range(3):
             arr[i][j], arr[j][i] = arr[j][i], arr[i][j]
 ```
 
-
-
 # 부분집합
 
 > 유한 개의 정수로 이루어진 집합이 있을 때, 이 집합의 부분집합 중에서 그 집합의 원소를 모두 더한 값이 0이 되는 경우가 있는지 확인하는 문제
@@ -148,8 +146,6 @@ for i in range(1<<n):   # 1<<n - 부분집합의 개수
     print()
 print()
 ```
-
-
 
 # 검색
 
@@ -266,8 +262,6 @@ def binarySearch2(a, low, high, key):
             return binarySearch2(a, middle+1, high, key)
 ```
 
-
-
 # 선택 정렬
 
 > 주어진 자료들 중 가장 작은 값의 원소부터 차례대로 선택하여 위치를 교환하는 방식
@@ -320,7 +314,14 @@ print(arr2)
 * **k번째로 작은 원소를 찾는 알고리즘 = O(kn)**
 
 ```python
-
+def select(arr, k):
+    for i in range(k):
+        minIdx = i
+        for j in range(i+1, len(arr)):
+            if arr[j] < arr[minIdx]:
+                minIdx = j
+        arr[i], arr[minIdx] = arr[minIdx], arr[i]
+    return arr[k-1]
 ```
 
 | 알고리즘      | 평균 시간   | 최악 시간   | 기법     | 비고                     |
@@ -328,8 +329,6 @@ print(arr2)
 | bubble    | O(n**2) | O(n**2) | 비교와 교환 | 코딩이 가장 쉬움              |
 | counting  | O(n+k)  | O(n+k)  | 비교환 방식 | n이 비교적 작을 때만 사용 가능     |
 | selection | O(n**2) | O(n**2) | 비교와 교환 | 교환의 횟수가 버블, 삽입정렬보다 작다. |
-
-
 
 ## ✅ 인덱스
 
@@ -340,5 +339,3 @@ print(arr2)
 * **배열을 사용한 인덱스**
   
   * **대량의 데이터를 매번 정렬하면, 프로그램의 반응은 느려질 수 밖에 없다. 대량 데이터의 성능 저하 문제를 해결하기 위해 배열 인덱스를 사용할 수 있다.**
-
-

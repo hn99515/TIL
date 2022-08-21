@@ -44,13 +44,9 @@
 
 ![](APS_basic_assets/2022-08-08-10-40-48-image.png)
 
-
-
 # 배열 (Array)
 
 > 일정한 자료형의 변수들을 하나의 이름으로 열거하여 사용하는 자료구조
-
-
 
 ## ✅ 배열의 필요성
 
@@ -69,8 +65,6 @@
 * 배열의 접근 - index를 통해 원하는 값을 저장
   
   `Arr[idx] = 20` 
-
-
 
 # 정렬 (sort)
 
@@ -123,18 +117,18 @@ def BubbleSort(a, N):            # 정렬할 List, N 원소 수
   * data에 맨 마지막 값을 감소시키고 Temp(원본과 같은 크기)에 삽입한다.
 
 ```python
-def Counting_Sort(A, B, k)
+def Counting_Sort(A, B, k):
 
-C = [0] * (k+1)                    # 원소의 최대값까지를 인덱스로 사용하기 위
-for i in range(0, len(A)):
-    C[A[i]] += 1                   # C 에 숫자별 개수가 저장
-    
-for i in range(1, len(C)):         # 누적합 값으로 갱신하기 위함
-    C[i] += C[i-1]
+    C = [0] * (k+1)                # 원소의 최대값까지를 인덱스로 사용하기 위
+    for i in range(0, len(A)):
+        C[A[i]] += 1               # C 에 숫자별 개수가 저장
 
-for i in range(len(B)-1, -1, -1):
-    C[A[i]] -= 1                   # 누적합 배열에서 해당 숫자를 -1
-    B[C[A[i]]] = A[i]              # B는 C의 값을 인덱스로 A의 값을 넣으면 정렬됨!
+    for i in range(1, len(C)):     # 누적합 값으로 갱신하기 위함
+        C[i] += C[i-1]
+
+    for i in range(len(B)-1, -1, -1):
+        C[A[i]] -= 1               # 누적합 배열에서 해당 숫자를 -1
+        B[C[A[i]]] = A[i]          # B는 C의 값을 인덱스로 A의 값을 넣으면 정렬됨!
 ```
 
 ▶ 비교
@@ -178,8 +172,6 @@ for i1 in range(1, 4):
                 if i3 != i1 and i3 != i2:
                     print(i1, i2, i3)
 ```
-
-
 
 # Greedy Algorithm (탐욕 알고리즘)
 
