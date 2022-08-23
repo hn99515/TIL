@@ -26,13 +26,15 @@
 
 * 중위 표기식에 더 읽을 것이 없다면 중지하고, 더 읽을 것이 있으면 1부터 다시 반복
 
+* **stack 의 top 과 토큰을 비교하여 어떻게 할지 결정**!
+
 * **스택에 남아있는 연산자를 모두 pop 하여 출력**
   
   * **스택 밖의 여는 괄호는 우선순위가 가장 높으며, 스택 안의 여는 괄호는 우선순위가 가장 낮다!**
     
     ![](Stack_2_assets/2022-08-22-20-33-06-image.png)
   
-  * isp = in-stack priorigy = 스택 안
+  * isp = in-stack priority = 스택 안
   
   * icp = in-coming priority = 스택 밖
 
@@ -44,7 +46,7 @@
 
 * `2 + 3 * 4 / 5`
 
-`2 3 4 5 / * +`
+`2 3 4 5 / * +` = `2 3 4 * 5 / +`
 
 ## ▶ 후위 표기법의 수식 계산
 
@@ -52,13 +54,14 @@
 
 * **피연산자를 만나면 스택에 push**
 
-* **연산자를 만나면 필요한 만큼의 피연산자를 스택에서 pop 하고, 연산결과를 다시 스택에 push**
+* **연산자를 만나면 필요한 만큼의 피연산자를 스택에서 pop 하고(먼저 빼는 숫자를 연산자 뒤에 위치!), 연산결과를 다시 스택에 push**
 
 * **수식이 끝나면, 마지막으로 스택을 pop 하여 출력**
 
 #### 🔴 예시
 
 * `6528-*2/+` : `-9`
+* `2 + 3 * 4 / 5` : `4.4`
 
 # 백트래킹 (Backtracking)
 
@@ -97,23 +100,29 @@
 
 - **기법**
   
-  - **어떤 노드의 유망성을 체크하여 유망하지 않다고 결정되면 그 노드의 부모로 되돌아가 다음 자식 노드로 감**
+  - **어떤 노드의 유망성을 체크하여 유망하지 않다고 결정되면 그 노드의 부모로 되돌아가 다음 자식 노드로 감 = if 조건문이 추가된다!**
   
   - 어떤 노드를 방문했을 때 그 노드를 포함한 경로가 해답이 될 수 없으면 그 노드는 유망하지 않다고 하며, 반대로 해답의 가능성이 있으면 유망하다고 함
   
   - **가지치기(pruning) - 유망하지 않는 노드가 포함되는 경로는 더 이상 고려하지 않음**
 * **절차**
   
-  * **상태 공간 트리의 깊이 우선 검색을 실시**
+  * **상태 공간 트리의 깊이 우선 검색(DFS)을 실시**
   
-  * **각 노드가 유망한지 체크**
+  * **각 노드가 유망한지 체크 = if 조건문 추가**
   
   * **노드가 유망하지 않으면 그 노드의 부모 노드로 돌아가서 검색을 계속**
 
 ### ✔ N-Queen 문제
 
 ```python
-
+def checknode(v):
+    if promising(v):
+        if there is a solution at v:
+            write the solution
+        else:
+            for u in each child of v:
+                checkcnode(u)
 ```
 
 ### ✔ 부분집합 구하기
@@ -123,7 +132,7 @@
 * loop 를 이용한 부분집합 생성
 
 ```python
-bit = [0, 0, 0, 0]
+bit = [0, 0, 0, 0]              # 비트 생성
 for i in range(2):
     bit[0] = i
     for j in range(2):
@@ -138,7 +147,7 @@ for i in range(2):
 * powerset 을 구하는 백트래킹 알고리즘
 
 ```python
-def backtrack(a, k, input):
+def backtrack(a, k, input): # a - 선택된 자리를 나타낸 리스트, k - 현재 자리수, input - 개
     global MAXCANDIDATES
     c = [0] * MAXCANDIDATES
 
@@ -152,14 +161,33 @@ def backtrack(a, k, input):
             backtrack(a, k, input)
 
 def construct_candidates(a, k, input, c):
-    c[0] = True
-    c[1] = False
+    c[0] = True    # 사용하는 경우
+    c[1] = False   # 사용안하는 경
     return 2
 
 MAXCANDIDATES = 2
 NMAX = 4
 a = [0] * NMAX
-backtrack(a, 0, 3)
+backtrack(a, 0, 3)numbers = list(range(1, 6))          # 숫자
+selected = [False] * len(numbers)    # 사용 유무
+result = []
+
+def powerset(idx):                  # 몇 번째 idx가 선택/선택되지 않았는지 판단
+    if idx < len(numbers):          # 사용되는 숫자를 정할 수 있음
+         selected[idx] = True       # 해당 인덱스가 사용되었을 때
+         powerset(idx+1)            # 다음 자리 확인
+         selected[idx] = False      # 사용되지 않았을 때
+         powerset(idx+1)
+    else:
+        # 부분집합을 뽑아내는 부분
+        res = []
+        for i in range(len(numbers)):
+            if selected[i]:         # 사용된 경우
+                res.append(numbers[i])
+        result.append(res)          # 선택된 부분집합을 저장
+
+powerset(0)                         # 모든 부분집합 호출
+print(result)
 ```
 
 ### ✔ 부분집합의 합
@@ -279,5 +307,3 @@ def Permutation(i, N):
 P = [1, 2, 3]
 Permutation(0, 3)
 ```
-
-
