@@ -366,13 +366,13 @@
 
 ## ▶ 참고 (setting.py 내에서 수정 가능)
 
-* LANGUAGE_CODE
+* **LANGUAGE_CODE**
   
   * 모든 사용자에게 제공되는 번역을 결정
   
-  * 이 설정이 적용되려면 USE_I18N이 활성화(True)되어야 함
+  * **이 설정이 적용되려면 USE_I18N이 활성화(True)되어야 함**
 
-* TIME_ZONE
+* **TIME_ZONE**
   
   * 데이터베이스 연결의 시간대를 나타내는 문자열 지정
   
@@ -422,9 +422,9 @@
   
   * 공백이나 구두점 문자 또한 사용 불가
 
-* **`.`을 사용하여 변수 속성에 접근할 수 있음**
+* **`.`을 사용하여 <mark>변수 속성에 접근할 수 있음</mark>**
 
-* **render() 의 세번째 인자로 딕셔너리 형태(`{'key': value}`)로 넘겨주며, 여기서 정의한 key에 해당하는 문자열이 template에서 사용 가능한 변수명이 된다.**
+* **render() 의 세번째 인자로 딕셔너리 형태(`{'key': value}`)로 넘겨주며, 여기서 정의한 <mark>key에 해당하는 문자열이 template에서 사용 가능한 변수명</mark>이 된다.**
   
   * context 데이터가 많아질 경우에는 별도로 dictionary 로 작성하는 것이 바람직
 
@@ -432,7 +432,7 @@
 
 **`{{ variable|filter }}`**
 
-* **표시할 변수를 수정할 때 사용**
+* <mark>**표시할 변수를 수정할 때 사용**</mark>
   
   * ex. name 변수를 모두 소문자로 출력 - `{{ name|lower }}`
 
@@ -454,7 +454,7 @@
 
 * 출력 텍스트를 만들거나, 반복 또는 논리를 수행하여 제어 흐름을 만드는 등 변수보다 복잡한 일들을 수행
 
-* **일부 태그는 시작과 종료 태그가 필요** - **`{% if %}{% endif %}`**
+* <mark>**일부 태그는 시작과 종료 태그가 필요** - **`{% if %}{% endif %}`**</mark>
 
 * 약 24개의 built-in template tags를 제공
 
@@ -490,7 +490,7 @@
   
   * **<mark>반드시 템플릿 최상단에 작성되어야 함‼ (즉, 2개 이상 사용 불가❗)</mark>**
 
-* **`{% block content %} {% endblock content %}`** - **base.html & 적용할 html에 작성**
+* <mark>**`{% block content %} {% endblock content %}`**</mark> - **base.html & 적용할 html에 작성**
   
   * **하위 템플릿에서 재지정(override)할 수 있는 블록을 정의**
   
@@ -512,9 +512,9 @@
 
 ![](Django_assets/2022-08-30-16-39-14-image.png)
 
-* 웹은 다음과 같이 가장 기본적으로 클라이언트-서버 아키텍처 사용
+* **웹은 다음과 같이 가장 기본적으로 클라이언트-서버 아키텍처 사용**
   
-  * 클라이언트가 서버에 요청을 보내고, 서버는 클라이언트의 요청에 응답
+  * <mark>**클라이언트가 서버에 요청을 보내고, 서버는 클라이언트의 요청에 응답**</mark>
 
 * 클라이언트 측에서 HTML form은 HTTP 요청을 서버에 보내는 가장 편리한 방법
 
@@ -522,50 +522,169 @@
 
 ## ▶ Sending form data (Client)
 
-* 데이터가 전송되는 방법을 정의
+> 데이터가 전송되는 방법을 정의
 
 * 웹에서 **사용자 정보를 입력하는 여러 방식 (text, button, submit 등)을 제공하고 사용자로부터 할당된 데이터를 서버로 전송하는 역할을 담당**
 
-* 핵심 속성
+* **핵심 속성**
   
-  * action - 데이터를 어디로?
+  * **action - 데이터를 어디로?**
     
-    * 입력 데이터가 전송될 URL을 지정 = 목적지 주소
+    * <mark>**입력 데이터가 전송될 URL을 지정 = 목적지 주소**</mark>
     
     * 데이터를 어디로 보낼지 지정하는 것이며 반드시 유효한 URL이어야 함
     
-    * 이 속성을 지정하지 않으면 데이터는 현재 form이 있는 페이지의 URL로 보내짐
+    * **이 속성을 지정하지 않으면 데이터는 현재 form이 있는 페이지의 URL로 보냄**
   
-  * method - 어떤 방식으로 보낼지?
+  * **method - 어떤 방식으로 보낼지?**
     
     * 데이터를 어떻게 보낼 것인지 정의 = 방식
     
-    * HTML form 데이터는 오직 2가지 방법으로 전송 - GET 방식과 POST 방식
+    * **<mark>HTML form 데이터는 오직 2가지 방법으로 전송 - GET 방식과 POST 방식</mark>**
 
-* 사용자가 data를 입력하려면 입력 page가 필요하다.
+* **사용자가 data를 입력하려면 입력 page가 필요하다.**
   
-  * 사용자가 요청하면 입력 page는 서버가 제공하는 것이다. (ex. 로그인 버튼 클릭)
+  * <mark>**사용자가 요청하면 입력 page는 서버가 제공**</mark>하는 것이다. (ex. 로그인 버튼 클릭)
+
+### ✔ HTML input's attribute
+
+> 사용자로부터 데이터를 입력 받기 위해 사용
+
+* type 속성에 따라 동장 방식이 달라진다.
+  
+  * type을 지정하지 않는 경우 = text (default)
+
+* **name (핵심 속성)**
+  
+  * form 을 통해 데이터를 submit 했을 때 <mark>**name 속성에 설정된 값을 서버로 전송**</mark>하고 <mark>**서버는 name 속성에 설정된 값을 통해 사용자가 입력한 데이터 값에 접근 가능**</mark>
+  
+  * **주요 용도는 GET/POST 방식으로 서버에 전달하는 파라미터(key=name, value=value)로 매핑하는 것**
+
+### ✔ HTTP request methods
+
+> HTML 문서와 같은 리소스(데이터)들을 가져올 수 있도록 해주는 프로토콜(규칙)
+
+* **웹에서 이루어지는 모든 데이터 교환의 기초**
+
+* HTTP는 주어진 리소스가 수행할 원하는 작업을 나타내는 request methods를 정의
+
+* HTTP Method 예시
+  
+  * GET, POST, PUT, DELETE
+
+#### 📌 GET
+
+* 서버로부터 정보를 조회하는데 사용 = 서버에게 리소스를 요청하기 위해 사용
+
+* <mark>**데이터를 가져올 때만 사용해야 함**</mark>‼
+
+* **데이터를 서버로 전송할 때 Query String Parameters를 통해 전송**
+  
+  * 데이터는 URL에 포함되어 서버로 보내짐
+
+##### 📍 Query String Parameters
+
+> 사용자가 입력 데이터를 전달하는 방법 중 하나
+
+* url 주소에 데이터를 파라미터를 통해 넘기는 것
+
+* 문자열은 &로 연결된 key=value 쌍으로 구성되면 기본 URL과 ?로 구분
+  
+  * 예) **`http://host:port/paht?key=value&key=value`**
+
+* 물음표(?)를 쓰는 것으로 Query String 이 시작함
+
+* **단, 아직 어디로 보내야(action)할지는 모름**
+
+## ▶ Retrieving the data (Server)
+
+> 데이터 가져오기(검색)
+
+* 서버는 클라이언트로 받은 key-value 쌍의 목록과 같은 데이터를 받음
+
+* Django 에서는 `throw`가 보낸 데이터를 `catch`에서 가져온다.
+  
+  * **단, throw 페이지의 form 이 보낸 데이터는 어디로?**
+  
+  * <mark>**GET 방식은 데이터를 서버로 전송할 때 URL에 포함되어 보내짐**</mark>‼
+  
+  * **모든 요청 데이터는 view 함수의 첫 번째 인자인 `request`에 들어있다**‼
+
+### ✔ 요청과 응답 객체 흐름
+
+* 1️⃣ 페이지가 요청되면 HttpRequest object를 생성
+
+* 2️⃣ 해당하는 적절한 view 함수 로드하고 HttpRequest를 첫 번째 인자로 전달
+
+* 3️⃣ 마지막으로 view 함수는 HttpReponse object를 반환
 
 
 
+# Django URL
 
+## ▶ variable routing
 
-# variable routing
+> 템플릿의 많은 부분이 중복되고, 일부만 변경되는 상황에서는 계속 새로 만들 필요 X
 
-템플릿의 많은 부분이 중복되고, 일부분만 변경되는 상황에서도 계속 새로 만들어야 해?
+* URL 주소를 변수로 사용하는 것을 의미
 
-query string parameter - 사용자의 입력이 반드시 필요
+* **변수 값에 따라 하나의 path()에 여러 페이지를 연결시킬 수 있음**
 
-variable routing - 주소 이동할 때 path 의 일부분을 변수로 사용 (사용자 입력 X)
+* **변수는 `<>` 에 정의하며 view 함수의 인자로 할당함**
 
-사용 예) 인스타그램 - 해당 ID 마다 프로필 페이지가 필요
+### 📍 Query string 과 차이점
 
-변수는 `<>` 에 정의하며 view 함수의 인자로 할당함
+* Query string parameter - 사용자의 입력이 반드시 필요
 
-사용 시 주의점
+* **Variable routing - 주소 이동할 때 path 의 일부분을 변수로 사용 (사용자 입력 X)**
 
-1. 변수명과 views.py의 함수 내 매개변수의 이름이 같아야 한다.
+### 📍 사용 시 주의점
 
-2. variable routing이 설정되면 반드시 매개변수로 받아야 한다.
+* 1️⃣ <mark>**변수명과 views.py의 함수 내 매개변수의 이름이 같아야 한다.**</mark>
 
-3. varialbe routing이 적용된 주소에는 반드시 값이 들어가 있어야 한다.
+* 2️⃣ <mark>**variable routing이 설정되면 반드시 매개변수로 받아야 한다.**</mark>
+
+* 3️⃣ <mark>**varialbe routing이 적용된 주소에는 반드시 값이 들어가 있어야 한다.**</mark>
+
+## ▶ App URL mapping
+
+> 앱이 많아졌을 때 `urls.py` 를 각 app에 매핑하는 방법
+
+* 프로젝트의 urls.py에서 모든 앱의 url을 관리하는 것은 유지보수에 좋지 않음
+
+* 하나의 프로젝트에 여러 앱이 존재하는 경우
+  
+  * 각각의 앱 안에 `urls.py` 를 만들고 <mark>**프로젝트 urls.py에서 각 앱의 urls.py 파일로 URL 매핑을 위탁**</mark>할 수 있음❗
+
+```django
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('articles/', include('articles.urls')),
+    path('pages/', include('pages.urls')),
+]
+```
+
+* ❗ <mark>**include 되는 앱의 url.py에 urlpatterns가 작성되어 있지 않다면 에러가 발생**</mark> ❗
+  
+  * 앱의 urlpatterns 가 빈 리스트라도 작성되어야 함
+
+* 각각의 앱에서 URL 관리
+
+![](Django_assets/2022-09-02-17-26-03-image.png)
+
+## ▶ Naming URL patterns
+
+> URL 수정이 필요한 경우 모든 곳을 찾아서 변경하기는 어려움
+
+* **`path()` 함수의 name 인자를 정의해서 사용하면 문제 해결 가능**
+  
+  ![](Django_assets/2022-09-02-17-28-46-image.png)
+
+* **Built-in tag**
+  
+  ![](Django_assets/2022-09-02-17-29-30-image.png)
+  
+  * **주어진 URL 패턴 이름 및 선택적 매개 변수와 일치하는 절대 경로 주소를 반환**
