@@ -188,8 +188,6 @@
   
   * 문법적으로 너무 파고들지 말고 **`ModelForm`의 역할과 사용법을 숙지**하자
 
-
-
 # ModelForm with view functions
 
 ## ▶ Create
@@ -215,8 +213,6 @@
   * **제공되지 않은 경우 `save()` 는 지정된 모델의 새 인스턴스를 만듦 (CREATE)**
   
   * **제공되면 `save()` 는 해당 인스턴스를 수정 (UPDATE)**
-
-
 
 ### ✔ form 인스턴스의 `errors` 속성
 
@@ -264,15 +260,11 @@
   
   * **데이터의 유효성 검사가 끝나면 데이터를 각각 어떤 레코드에 맵핑해야 할 지 이미 알고 있기 때문에 곧바로 `save()` 호출이 가능**
 
-
-
 # Widgets 활용하기
 
 ![](Django_3_assets/2022-09-06-13-53-00-image.png)
 
 * indent 유의하자!
-
-
 
 # Handling HTTP requests‼
 
@@ -330,8 +322,6 @@
 
 ![](Django_3_assets/2022-09-06-17-34-32-image.png)
 
-
-
 # View decorators
 
 > 기존에 작성된 함수에 기능을 추가하고 싶을 때 사용
@@ -357,5 +347,3 @@
   * 3️⃣ **`require_safe()`**
     
     * View 함수가 <mark>**GET 요청 method만 허용**</mark>하도록 하는 데코레이터
-
-
