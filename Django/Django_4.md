@@ -567,5 +567,3 @@
 * POST method만 허용하는 delete 같은 함수는 내부에서 `is_authenticated` 속성 값을 사용해서 처리
   
   ![](Django_4_assets/2022-09-08-00-23-59-image.png)
-
-
