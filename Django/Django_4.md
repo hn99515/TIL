@@ -30,7 +30,7 @@
     
     * ex. 회원가입 시 username 대신 email을 식별 값으로 사용하고 싶은 경우
 
-* Django는 현재 프로젝트에서 사용할 User Model을 결정하는 <mark>**`AUTH_USER_MODEL`**</mark> 설정값으로 **Default User Model을 재정의(override)할 수 있도록 한다.**
+* Django는 현재 프로젝트에서 사용할 User Model을 결정하는 **`AUTH_USER_MODEL`** 설정값으로 **<mark>Default User Model을 재정의(override)</mark>할 수 있도록 한다.**
 
 ### ✔ AUTH_USER_MODEL
 
@@ -52,6 +52,8 @@
 
 > 공식문서를 보며 순서대로 진행하는 것을 권장
 
+📌 https://docs.djangoproject.com/en/3.2/topics/auth/customizing/#substituting-a-custom-user-model
+
 ### 1️⃣ AbstractUser를 상속받는 커스텀 User 클래스 작성
 
 * 기존 User 클래스도 AbstractUser를 상속받기 때문에 Custom User 클래스도 완전히 같은 모습
@@ -60,17 +62,19 @@
 
 ### 2️⃣ settings.py 에서 `AUTH_USER_MODEL` 업데이트
 
-* Django 프로젝트에서 User를 나타내는데 사용하는 모델을 위에서 생성한 커스텀 User 모델로 지정
+* **Django 프로젝트에서 User를 나타내는데 사용하는 모델을 위에서 생성한 커스텀 User 모델로 지정**
   
   ![](Django_4_assets/2022-09-07-16-49-34-image.png)
 
-### 3️⃣ admin.py 에 custom User 모델을 등록
+### 3️⃣ admin.py 에 custom User 모델을 등록 (선택 사항)
 
-* 기본 User 모델이 아니기 때문에 등록해야만 admin site에 출력됨
+* admin.py 에 커스텀 User 모델을 등록
+  
+  * 기본 User 모델이 아니기 때문에 등록해야만 admin site에서 사용 가능
   
   ![](Django_4_assets/2022-09-07-16-54-59-image.png)
 
-#### 📍 User 모델 상속 관계
+### 📍 User 모델 상속 관계
 
 ![](Django_4_assets/2022-09-07-16-59-36-image.png)
 
@@ -83,14 +87,16 @@
   * 몇 가지 공통 정보를 여러 다른 모델에 넣을 때 사용하는 클래스
   
   * 데이터베이스 테이블을 만드는 데 사용되지 않으며, **대신 다른 모델의 기본 클래스로 사용되는 경우, 해당 필드가 하위 클래스의 필드에 추가됨**
+  
+  * https://docs.python.org/3/library/abc.html
 
-#### 📍 프로젝트 중간에 `AUTH_USER_MODEL` 변경하기❓
+### 📍 프로젝트 중간에 `AUTH_USER_MODEL` 변경하기❓
 
 * 모델 관계에 영향을 미치기 때문에 훨씬 더 어려운 작업이 필요
   
   * ex. 변경사항이 자동으로 수행될 수 없기 때문에 DB 스키마를 직접 수정하고, 이전 사용자 테이블에서 데이터를 이동하고, 일부 마이그레이션을 수동으로 다시 적용해야 하는 등의 불편함이 매우 큼
   
-  * <mark>**무조건**</mark>‼ **프로젝트 처음에 진행하기**‼</mark>
+  * <mark>**무조건**</mark>‼ **프로젝트 처음에 진행하기**‼
 
 ## ▶ 데이터베이스 초기화 방법
 
@@ -100,9 +106,9 @@
 
 * migrations 폴더 및 `__init__.py` 는 삭제 ❌
 
-* 번호가 붙은 파일만 삭제
+* **번호가 붙은 파일만 삭제** ⭕
 
-### 2️⃣ `db.sqlite3` 삭제
+### 2️⃣ db.sqlite3 파일 삭제
 
 ### 3️⃣ migrations 진행
 
@@ -110,9 +116,9 @@
 
 * `python manage.py migrate`
 
-## ▶ 반드시 User 모델을 대체해야 하나❓
+## ▶ 반드시 Custom User 모델을 사용해야 하나❓
 
-> Django에서 강력하게 권장하고 있음
+> Django에서 **강력하게 권장**하고 있음
 
 * Custom User 모델은 **기본 User 모델과 동일하게 작동하면서도 필요한 경우 나중에라도 맞춤 설정**할 수 있다‼
 
@@ -130,7 +136,7 @@
 
 ### 1️⃣ 비연결 지향 (connectionless)
 
-* **서버는 요청에 대한 응답을 보낸 후 연결을 끊음**
+* <mark>**서버는 요청에 대한 응답을 보낸 후 연결을 끊음**</mark>
   
   * ex. 네이버 메인 페이지를 보고 있다고 해서 네이버 서버와 연결되어 있는 것은 아님
     
@@ -142,7 +148,7 @@
 
 * **클라이언트와 서버가 주고받는 메시지들은 서로 완전히 독립적**
 
-#### 📌 그럼 어떻게 로그인 상태를 유지할까❓
+### 📍 그럼 어떻게 로그인 상태를 유지할까❓
 
 * **로그인을 하고 웹 사이트를 사용할 때 페이지를 이동해도 로그인 상태가 유지**
 
@@ -178,7 +184,7 @@
 
 * 1️⃣ <mark>**세션 관리 (Session management)**</mark>
   
-  * **로그인, 아이디 자동완성, 공지 하루동안 안 보기, 팝업 체크, 장바구니 등의 정보 관리**
+  * **로그인, 아이디 자동완성, 공지 하루동안 안 보기, 팝업 체크, 장바구니 등의 사용자 정보를 관리**
     
     * 개발자 도구 - Network 에서 확인 가능
     
@@ -202,7 +208,7 @@
   
   * **클라이언트가 다시 동일한 서버에 접속하면 요청과 함께 쿠키(session id가 저장된)를 서버에 전달 = 중요한 데이터는 서버에 저장되어 있음**
   
-  * **쿠키는 요청 때마다 서버에 함께 전송되므로 <mark>서버에서 session id를 확인해 알맞은 로직을 처리</mark>**
+  * **쿠키는 요청 때마다 서버에 함께 전송되므로 <mark>서버에서 session id(key)를 확인해 알맞은 로직을 처리</mark>**
 
 * `session id` 는 세션을 구별하기 위해 필요하며, **쿠키에는 `session id` 만 저장**
 
@@ -232,27 +238,31 @@
 
 # Authentication in Web requests
 
+> Django가 제공하는 인증 관련 built-in forms
+> 
+>  https://docs.djangoproject.com/en/3.2/topics/auth/default/#module-django.contrib.auth.forms
+
 ## ▶ Login
 
 * **로그인은 <mark>Session 을 Create</mark>하는 과정**
 
-### ✔ `AuthenticationForm`
+### ✔ AuthenticationForm
 
 * **로그인을 위한 built-in form**
   
   * 로그인 하고자 하는 사용자의 정보를 입력 받음
   
+  * **일반 Form 중에 하나 - 사용할 때 유의**‼
+  
   * **기본적으로 username과 password를 받아 <mark>데이터가 유효한지 검증</mark>**
 
-* **request를 첫 번째 인자로 취함**
-
-![](Django_4_assets/2022-09-07-21-25-45-image.png)
+* **`AuthenticationForm(request)`**
 
 ### ✔ login() as auth_login()
 
-* **`login(request, user, backend=None)`**
+* **`login(request, user(유저정보), backend=None)`**
 
-* **인증된 사용자를 로그인 시키는 로직으로 view 함수에서 사용됨**
+* <mark>**인증된 사용자를 로그인 시키는 로직으로 view 함수에서 사용됨**</mark>
 
 * **현재 세션에서 연결하려는 인증된 사용자가 있는 경우 사용**
   
@@ -280,7 +290,7 @@
 
 * 템플릿에서 **context 데이터 없이 user 변수를 사용할 수 있는데 왜**❓
   
-  * settings.py 의 `context processors` 설정 값 때문
+  * settings.py 의 **`context processors` 설정 값 때문**
 
 ### 📍 context processors
 
@@ -300,7 +310,8 @@
 
 ## ▶ Logout
 
-* 로그아웃은 **<mark>Session 을 Delete하는 과정</mark>** - session은 클라이언트와 서버 양쪽에 위치
+* 로그아웃은 **<mark>Session 을 Delete하는 과정</mark>**
+  * 로그인 했다는 것은 session이 클라이언트와 서버 양쪽에 위치함을 의미
 
 ### ✔ logout() as auth_logout()
 
@@ -328,7 +339,7 @@
 
 * 3개의 필드를 가짐
   
-  * 1️⃣ username - from the user model
+  * 1️⃣ username  (from the user model)
   
   * 2️⃣ password1
   
@@ -338,7 +349,7 @@
 
 * **위와 같이 작성 시 Error 발생**‼
   
-  * 회원가입에 사용하는 **`UserCreationForm`이 우리가 대체한 커스텀 user 모델이 아닌 <mark>기존 user 모델로 인해 작성된 클래스이기 때문에 상속을 통한 변경이 필요</mark>하다.**
+  * 회원가입에 사용하는 **`UserCreationForm`이 우리가 대체한 커스텀 user 모델이 아닌 <mark>기존 user 모델로 인해 작성된 클래스이기 때문에 상속을 통한 변경이 필요</mark>하다**❗
   
   * 실제 UserCreationForm 코드
     
@@ -350,7 +361,7 @@
 
 ## ▶ AbstractBaseUser의 모든 subclass와 호환되는 forms
 
-* 커스텀하지 않아도 사용 가능한 Form 클래스 = 기존 User 모델을 참조하는 Form이 아니기 때문❗
+* 커스텀하지 않아도 사용 가능한 일반 Form 클래스 = 기존 User 모델을 참조하는 Form이 아니기 때문❗
   
   * `AuthenticationForm`
   
@@ -454,7 +465,7 @@
 
 ### ✔ update_session_auth_hash()
 
-* `update_session_auth_hash(request, user)`
+* **`update_session_auth_hash(request, user)`**
 
 * 현재 요청과 새 session data가 파생될 업데이트 된 사용자 객체를 가져오고, session data를 적절하게 업데이트해줌
 
@@ -484,7 +495,7 @@
   
   * **AnonymousUser에 대해서는 항상 False**
 
-* 일반적으로 reqeust.user에서 이 속성을 사용 **(`request.user.is_authenticated`)**
+* 일반적으로 `reqeust.user`에서 이 속성을 사용 <mark>**(`request.user.is_authenticated`)**</mark>
 
 * **권한(permission)과는 관련이 없으며, 사용자가 활성화 상태(active)이거나 유효한 세션을 가지고 있는지도 확인하지 않음**‼
 
@@ -525,12 +536,16 @@
 ### ✔ 'next' query string parameter
 
 * 로그인이 정상적으로 진행되면 이전에 요청했던 주소록 redirect 하기 위해 Django가 제공해주는 쿼리 스트링 파라미터
+  
+  * `/articles/create/` 로 강제 접속 시도
+  
+  * 로그인 페이지로 리다이렉트 되면 url 에는 **`/accounts/login/?next=/articles/create/`** 로 확인
 
 * **해당 값을 처리할지 말지는 자유이며 별도로 처리 해주지 않으면 view에 설정한 redirect 경로로 이동하게 된다.**
 
 ![](Django_4_assets/2022-09-07-23-50-32-image.png)
 
-* 단축평가를 통해 위와 같이 표현 가능함‼
+* **단축평가를 통해 위와 같이 표현 가능함**‼
   
   * **앞이 True 면 뒤는 확인 ❌ / 앞이 False 면 뒤를 확인❗**
   
