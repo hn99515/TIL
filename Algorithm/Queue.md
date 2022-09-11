@@ -50,7 +50,7 @@
   
   * **rear - 마지막으로 저장된 위치**
   
-  * **`front == rear` 상태 - 큐가 비어있음을 의미**
+  * **`front == rear` 상태 - 큐가 비어있음을 의미**❗
 
 ![](Queue_assets/2022-08-24-09-13-24-image.png)
 
@@ -64,15 +64,15 @@
   
   * **공백 상태 - front == rear**
   
-  * **포화 상태 - rear == n-1 (n: 배열의 크기, n-1: 배열의 마지막 인덱스)**
+  * **포화 상태 - rear == n-1 (n-1: 배열의 마지막 인덱스)**
 
 ### ✔ 구현
 
 * 삽입 = `enQueue(item)`
   
-  * rear 값을 하나 증가시켜 새로운 원소를 삽입할 자리를 마련
+  * **rear 값을 하나 증가**시켜 새로운 원소를 삽입할 자리를 마련
   
-  * 그 인덱스에 해당하는 배열원소 Q[rear]에 item을 저장
+  * 그 인덱스에 해당하는 배열원소 **Q[rear]에 item을 저장**
 
 ```python
 def enQueue(item):
@@ -86,12 +86,12 @@ def enQueue(item):
 
 * 삭제 = `deQueue()`
   
-  * front 값을 하나 증가시켜 큐에 남아있게 될 첫 번째 원소 이동
+  * **front 값을 하나 증가**시켜 큐에 남아있게 될 첫 번째 원소 이동
   
-  * 새로운 첫 번째 원소를 리턴 함으로써 삭제와 동일한 기능
+  * 새로운 **첫 번째 원소를 리턴 함으로써 삭제와 동일한 기능**
 
 ```python
-def deQueu():
+def deQueue():
     global front
     if isEmpty():
         print('Queue_Empty')
@@ -102,9 +102,9 @@ def deQueu():
 
 * 공백 및 포화 상태 검사 = `isEmpty()`, `isFull()`
   
-  * 공백상태 - front == rear
+  * **공백상태 - front == rear**
   
-  * 포화상태 - rear == n-1 (n: 배열의 크기, n-1: 배열의 마지막 인덱스)
+  * **포화상태 - rear == n-1** (n-1: 배열의 마지막 인덱스)
 
 ```python
 def isEmpty():
@@ -128,6 +128,55 @@ def Qpeek():
         return Q[front+1]
 ```
 
+### 📌 선형 큐 기본
+
+```python
+N = 10
+q = [0] * N
+front = -1
+rear = -1
+
+# enqueue(10)
+rear += 1
+q[rear] = 10
+
+# enqueue(20)
+rear += 1
+q[rear] = 20
+
+# enqueue(30)
+rear += 1
+q[rear] = 30
+
+# dequeue() - 10
+front += 1
+print(q[front])
+
+# dequeue() - 20
+front += 1
+print(q[front])
+
+# dequeue() - 30
+front += 1
+print(q[front])
+```
+
+### 📌 deque() 활용
+
+```python
+from collections import deque
+
+q = deque()
+
+q.append(10)
+q.append(20)
+q.append(30)
+
+print(q.popleft())
+print(q.popleft())
+print(q.popleft())
+```
+
 ## ▶ 선형 큐 이용 시 문제점
 
 ### ✔ 잘못된 포화상태 인식
@@ -140,7 +189,7 @@ def Qpeek():
   
   * 연산이 이루어질 때마다 저장된 원소들을 배열의 앞부분으로 모두 이동
   
-  * 원소 이동에 많은 시간이 소요 = 큐의 효율성 급락
+  * **원소 이동에 많은 시간이 소요 = 큐의 효율성 급락**
 
 ![](Queue_assets/2022-08-24-09-27-48-image.png)
 
@@ -156,13 +205,13 @@ def Qpeek():
 
 * **초기 공백 상태 : `front = rear = 0`**
 
-* index의 순환: front와 rear의 위치가 배열의 마지막 인덱스인 n-1을 가리킨 후 다음에는 배열의 처음 인덱스인 0으로 이동해야 함
+* index의 순환: front와 rear의 위치가 **배열의 마지막 인덱스인 n-1을 가리킨 후 다음에는 배열의 처음 인덱스인 0으로 이동해야 함**
   
-  * **나머지 연산자 mod를 사용!**
+  * <mark>**나머지 연산자 mod를 사용!**</mark>
 
 * front 변수
   
-  * **공백 상태와 포화 상태 구분을 쉽게 하기 위해 front가 있는 자리는 사용하지 않고 항상 빈자리**
+  * **공백 상태와 포화 상태 구분을 쉽게 하기 위해 <mark>front가 있는 자리는 사용하지 않고 항상 빈자리</mark>**
 
 * 삽입 및 삭제 위치
 
@@ -217,9 +266,9 @@ def deQueue():
 
 - 공백 및 포화 상태 검사 = `isEmpty()`, `isFull()`
   
-  - **공백상태 - front == rear**
+  - <mark>**공백상태 - front == rear**</mark>
   
-  - **포화상태 - 삽입할 rear의 다음 위치 == 현재 front - (rear+1) mod n == front**
+  - **포화상태 - <mark>삽입할 rear의 다음 위치</mark> == 현재 front - (rear+1) mod n <mark>== front</mark>**
 
 ```python
 def isEmpty():
@@ -227,6 +276,43 @@ def isEmpty():
 
 def isFull():
     return (rear+1) % len(cQ) == front
+```
+
+### 📌 원형 큐 기본
+
+```python
+N = 10
+q = [0] * N
+front = 0
+rear = 0
+
+# enqueue(10)
+rear = (rear + 1) % N
+q[rear] = 10
+
+# enqueue(20)
+rear = (rear + 1) % N
+q[rear] = 20
+
+# enqueue(30)
+rear = (rear + 1) % N
+q[rear] = 30
+
+# enqueue(40)
+rear = (rear + 1) % N
+q[rear] = 40
+
+# dequeue() - 10
+front = (front + 1) % N
+print(q[front])
+
+# dequeue() - 20
+front = (front + 1) % N
+print(q[front])
+
+# dequeue() - 30
+front = (front + 1) % N
+print(q[front])
 ```
 
 # 우선순위 큐 (Priority Queue)
@@ -251,7 +337,7 @@ def isFull():
 
 ![](Queue_assets/2022-08-24-10-00-24-image.png)
 
-### ✔ 배열 이용
+### ✔ 배열을 이용한 우선순위 큐 구현
 
 * 원소를 삽입하는 과정에서 우선순위를 비교하여 적절한 위치에 삽입
 
@@ -259,19 +345,17 @@ def isFull():
 
 ### ✔ 문제점
 
-* 배열 사용으로 삽입이나 삭제 연산이 일어날 때 원소의 재배치가 발생
+* 배열 사용으로 **삽입이나 삭제 연산이 일어날 때 원소의 재배치가 발생**
   
-  * 이에 소요되는 시간이나 메모리 낭비가 큼
-
-
+  * **이에 소요되는 시간이나 메모리 낭비가 큼**
 
 # 큐의 활용
 
 ## ▶ 버퍼(Buffer)
 
-* **데이터를 한 곳에서 다른 한 곳으로 전송하는 동안 일시적으로 그 데이터를 보관하는 메모리의 영역**
+* **데이터를 한 곳에서 다른 한 곳으로 전송하는 동안 <mark>일시적으로 그 데이터를 보관하는 메모리의 영역</mark>**
 
-* **버퍼링 - 버퍼를 활용하는 방식 or 버퍼를 채우는 동작을 의미**
+* 버퍼링 - 버퍼를 활용하는 방식 or 버퍼를 채우는 동작을 의미
 
 ### ✔ 버퍼의 자료구조
 
@@ -305,8 +389,6 @@ while m < N:
     print(f'마지막 받은 사람: {v}')
 ```
 
-
-
 # BFS (Breadth First Search)
 
 | 그래프 탐색법        | 사용처                                                      | 구현                     |
@@ -318,8 +400,12 @@ while m < N:
 
 ![](Queue_assets/2022-08-24-12-57-11-image.png)
 
+### 📌 BFS 기본 코드
+
+* *단, queue 에 정점이 중복으로 들어갈 가능성 존재*❗
+
 ```python
-def BFS(G, v):                      # 그래프 G, 탐색 시작점 v
+def BFS(G, v):                      # 인접 그래프 G, 탐색 시작점 v
     visited = [0] * (n+1)           # n - 정점의 개수
     queue = []
     queue.append(v)                 # 시작점 v를 큐에 삽입
@@ -340,20 +426,72 @@ def BFS(G, v):                      # 그래프 G, 탐색 시작점 v
   * Q 생성
   
   * 시작점 enqueue
+    
+    * enqueue 후 바로 visited 표기 = queue 에 정점이  중복되지 않는다.
 
 ```python
 def BFS(G, v, n)
     visited = [0] * (n+1)
     queue = []
-    queue.append(v)                              # 시작점을 1로 표기
-    visited[v] = 1
+    queue.append(v)       # 시작점을 queue에 넣고 시작
+    visited[v] = 1        # 시작점을 1로 표기 = queue에 중복을 없애준다.
     while queue:
         t = queue.pop(0)
         visited[v] = 1
         for i in G[t]:
             if not visited[i]:
                 queue.append(i)
-                visited[i] = visited[n] + 1      # 같은 그룹끼리 번호를 지정
+                visited[i] = visited[t] + 1    # 같은 그룹끼리 번호를 지정(중복을 막기 위함)
+```
+
+* 같은 그룹끼리 번호가 같음
+  
+  * 처리되는 우선순위가 동일함을 의미
+  
+  * **출발점에서부터 최단거리를 알 수 있음**
+  
+  * **출발점으로부터 거리가 같은 정점은 최대 몇 개인지도 알 수 있음**
+
+* **탐색 순서 출력**
+
+```python
+'''
+0번부터 N번까지, E개의 간선
+6 8
+0 1
+0 2
+3 1
+1 4
+2 4
+5 3
+4 5
+6 5
+'''
+
+
+def BFS(v, N):              # v - 시작 정점, N - 마지막 정점 번호
+    visited = [0] * (N+1)   # visited 생성
+    q = []                  # 큐 생성
+    q.append(v)             # 시작점 인큐
+    visited[v] = 1          # 시작점 처리 표시
+    while q:                        # 큐가 비어있으면 종료
+        v = q.pop(0)
+        print(v)                    # visit(v) - 문제에서 주어진 일을 처리
+        for w in adjList[v]:        # 인접하고 미방문한 정점 w가 있는 경우 q에 추가
+            if visited[w] == 0:
+                q.append(w)
+                visited[w] = visited[v] + 1
+
+
+V, E = map(int, input().split())
+N = V + 1           # N - 정점 개수, V - 마지막 정점 번호
+adjList = [[] for _ in range(N)]
+for _ in range(E):
+    a, b = map(int, input().split())
+    adjList[a].append(b)
+    adjList[b].append(a)
+
+BFS(0, V) # 출발점, 마지막 정점 번호
 ```
 
 
