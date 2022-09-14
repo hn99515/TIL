@@ -274,6 +274,20 @@ def postorder_traverse(T):
 
 ![](Tree_assets/2022-09-13-01-03-59-image.png)![](Tree_assets/2022-09-13-01-04-07-image.png)
 
+```python
+def preorder(n):
+    if n <= size:
+        print(tree[n])
+        preorder(2*n)
+        preorder(2*n +1)
+
+
+tree = [0, 'A', 'B', 'C', 'D', 'E', 'F']        # 완전이진트리
+size = len(tree) - 1                            # 마지막 정점 번호
+# preorder(1)
+preorder(2)         # 2번부터 순회하면 서브트리만 순회하고 끝
+```
+
 * **노드 번호를 배열의 인덱스로 사용**
 
 * 높이가 h 인 이진 트리를 위한 배열의 크기는❓
