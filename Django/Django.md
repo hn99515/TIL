@@ -552,7 +552,7 @@
 
 * type 속성에 따라 동장 방식이 달라진다.
   
-  * type을 지정하지 않는 경우 = text (default)
+  * type을 지정하지 않는 경우(default) = text
 
 * **name (핵심 속성)**
   
@@ -618,8 +618,6 @@
 
 * 3️⃣ 마지막으로 view 함수는 HttpReponse object를 반환
 
-
-
 # Django URL
 
 ## ▶ variable routing
@@ -632,13 +630,13 @@
 
 * **변수는 `<>` 에 정의하며 view 함수의 인자로 할당함**
 
-### 📍 Query string 과 차이점
+### 📍 Query string 과 차이점❗
 
 * Query string parameter - 사용자의 입력이 반드시 필요
 
 * **Variable routing - 주소 이동할 때 path 의 일부분을 변수로 사용 (사용자 입력 X)**
 
-### 📍 사용 시 주의점
+### 📍 사용 시 주의점❗
 
 * 1️⃣ <mark>**변수명과 views.py의 함수 내 매개변수의 이름이 같아야 한다.**</mark>
 

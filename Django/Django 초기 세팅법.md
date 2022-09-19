@@ -109,17 +109,17 @@
      ```python
      from django.urls import path
      from . import views
-     
-     
-     app_name = 'accounts'
-     urlpatterns = [
-         
-     ]
-     
-     
      ```
 
-3.  프로젝트 폴더 내 `urls.py` 에서 방금 생성한 `앱/urls.py` 를 등록
+     app_name = 'accounts'
+     urlpatterns = [
+    
+     ]
+    
+    
+     ```
+
+3. 프로젝트 폴더 내 `urls.py` 에서 방금 생성한 `앱/urls.py` 를 등록
 
 ```python
 from django.contrib import admin
@@ -166,5 +166,3 @@ from .models import User  # 새롭게 등록한 User 모델
 
 admin.site.register(User, UserAdmin)
 ```
-
-

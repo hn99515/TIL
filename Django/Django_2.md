@@ -287,7 +287,7 @@
   
   * **ORM에 의해 SQL로 변환되어 DB에 전달 & DB의 응답 데이터를 ORM이 QuerySet이라는 자료 형태로 변환하여 우리에게 전달**
 
-* **QuerySet‼**
+* **QuerySet❗**
   
   * **DB에게 받은 데이터를 담고있는 유사 리스트 - 음수 인덱스 사용 불가**
   
@@ -325,7 +325,7 @@ article.content = 'django'
 article.save()
 ```
 
-* save를 하지 않으면 아직 DB에 값이 저장되지 않는다‼
+* save를 하지 않으면 아직 DB에 값이 저장되지 않는다❗
 
 #### 2️⃣ 인스턴스 생성 시 초기 값을 함께 작성하여 생성
 
@@ -427,8 +427,6 @@ article.delete()
 ```
 
 * 삭제한 후 데이터를 생성하면 id 값은 여전히 그 다음 순번부터 시작한다.
-
-
 
 # 실제 적용해보기
 
@@ -581,8 +579,6 @@ article.delete()
 * **views.py**
 
 ![](Django_2_assets/2022-09-01-17-45-08-image.png)
-
-
 
 # Admin site
 
