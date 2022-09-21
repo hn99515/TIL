@@ -1,5 +1,3 @@
-
-
 # 반복과 재귀
 
 > 반복과 재귀는 유사한 작업을 수행
@@ -113,10 +111,11 @@ def fact(n):
 
 * 상대적으로 빠른 시간에 문제 해결(알고리즘 설계)을 할 수 있음
 
-* 문제에 포함된 자료의 크기가 작다면 유용함
+* **문제에 포함된 자료의 크기가 작다면 유용함**
 
 ```python
-SequentialSearch(A[0...n], k)
+# 리스트 안에 k 찾기
+SequentialSearch(A, k)
     A[n] = k
     i = 0
     while A[i] != k:
@@ -129,7 +128,7 @@ SequentialSearch(A[0...n], k)
 
 * 모든 경우의 수를 생성하고 테스트하기 때문에 수행 속도는 느리지만, 해답을 찾아내지 못할 확률이 작다.
 
-* 이를 기반으로 그리디 기법이나 동적 계획법을 이용해서 효율적인 알고리즘을 찾을 수 있다.
+* **이를 기반으로 그리디 기법이나 동적 계획법을 이용해서 효율적인 알고리즘을 찾을 수 있다.**
 
 * **우선 완전 검색으로 접근하여 해답을 도출한 후, 성능 개선을 위해 다른 알고리즘을 사용하고 해답을 확인하는 것이 바람직**
 
@@ -139,7 +138,7 @@ SequentialSearch(A[0...n], k)
 
 * `nPr` - 서로 다른 n개 중 r개를 택하는 순열
   
-  * `nPr` =  n * (n-1) * (n-2) * ... * (n-r+1)
+  * `nPr` =  n * (n-1) * (n-2) * ... * (n-r+1) = `n! / (n-r)!`
   
   * `nPn` = n!
 
@@ -147,7 +146,7 @@ SequentialSearch(A[0...n], k)
   
   * TSP(Traveling Salesman Problem)
 
-* N 개의 요소들에 대해서 n! 개의 순열들이 존재
+* **N 개의 요소들에 대해서 n! 개의 순열들이 존재**
   
   * n 이 커질수록 시간 복잡도는 폭발적으로 늘어난다.
 
@@ -172,21 +171,23 @@ for i1 in range(1, 4):
 ![](bruteforce_greedy_assets/2022-09-21-10-19-35-image.png)
 
 ```python
-def perm(i, k):
-    if i == k:          # 인덱스 i == 원소의 개수
-        print(p)
+def f(i, k):
+    # 인덱스 i == 원소의 개수
+    if i == k:
+        print(p)        # 원하는 작업 실행
     else:
         for j in range(i, k):
-            p[i], p[j] = p[j], p[i]
-            perm(i+1, k)
-            p[i], p[j] = p[j], p[i]
+            p[i], p[j] = p[j], p[i]     # 자리 교환
+            f(i+1, k)                   # 그 다음 인덱스 확인
+            p[i], p[j] = p[j], p[i]     # 원상 복구
 
 
-p = [1, 2, 3]
-perm(0, 3)
+p = [1, 2, 3, 4, 5]
+f(0, 5)
+
 ```
 
-## ▶ [참고] 순열 구하는 방법
+## ▶ [참고] used 배열을 사용한 순열 구하는 방법
 
 * 5개 중에 3개의 수로 이뤄진 순열 구하기
 
@@ -211,6 +212,28 @@ p = [0] * R
 f(0, N, R)
 ```
 
+```python
+# used 배열 생성
+def f(i, k):
+    if i == k:
+        print(p)
+    else:
+        for j in range(k):
+            # a[j]가 아직 사용되지 않았으면
+            if used[j] == 0:
+                used[j] = 1     # a[j]가 사용됨으로 표시
+                p[i] = arr[j]   # p[i]는 a[j]로 결정
+                f(i+1, k)       # p[i+1] 값을 결정하러 이동
+                used[j] = 0     # 원상 복구 = a[j]를 다른 자리에서 사용 가능하도록 함
+
+
+N = 3
+arr = [i for i in range(1, N+1)]
+used = [0] * N
+p = [0] * N     # p 라는 배열에 숫자를 채우기
+f(0, N)
+```
+
 # 부분 집합
 
 > 집합에 포함된 원소들을 선택하는 것
@@ -224,6 +247,37 @@ f(0, N, R)
   * 자기 자신과 공집합을 포함한 모든 부분집합의 개수는 `2**n` 개
   
   * 원소의 수가 증가하면 부분집합의 개수는 지수적으로 증가
+
+* 이차원 배열에서 각 행의 최소 합을 구하는 방법
+
+```python
+def perm(i, k):
+    global minV
+    if i == k:          # 인덱스 i == 원소의 개수
+        # print(p)
+        s = 0           # 모든 l 행에서 p[l] 열을 골랐을 때의 합
+        for l in range(k):
+            s += arr[l][p[l]]
+        if s < minV:
+            minV = s
+    else:
+        for j in range(i, k):
+            p[i], p[j] = p[j], p[i]
+            perm(i+1, k)
+            p[i], p[j] = p[j], p[i]
+
+
+T = int(input())
+for tc in range(1, T+1):
+    N = int(input())
+    arr = [list(map(int, input().split())) for _ in range(N)]
+    # p[i] : i 행에서 선택한 열 번호가 저장되어 있음
+    p = [i for i in range(N)]
+    minV = N*10     # 나올 수 있는 가장 큰 수라고 가정
+
+    perm(0, N)
+    print(f'#{tc} {minV}')
+```
 
 ## ▶ 바이너리 카운팅(Binary Counting)
 
@@ -355,8 +409,6 @@ nCr(n, r, 0)
 
 ## ▶ 배낭 짐싸기
 
-
-
 # 활동 선택 문제
 
 ## ▶ 회의실 배정하기
@@ -374,5 +426,3 @@ nCr(n, r, 0)
   * 남은 활동에 대해 앞의 과정을 반복
 
 * 재귀 알고리즘
-
-
