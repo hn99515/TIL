@@ -28,7 +28,7 @@
 5. [Stack2(후위표기식, Back-tracking)](./Algorithm/Stack_2.md)
 6. [Queue(Queue, 원형큐, BFS)](./Algorithm/Queue.md)
 7. [Tree(Full Binary Tree, Complete Binary Tree, traversal, Binary Search Tree, Heap)](./Algorithm/Tree.md)
-8. [CT(Logic, Proof, log, Big-O, Combination, Recursion, DP)](./Algorithm/Computational Thinking.md)
+8. [CT(Logic, Proof, log, Big-O, Combination, Recursion, DP)](./Algorithm/Computational_Thinking.md)
 
 ### ✅ Django
 1. [Design_pattern(Clien & Server, MTV, DTL, Template 상속)](./Django/Django.md)
