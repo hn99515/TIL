@@ -60,8 +60,8 @@
 
 ```python
 def sort(arr):
-    # 리스트 길이가 1이면 정렬된 상태
-    if len(arr) == 1:
+    # 리스트 길이가 1이하 정렬된 상태
+    if len(arr) <= 1:
         return arr
 
     # 중간 위치 찾기
@@ -146,6 +146,33 @@ def merge_sort(arr):
         arr[i] = temp[i-low]
 
 return sort(0, len(arr))
+```
+
+```python
+def Dsort(lt, rt):
+    if lt < rt:
+        mid = (lt + rt) // 2
+        Dsort(lt, mid)
+        Dsort(mid+1, rt)
+        
+        p1 = lt
+        p2 = mid+1
+        tmp = []
+        # 왼쪽 포인터는 가운데를 지날 때까지 / 오른쪽 포인터는 오른쪽 끝을 지날 때까지
+        while p1 <= mid and p2 <= rt:
+            if arr[p1] < arr[p2]:
+                tmp.append(arrp[p1])
+                p1 += 1
+            else:
+                tmp.append(arr[p2])
+                p2 += 1
+        if p1 <= mid:
+            tmp = tmp + arr[p1:mid+1]
+        if p2 <= rt:
+            tmp = tmp + arr[p2:rt+1]
+        # Dsort(4, 7) 인 경우도 있기 때문에 
+        for i in range(len(tmp)):
+            arr[lt+i] = tmp[i]
 ```
 
 # 퀵 정렬
@@ -394,7 +421,53 @@ def binarySearch(arr, start, end, key)
 ## ▶ {1, 2, 3}의 부분집합을 구하는 백트래킹 알고리즘
 
 ```python
+def f1(i, k, t):
+    global cnt
+    cnt += 1
+    if i == k:
+        s = 0
+        for j in range(10):
+            if bit[j]:
+                s += A[j]
+        if s == t:
+            for j in range(10):
+                if bit[j]:
+                    print(A[j], end=' ')
+            print()
+    else:
+        bit[i] = 0
+        f1(i+1, k, t)
+        bit[i] = 1
+        f1(i+1, k, t)
 
+
+def f2(i, k, t, s):
+    global cnt
+    cnt += 1
+    if i == k
+        if t == s:
+            for j in range(10):
+                if bit[j]:
+                    print(A[j], end=' ')
+            print()
+
+    elif t <= s:
+        return
+
+    else:
+        bit[i] = 0
+        f2(i+1, k, t, s)
+        bit[i] = 1
+        f2(i+1, k, t, s+A[i])
+    return
+
+A = [i for i in range(1, 11)]
+bit = [0] * 10
+cnt = 0
+f1(0, 10, 10)
+# f1(0, 10, 5)
+f2(0, 10, 10, 0)
+print(cnt)
 ```
 
 ![](Divide_Conquer_assets/2022-09-26-15-16-31-image.png)
