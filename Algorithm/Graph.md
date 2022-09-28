@@ -394,6 +394,8 @@ for _ in range(E):
 print(prim2(0, V))
 ```
 
+![](Graph_assets/2022-09-29-01-42-29-image.png)
+
 ## ▶︎ KRUSKAL 알고리즘
 
 > 간선을 하나씩 선택해서 MST를 찾는 알고리즘
@@ -436,6 +438,8 @@ for w, u, v in edge:  # N-1개의 간선 선택 루프
             break
 print(total)
 ```
+
+![](Graph_assets/2022-09-29-01-42-09-image.png)
 
 # 최단 경로
 
@@ -540,6 +544,4 @@ print(D)
 # visited 를 지우면 0 까지 체크되면서 되돌아 오는 거리를 구할 수 있음
 ```
 
-```
-
-```
+![](Graph_assets/2022-09-29-01-43-08-image.png)
