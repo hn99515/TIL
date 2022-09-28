@@ -60,21 +60,21 @@
 
 ```python
 def sort(arr):
-    # 리스트 길이가 1이면 최소 단위이므로 종료
-    if len(arr) == 1:
+    # 리스트 길이가 1이하 정렬된 상태
+    if len(arr) <= 1:
         return arr
-	
+
     # 중간 위치 찾기
     mid = len(arr) // 2
-    
+
     # 중간을 기준으로 왼쪽, 오른쪽 분할
     l_list = arr[:mid]
     r_list = arr[mid:]
-	
+
     # 분할한 리스트를 정렬
     l_list = sort(l_list)
     r_list = sort(r_list)
-	
+
     # 정렬된 두 리스트를 병합
     return merge(l_list, r_list)
 ```
@@ -83,12 +83,12 @@ def sort(arr):
 
 ```python
 def merge(l, h):
-	# 분할한 리스트를 병합하기 위한 리스트
+    # 분할한 리스트를 병합하기 위한 리스트
     res = []
-	
+
     # 분할한 두 리스트의 대소비교를 하며 result 리스트에 담는 것을 반복
     while len(l) > 0 or len(h) > 0:
-        
+
         # 왼쪽, 오른쪽 리스트 모두 비교할 대상이 남아있을 경우
         if len(l) > 0 and len(h) > 0:
             if l[0] <= h[0]:
@@ -97,7 +97,7 @@ def merge(l, h):
             else:
                 res.append(h[0])
                 h = h[1:]
-		
+
         # 오른쪽 리스트는 끝, 왼쪽 리스트에만 숫자가 남았을 경우
         elif len(l) > 0:
             res.append(l[0])
@@ -107,10 +107,9 @@ def merge(l, h):
         elif len(h) > 0:
             res.append(h[0])
             h = h[1:]
-	
+
     # 합친 결과를 반환
     return res
-
 ```
 
 ```python
@@ -127,7 +126,7 @@ def merge_sort(arr):
     def merge(low, mid, high):
     temp = []
     l, h = low, mid
-    
+
     while l < mid and h < high:
         if arr[l] < arr[h]:
             temp.append(arr[l])
@@ -149,7 +148,32 @@ def merge_sort(arr):
 return sort(0, len(arr))
 ```
 
-
+```python
+def Dsort(lt, rt):
+    if lt < rt:
+        mid = (lt + rt) // 2
+        Dsort(lt, mid)
+        Dsort(mid+1, rt)
+        
+        p1 = lt
+        p2 = mid+1
+        tmp = []
+        # 왼쪽 포인터는 가운데를 지날 때까지 / 오른쪽 포인터는 오른쪽 끝을 지날 때까지
+        while p1 <= mid and p2 <= rt:
+            if arr[p1] < arr[p2]:
+                tmp.append(arrp[p1])
+                p1 += 1
+            else:
+                tmp.append(arr[p2])
+                p2 += 1
+        if p1 <= mid:
+            tmp = tmp + arr[p1:mid+1]
+        if p2 <= rt:
+            tmp = tmp + arr[p2:rt+1]
+        # Dsort(4, 7) 인 경우도 있기 때문에 
+        for i in range(len(tmp)):
+            arr[lt+i] = tmp[i]
+```
 
 # 퀵 정렬
 
@@ -161,7 +185,7 @@ return sort(0, len(arr))
 
 * 각 부분 정렬이 끝난 후, **병합정렬은 '병합'이라는 후처리 작업이 필요하나, 퀵 정렬은 필요하지 않다.**
 
-* 알고리즘
+* 퀵 정렬 알고리즘
 
 ```python
 def quickSort(arr, l, r):
@@ -188,7 +212,7 @@ def partition(arr, pivot, high):
 
         i += 1
         j -= 1
-    
+
     arr[pivot], arr[j] = arr[j], arr[pivot]
     return j
 ```
@@ -213,7 +237,7 @@ def partition(arr, pivot, high):
 
 ![](Divide_Conquer_assets/2022-09-26-13-03-42-image.png)
 
-* pivot 자리 정한 후 좌측과 우측 구간에 대해 quickSort 재진행!
+* **pivot 자리 정한 후 좌측과 우측 구간에 대해 quickSort 재진행!**
 
 ![](Divide_Conquer_assets/2022-09-26-14-07-21-image.png)
 
@@ -232,36 +256,39 @@ def partition(arr, pivot, r):
     return i+1
 ```
 
-![](/Users/awake-ukey/Library/Application%20Support/marktext/images/2022-09-26-21-45-01-image.png)
+![](Divide_Conquer_assets/2022-09-27-09-09-46-image.png)
 
 * quicksort 기본형
 
 ```python
-def partition(l, r):
-    pivot = A[l]
-    i, j = l, r
-    while i <= j:
-        while i <= j and A[i] <= pivot:
-            i += 1
-        while i <= j and A[j] >= pivot:
-            j -= 1
-        if i < j:
-            A[i], A[j] = A[j], A[i]
-    A[l], A[j] = A[j], A[l]
-    return j
+def quick_sort(arr):
+    # 배열의 길이가 1이하면 정렬할 필요 없음
+    if len(arr) <= 1:
+        return arr
+
+    left = []                       # 기준값보다 작은 값을 저장
+    right = []                      # 기준값보다 같거나 큰 값을 저장
+    pivot = arr[len(arr)//2]        # 가운데 값을 기준값으로 설정
+
+    for i in range(len(arr)):
+        if i == (len(arr) // 2):    # 기준값이 비교되지 않도록 하기 위함
+            # left, right 리스트에 들어갈 필요 없음!
+            # pivot 값이 기준값이기 때문에 비교대상으로 이미 정렬될 것
+            continue
+
+        if pivot > arr[i]:
+            left.append(arr[i])
+        else:
+            right.append(arr[i])
+
+    return quick_sort(left) + [pivot] + quick_sort(right)
 
 
-def qsort(l, r):
-    if l < r:
-        s = partition(l, r)
-        qsort(l, s-1)
-        qsort(s+1, r)
-
-
-A = [7, 2, 5, 3, 4, 5]
-N = len(A)
-qsort(0, N-1)
-print(A)
+arr = [3, 2, 4, 6, 9, 1, 8, 7, 5]
+print(f'정렬 전: ', arr)
+print('---'*10)
+arr = quick_sort(arr)
+print(f'정렬 후: ', arr)
 ```
 
 # 이진 검색 (Binary Search)
@@ -394,7 +421,53 @@ def binarySearch(arr, start, end, key)
 ## ▶ {1, 2, 3}의 부분집합을 구하는 백트래킹 알고리즘
 
 ```python
+def f1(i, k, t):
+    global cnt
+    cnt += 1
+    if i == k:
+        s = 0
+        for j in range(10):
+            if bit[j]:
+                s += A[j]
+        if s == t:
+            for j in range(10):
+                if bit[j]:
+                    print(A[j], end=' ')
+            print()
+    else:
+        bit[i] = 0
+        f1(i+1, k, t)
+        bit[i] = 1
+        f1(i+1, k, t)
 
+
+def f2(i, k, t, s):
+    global cnt
+    cnt += 1
+    if i == k
+        if t == s:
+            for j in range(10):
+                if bit[j]:
+                    print(A[j], end=' ')
+            print()
+
+    elif t <= s:
+        return
+
+    else:
+        bit[i] = 0
+        f2(i+1, k, t, s)
+        bit[i] = 1
+        f2(i+1, k, t, s+A[i])
+    return
+
+A = [i for i in range(1, 11)]
+bit = [0] * 10
+cnt = 0
+f1(0, 10, 10)
+# f1(0, 10, 5)
+f2(0, 10, 10, 0)
+print(cnt)
 ```
 
 ![](Divide_Conquer_assets/2022-09-26-15-16-31-image.png)
@@ -413,9 +486,9 @@ def powerset(idx):
             if check[i]:
                 print(arr[i], end=' ')
         print()
-        
+
         return
-    
+
     # idx 자리의 원소를 뽑는 경우
     check[idx] = 1
     powerset(idx + 1)
@@ -439,11 +512,11 @@ check = [0] * n
 
 # 재귀방식
 def perm(idx):
-    
+
     # 다 뽑아서 정리했다면
     if idx == n:
         print(sel)
-    
+
     else:
         for i in range(n):
             if check[i] == 0:
@@ -492,12 +565,11 @@ def perm(idx):
             # 순서를 바꾸고
             arr[idx], arr[i] = arr[i], arr[idx]
             perm(idx + 1)
-            
+
             # 원상복구
             arr[idx], arr[i] = arr[i], arr[idx]
 
 perm(0)
-
 ```
 
 ![](Divide_Conquer_assets/2022-09-26-15-19-05-image.png)

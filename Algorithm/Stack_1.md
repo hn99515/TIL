@@ -250,6 +250,7 @@ def reverse(texts):
     for i in range(21):
         print(i, f(i))
     ```
+  
   * ex2. 피보나치 수열
 
 ```python
