@@ -30,6 +30,8 @@
 7. [Tree(Full Binary Tree, Complete Binary Tree, traversal, Binary Search Tree, Heap)](./Algorithm/Tree.md)
 8. [CT(Logic, Proof, log, Big-O, Combination, Recursion, DP)](./Algorithm/Computational_Thinking.md)
 9. [Greedy(Iteration, Recursion, Permutation, Subset, Combination, Greedy)](./Algorithm/bruteforce_greedy.md)
+10. [Divide_Conquer(Merge Sort, Quick Sort, Binary Search, Back-tracking)](./Algorithm/Divide_Conquer.md)
+11. [Graph(DFS, BFS, Disjoint-set, MST(prim, Kruskal), Dijkstra)](./Algorithm/Graph.md)
 
 ### ✅ Django
 1. [Design_pattern(Clien & Server, MTV, DTL, Template 상속)](./Django/Django.md)
