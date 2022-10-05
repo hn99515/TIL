@@ -151,10 +151,88 @@ A2. **가격 컬럼의 경우 null 값의 개수에 따라 서로 다른 실행 
   
   * **모르는 값을 상징하고, 값이 없음(부재)을 의미**
   
-  * NULL IS NULL = TRUE
+  * **NULL IS NULL = TRUE**
   
-  * NULL 과의 모든 비교는 알 수 없음(NULL)을 반환
+  * NULL 과의 모든 비교(예. NULL = 0)는 알 수 없음(NULL)을 반환
   
-  * NULL 은 숫자 0이나 공백문자(' ')와 동일하지 않다❗ (값이 있음)
+  * **NULL 은 숫자 0이나 공백문자(' ')와 동일하지 않다❗ (0이나 공백문자는 값이 있음)**
+
+## ▶ ALTER - 테이블과 컬럼에 대해 이름 및 속성을 수정
+
+> **테이블 + 세부 명령 + 대상 순으로 작성**
+
+* **테이블명 변경법 - `ALTER TABLE menu RENAME TO uk_menu;`**
+  
+  * 다수 테이블명 동시에 변경 가능
+    
+    * `RENAME TABLE menu TO uk_menu;`
+
+* **컬럼명 변경법 - `ALTER TABLE menu RENAME COLUMN phone TO 전화번호;`**
+  
+  * 컬럼 속성 변경 = `MODIFY`
+    
+    * **`ALTER TABLE menu MODIFY (이름 varchar(20) NOT NULL);`**
+  
+  * 컬럼 추가 = `ADD`
+    
+    * **`ALTER TABLE menu ADD (거주지역 varchar(10));`**
+  
+  * 컬럼 삭제 = `DROP`
+    
+    * **`ALTER TABLE menu DROP <column_name>;`**
+
+* **제약조건 추가/삭제**
+  
+  * `ALTER TABLE menu ADD constraint;`
+  
+  * `ALTER TABLE menu DROP constraint;`
+
+### 📍 문제
+
+Q. **테이블 riding 에서 <mark>현재 null 값이 존재하는 컬럼</mark>에 대하여 null이 발생할 수 없도록 <mark>제약조건을 추가</mark>하고자 한다. 올바른 SQL 문장은?**
+
+![](SQLD_1_assets/2022-10-06-01-46-54-image.png)
+
+A. **`ALTER TABLE riding MODIFY (phone varchar(15) NOT NULL);`**
+
+## ▶ DROP - 테이블 및 컬럼 삭제
+
+* **컬럼 삭제 - `ALTER TABLE menu DROP column_name;`**
+
+* **테이블 삭제 - `DROP TABLE menu`**
+  
+  * 유의 사항
+    
+    * **`DROP TABLE menu CASCADE CONSTRAINT;`**
+    
+    * 해당 테이블의 데이터를 외래 키(FK)로 참조한 제약사항도 모두 삭제❗
+    
+    * Oracle에만 있는 옵션 (SQL Server 에는 존재하지 않음)
+    
+    * FK 제약조건과 참조테이블 먼저 삭제하고, 해당 테이블을 삭제한다.
+
+## ▶ DROP vs TRUNCATE
+
+* **테이블 삭제 - `DROP TABLE menu`**
+  
+  * 테이블 관련해서 모두 삭제 = 구조 & 데이터 모두 삭제❗
+  
+  * 테이블 정의를 완전 삭제
+
+* **테이블 초기화 - `TRUNCATE TABLE menu`**
+  
+  * 테이블 데이터만 삭제되고 구조는 살아있다❗
+  
+  * 테이블을 초기상태로 만듦
+
+### 📍 문제
+
+Q. f_info 테이블에 대해 DDL을 통해 삭제를 진행하고자 한다. 변경 후의 모습이 아래와 같도록 만들기 위해서 A와 B에 각각 알맞은 SQL을 작성하시오.
+
+![](SQLD_1_assets/2022-10-06-01-54-30-image.png)
+
+A. `DROP TABLE f_info`
+
+B. `TRUNCATE TABLE f_info`
 
 
