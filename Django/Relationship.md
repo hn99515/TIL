@@ -28,7 +28,7 @@
 
 ![](Relationship_assets/2022-10-05-08-51-05-image.png)
 
-* **두 테이블은 공유된 고객 id를 기반으로 연결되며 다양한 명령 처리 가능**
+* **<mark>두 테이블은 공유된 고객 id를 기반으로 연결되며 다양한 명령 처리 가능</mark>**
   
   * **특정 날짜에 구매한 모든 고객 정보 확인**
   
@@ -324,11 +324,11 @@
   
   * `comment = Comment()` 처럼 comment 인스턴스가 필요함❗
     
-    * **if 문 안쪽에 들어있어야 저장이 가능**❗
+    * <mark>**if 문 안쪽에 들어있어야 저장이 가능**</mark>❗
 
 * **그래서 `save()` 메서드는 데이터베이스에 저장하기 전에 객체에 대한 추가적인 작업을 진행할 수 있도록 인스턴스만을 반환해주는 옵션 값을 제공**
 
-* **save 메서드의 commit 옵션을 사용해 DB에 저장되기 전 article 객체 저장하기**
+* **<mark>save 메서드의 commit 옵션을 사용해 DB에 저장되기 전 article 객체 저장하기</mark>**
 
 ![](Relationship_assets/2022-10-05-23-03-53-image.png)
 
@@ -339,8 +339,7 @@
   * **아직 데이터베이스에 저장되지 않은 인스턴스를 반환**
     
     * 마지막에 `.save()` 해줘야 함
-  
-  * 저장하기 전에 객체에 대한 사용자 지정 처리를 수행할 때 유용하게 사용
+    * 저장하기 전에 객체에 대한 사용자 지정 처리를 수행할 때 유용하게 사용
 
 ## ▶ READ
 
@@ -588,7 +587,7 @@
 
 - **댓글 작성 시 댓글과 마찬가지로 에러 발생**
   
-  - 댓글 작성 시 외래 키에 저장되어야 할 작성자 정보가 누락되었기 때문
+  - **댓글 작성 시 외래 키에 저장되어야 할 작성자 정보가 누락되었기 때문**
 
 ![](Relationship_assets/2022-10-05-23-43-10-image.png)
 
@@ -630,4 +629,44 @@
 
 ![](Relationship_assets/2022-10-06-00-09-19-image.png)
 
+### 📌 get_object_or_404
 
+> DB에서 사용자가 요청한 데이터를 찾기 위해 사용
+
+* 기본 문법
+  
+  * `get_object_or_404(찾으려는 모델 클래스, 찾는 조건)`
+  
+  * `찾는 조건` - 유니크한 값으로 검색해야 함!
+
+* 데이터가 있으면 get_object 로 실행되며 없으면 404 page Error 가 나옴
+
+```python
+@ require_POST
+def comment_create(request, article_pk):
+    # 로그인 안된 유저 = 로그인 page로 보내기
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+
+    # pk 를 불러오는 이유?
+    # DB에서 사용자가 요청한 게시글 정보를 찾기 위해 (어떤 게시글의 댓글을 달 것인지 확인하기 위해)
+    # 데이터가 있으면 get_object / 없으면 404 page 보여줌
+    article = get_object_or_404(Article, pk=article_pk)
+    # 댓글을 생성하는 폼 (request.POST 가 있다는 건 사용자가 데이터를 입력하고 글 생성 버튼을 누른 경우를 의미)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        # commit=False 옵션이 없으면 NOT NULL constraint 오류 발생 - 외래 키에 저장되어야 할 정보가 누락되기 때문
+        comment = comment_form.save(commit=False)   # 저장할 인스턴스가 comment 에 들어옴
+        comment.author = request.user   # 작성자 정보(=로그인 정보가 들어 있음)
+        comment.article = article       # 게시글 정보
+        comment.save()                  # DB에 저장함
+        # redirect 는 url name에서 page를 렌더링
+        return redirect('articles:detail', article.pk)
+
+    context = {
+        'article': article,             # detail 페이지로 보내지기 위해 게시글 정보를 포함해줘야 함 (안그러면 게시글 정보 안보여진다.) 
+        'comment_form': comment_form,   # 데이터가 유효성 검사를 통과하지 못했을 때 에러 정보와 함께 사용자의 입력을 다시 받기 위해서 전달되는 역할
+    }
+    # 여기에서 page를 렌더링을 하기 때문에 데이터 전달이 필요
+    return render(request, 'articles/detail.html', context)
+```
