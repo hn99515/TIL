@@ -73,6 +73,7 @@
 **✔ justify-content**
 
 * **main axis를 기준으로 공간 배분**
+  
   * flex-start / flex-end / center / **space-between / space-around / space-evenly**
     
     ![](web_adv_assets/2022-08-03-23-33-44-image.png)
@@ -80,6 +81,7 @@
 **✔ align-content**
 
 * **cross axis를 기준으로 공간 배분** - 아이템이 한 줄로 배치되는 경우 확인 불가
+  
   * flex-start / flex-end / center / **space-between / space-around / space-evenly**
     
     ![](web_adv_assets/2022-08-03-23-34-02-image.png)
@@ -99,8 +101,6 @@
   * **stretch** / flex-start / flex-end / center
     
     ![](web_adv_assets/2022-08-03-23-34-38-image.png)
-
-
 
 # ✅ Bootstrap
 
@@ -162,8 +162,6 @@
 * 별도의 기술 이름이 아닌 웹 디자인에 대한 접근 방식
 
 * 예시 - Media Queries, Flexbox, Bootstrap Grid System 등
-
-
 
 ## ▶ Grid system (web design)
 
