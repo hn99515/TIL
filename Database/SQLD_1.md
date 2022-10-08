@@ -183,9 +183,9 @@ A2. **가격 컬럼의 경우 null 값의 개수에 따라 서로 다른 실행 
 
 * **제약조건 추가/삭제**
   
-  * `ALTER TABLE menu ADD constraint;`
+  * `ALTER TABLE menu ADD CONSTRAINT;`
   
-  * `ALTER TABLE menu DROP constraint;`
+  * `ALTER TABLE menu DROP CONSTRAINT;`
 
 ### 📍 문제
 
@@ -248,3 +248,24 @@ A. `MENU_20`
 * 다른 테이블명과 중복 X
 
 * 칼럼 뒤 데이터유형은 꼭 지정되어야 함❗
+
+### 📍 문제
+
+Q. 비절차적 데이터 조작어(DML)는 사용자가 무슨 데이터를 원하며, 어떻게 그것을 접근해야 되는지를 명세하는 언어이다. = `X`
+
+A. 비절차적 데이터 조작어(DML)는 사용자가 무슨 데이터를 원하는 지만을 명세한다. 어떻게 데이터를 접근해야 하는지 명세하는 것은 절차적 데이터 조작어(PL/SQL, T-SQL 등)
+
+호스트 프로그램 속에 삽입되어 사용되는 DML 명령어들을 데이터 부속어(Data Sub Language)라고 한다. = `O`
+
+### 📍 문제
+
+Q. 테이블 및 PK 제약조건을 생성하는 DCL 문장은?
+
+```sql
+CREATE TABLE product (pro_id VARCHAR2(10) NOT NULL,
+                      pro_nm VARCHAR2(100) NOT NULL,
+                      reg_dt DATE NOT NULL,
+                      regr_no NUMBER(10),
+                      CONSTRAINGT product_pk PRIMARY KEY (pro_id)
+);
+```
