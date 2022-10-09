@@ -38,9 +38,9 @@
 
 ### ✔ AUTH_USER_MODEL
 
-> 프로젝트에서 User를 나타낼 때 사용하는 모델
+> **프로젝트에서 User를 나타낼 때 사용하는 모델 = auth 앱의 User 모델(기본값)**
 
-* *프로젝트가 진행되는 동안(모델을 만들고 마이그레이션 후) 변경 불가능*❗❗
+* *프로젝트가 진행되는 동안(모델을 만들고 마이그레이션 후) 변경 불가능*❗
 
 * **<mark>프로젝트 시작 시 설정</mark>해야 하며, 참조하는 모델은 첫 번째 마이그레이션에서 사용할 수 있어야 함**
   
@@ -64,9 +64,9 @@
   
   ![](Django_4_assets/2022-09-07-16-48-07-image.png)
 
-### 2️⃣ settings.py 에서 `AUTH_USER_MODEL` 업데이트
+### 2️⃣ settings.py 에서 `AUTH_USER_MODEL` override
 
-* **Django 프로젝트에서 User를 나타내는데 사용하는 모델을 위에서 생성한 커스텀 User 모델로 지정**
+* **User를 나타내는데 사용하는 모델을 <mark>위에서 생성한 커스텀 User 모델로 지정</mark>**
   
   ![](Django_4_assets/2022-09-07-16-49-34-image.png)
 
@@ -74,7 +74,7 @@
 
 * admin.py 에 커스텀 User 모델을 등록
   
-  * 기본 User 모델이 아니기 때문에 등록해야만 admin site에서 사용 가능
+  * **기본 User 모델이 아니기 때문에 등록해야만 admin site에서 사용 가능**
   
   ![](Django_4_assets/2022-09-07-16-54-59-image.png)
 
@@ -88,7 +88,7 @@
 
 * **`Abstract base classes(추상 기본 클래스)`**
   
-  * 몇 가지 공통 정보를 여러 다른 모델에 넣을 때 사용하는 클래스
+  * 몇 가지 공통 정보를 여러 다른 모델에 넣을 때 사용하는 클래스 = 상속용으로만 사용하기 위해
   
   * 데이터베이스 테이블을 만드는 데 사용되지 않으며, **대신 다른 모델의 기본 클래스로 사용되는 경우, 해당 필드가 하위 클래스의 필드에 추가됨**
   
@@ -110,7 +110,7 @@
 
 * migrations 폴더 및 `__init__.py` 는 삭제 ❌
 
-* **번호가 붙은 파일만 삭제** ⭕
+* **<mark>번호가 붙은 파일만 삭제</mark>** ⭕
 
 ### 2️⃣ db.sqlite3 파일 삭제
 
@@ -122,11 +122,13 @@
 
 ## ▶ 반드시 Custom User 모델을 사용해야 하나❓
 
-> Django에서 **강력하게 권장**하고 있음
+> Django에서 **강력하게 권장**
 
 * Custom User 모델은 **기본 User 모델과 동일하게 작동하면서도 필요한 경우 나중에라도 맞춤 설정**할 수 있다‼
 
 # HTTP Cookies
+
+> 로그인과 로그아웃을 이해하기 전 반드시 알아야 함
 
 ## ▶ HTTP
 
@@ -135,6 +137,10 @@
 * **HTML 문서와 같은 리소스들을 가져올 수 있도록 해주는 프로토콜(규칙, 규약)**
 
 * 웹(WWW)에서 이루어지는 모든 데이터 교환의 기초
+  
+  * 요청 - 클라이언트(브라우저)에 의해 전송되는 메시지
+  
+  * 응답 - 서버에서 응답으로 전송되는 메시지
 
 ## ▶ HTTP 특징
 
@@ -142,7 +148,7 @@
 
 * <mark>**서버는 요청에 대한 응답을 보낸 후 연결을 끊음**</mark>
   
-  * ex. 네이버 메인 페이지를 보고 있다고 해서 네이버 서버와 연결되어 있는 것은 아님
+  * 예) 네이버 메인 페이지를 보고 있다고 해서 네이버 서버와 연결되어 있는 것은 아님
     
     * 네이버 서버는 우리에게 메인 페이지를 응답하고 연결을 끊은 것
 
@@ -154,13 +160,13 @@
 
 ### 📍 그럼 어떻게 로그인 상태를 유지할까❓
 
-* **로그인을 하고 웹 사이트를 사용할 때 페이지를 이동해도 로그인 상태가 유지**
+* **로그인을 하고 웹 사이트를 사용할 때 페이지를 이동해도 실제로는 로그인 상태가 유지**
 
 * 서버와 클라이언트 간 지속적인 상태 유지를 위해 <mark>**쿠키와 세션이 존재**</mark>
 
 ## ▶ 쿠키(Cookie)
 
-> HTTP 쿠키는 <mark>**상태가 있는 세션**</mark>을 만들도록 함
+> HTTP 쿠키는 <mark>**상태가 있는 세션(=상태를 유지시키는 세션)**</mark>을 만들도록 함
 
 ### ✔ 개념
 
@@ -190,11 +196,11 @@
   
   * **로그인, 아이디 자동완성, 공지 하루동안 안 보기, 팝업 체크, 장바구니 등의 사용자 정보를 관리**
     
-    * 개발자 도구 - Network 에서 확인 가능
+    * 개발자 도구 - Network 에서 `set-cookie` 확인 가능
     
     * 서버는 응답과 함께 `Set-Cookie` 응답 헤더를 브라우저에게 전송
     
-    * `Set-Cookie` 헤더가 클라이언트에게 쿠키를 저장하라고 전달 **(이전에 저장했던 <mark>모든 쿠키들을 매 요청마다 서버에 함께 전달)</mark>**
+    * `Set-Cookie` 헤더가 클라이언트에게 쿠키를 웹브라우저에 저장하라고 전달 **(이전에 저장했던 <mark>모든 쿠키들을 매 요청마다 서버에 함께 전달)</mark>**
 
 * 2️⃣ **개인화 (Personalization)**
   
@@ -215,12 +221,14 @@
   * **쿠키는 요청 때마다 서버에 함께 전송되므로 <mark>서버에서 session id(key)를 확인해 알맞은 로직을 처리</mark>**
 
 * `session id` 는 세션을 구별하기 위해 필요하며, **쿠키에는 `session id` 만 저장**
+  
+  * 핵심정보는 서버가 가지고 있음
 
 ### ✔ 쿠키의 수명(Life-time)
 
 * 1️⃣ **<mark>Session cookie</mark>**
   
-  * **현재 세션이 종료되면 삭제**
+  * **<mark>현재 세션이 종료되면 삭제</mark>**
   
   * **세션이 종료되는 시점은 보통, 브라우저 종료와 함께 세션이 삭제**
 
@@ -228,7 +236,7 @@
   
   * Expires 속성에 지정된 날짜 혹은 Max-Age 속성에 지정된 기간이 지나면 삭제
 
-### ✔ Session in Django
+### ✔ Session in Django❗️
 
 * Django는 <mark>**database-backed sessions 저장 방식을 기본값**</mark>으로 사용
   
@@ -236,19 +244,19 @@
   
   * 설정을 통해 다른 저장방식으로 변경 가능
 
-* Django 는 특정 `session id`를 포함하는 쿠키를 사용해서 각각의 브라우저와 사이트가 연결된 session 을 알아냄
+* Django 는 **특정 `session id`를 포함하는 쿠키를 사용해서 각각의 브라우저와 사이트가 연결된 session 을 알아냄**
 
 * Django 는 우리가 session 메커니즘에 대부분을 생각하지 않고 사용할 수 있게 도와줌
 
 # Authentication in Web requests
 
-> Django가 제공하는 인증 관련 built-in forms
+> Django가 제공하는 **인증 관련 built-in forms**
 > 
 >  https://docs.djangoproject.com/en/3.2/topics/auth/default/#module-django.contrib.auth.forms
 
 ## ▶ Login
 
-* **로그인은 <mark>Session 을 Create</mark>하는 과정**
+* **로그인은 <mark>Session 을 Create</mark>하는 과정** = session 을 만드는 과정
 
 ### ✔ AuthenticationForm
 
@@ -256,11 +264,32 @@
   
   * 로그인 하고자 하는 사용자의 정보를 입력 받음
   
-  * **일반 Form 중에 하나 - 사용할 때 유의**‼
+  * **<mark>일반 Form중에 하나 - 사용할 때 유의</mark>**‼️ - DB를 조작하는 것이 아닌 인증만 하기 떄문❗️
   
   * **기본적으로 username과 password를 받아 <mark>데이터가 유효한지 검증</mark>**
 
 * **`AuthenticationForm(request)`**
+
+```python
+# accounts.views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login as auth_login
+
+def login(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            # 로그인 - 세션을 만드는 과정 / form.get_user() - 작성된 유저 정보
+            auth_login(request, form.get_user()) 
+            return redirect('articles:index')
+    else:
+        form = AuthenticationForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/login.html', context)
+```
 
 ### ✔ login() as auth_login()
 
@@ -274,7 +303,7 @@
 
 * HttpRequest 객체와 User 객체가 필요
 
-* view 함수 login과의 충돌 방지
+* **view 함수 login과의 충돌 방지**
   
   * import한 login 함수 이름을 **`auth_login`** 으로 변경해서 사용
 
@@ -282,7 +311,7 @@
 
 * **`AuthenticationForm`** 의 인스턴스 메서드
 
-* **유효성 검사를 통과했을 경우, 로그인 한 사용자 객체를 반환**
+* **<mark>유효성 검사를 통과했을 경우, 로그인 한 사용자 객체를 반환</mark>**
 
 # Authentication with User
 
@@ -292,19 +321,19 @@
 
 ![](Django_4_assets/2022-09-07-21-35-05-image.png)
 
-* 템플릿에서 **context 데이터 없이 user 변수를 사용할 수 있는데 왜**❓
+* 템플릿에서 <mark>**context 데이터 없이 user 변수를 사용할 수 있는데 왜 그럴까**</mark>❓
   
   * settings.py 의 **`context processors` 설정 값 때문**
 
-### 📍 context processors
+### 📍 [참고] context processors
 
 * 템플릿이 렌더링 될 때 호출 가능한 컨텍스트 데이터 목록
 
 * 작성된 컨텍스트 데이터는 **기본적으로 템플릿에서 사용 가능한 변수로 포함됨**
-
-* **Django에서 자주 사용하는 데이터 목록을 미리 템플릿에 로드해 둔 것**
   
-  ![](Django_4_assets/2022-09-07-21-38-18-image.png)
+  * **Django에서 자주 사용하는 데이터 목록을 미리 템플릿에 로드해 둔 것**
+    
+    ![](Django_4_assets/2022-09-07-21-38-18-image.png)
 
 * **현재 로그인한 사용자를 나타내는 User 클래스의 인스턴스가 템플릿 변수 `{{ user }}` 에 저장됨**
   
@@ -315,23 +344,35 @@
 ## ▶ Logout
 
 * 로그아웃은 **<mark>Session 을 Delete하는 과정</mark>**
-  * 로그인 했다는 것은 session이 클라이언트와 서버 양쪽에 위치함을 의미
+  * **로그인 했다는 것은 session이 클라이언트와 서버 양쪽에 위치함을 의미**
 
 ### ✔ logout() as auth_logout()
 
 * **`logout(request)`**
 
-* HttpRequest 객체를 인자로 받고 반환 값이 없음
+* HttpRequest 객체를 인자로 받고 **반환 값이 없음**
 
 * **사용자가 로그인하지 않은 경우 오류를 발생시키지 않음**
 
-* 2가지 일 처리
+* **2가지 일 처리**
   
-  * 1️⃣ **현재 요청에 대한 session data를 DB에서 삭제**
+  * 1️⃣ **<mark>현재 요청에 대한 session data를 DB에서 삭제</mark>** = POST 방법
   
-  * 2️⃣ **클라이언트의 쿠키에서도 sessionid를 삭제**
+  * 2️⃣ **<mark>클라이언트의 쿠키에서도 sessionid를 삭제</mark>**
   
   * 모두 삭제하는 이유는 다른 사람이 동일한 웹 브라우저를 사용하여 로그인하고, **이전 사용자의 세션 데이터에 액세스하는 것을 방지하기 위함**
+
+```python
+# accounts.views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import logout as auth_logout
+
+def logout(request):
+    # 로그아웃
+    auth_logout(request)
+    return redirect('articles:index')
+```
 
 ## ▶ 회원가입
 
