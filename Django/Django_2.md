@@ -8,17 +8,17 @@
 
 ### ✔ 2가지 문제 발생
 
-* 1️⃣ **URL namespace**
+* 1️⃣ **URL namespace** 나누기
   
-  * articles app index 페이지에 작성한 두 번째 앱 index로 이동하는 하이퍼링크를 클릭 시 현재 페이지로 다시 이동
+  * articles app index 페이지에 작성한 *두 번째 앱 index로 이동하는 하이퍼링크를 클릭 시 현재 페이지로 다시 이동*
 
-* 2️⃣ **Template namespace**
+* 2️⃣ **Template namespace** 나누기
   
-  * pages app의 index url(~/pages/index)로 직접 이동해도 articles app의 index 페이지가 출력됨
+  * *pages app의 index url(~/pages/index)로 직접 이동해도 articles app의 index 페이지가 출력됨*
 
 ## ▶ URL Namespace
 
-* URL namespace를 사용하면 서로 다른 앱에서 동일한 URL 이름을 사용하는 경우에도 이름이 지정된 URL을 고유하게 사용할 수 있다.
+* URL namespace를 사용하면 **서로 다른 앱에서 동일한 URL 이름을 사용하는 경우에도 이름이 지정된 URL을 고유하게 사용할 수 있다.**
 
 * <mark>**`app_name` 속성을 작성해 URL namespace를 설정!**</mark>
   
@@ -26,19 +26,19 @@
   
   * **`{% url 'articles:index' %}`** 형태로 수정
   
-  * **app_name을 지정한 이후에는 url 태그에서 반드시 app_name:url_name 형태로만 사용해야 한다**❗ 그렇지 않으면  **`NoReverseMatch`(url 태그 수정)** 에러 발생❗
+  * **app_name을 지정한 이후에는 url 태그에서 반드시 app_name:url_name 형태로만 사용해야 한다**❗ 그렇지 않으면  **`NoReverseMatch`(`->`url 태그 수정해)** 에러 발생❗
 
 ## ▶ Template namespace
 
 * Django는 기본적으로 <mark>**`app_name/templates/`**</mark> 경로에 있는 templates 파일들만 찾을 수 있으며, <mark>**settings.py의 INSTALLED_APPS 에 작성한 app 순서로 template을 검색 후 렌더링**</mark>
 
-* Django template의 기본 경로 자체를 변경할 수 없기 때문에 물리적으로 이름 공간을 만들어야 한다.
+* *Django template의 기본 경로 자체를 변경할 수 없기 때문에* **물리적으로 이름 공간을 만들어야 한다.**
   
   * 폴더 구조를 <mark>**`app_name/template/app_name/`**</mark> 형태로 변경
   
   * ![](Django_2_assets/2022-08-31-23-40-54-image.png)
   
-  * 템플릿 경로를 모두 변경해주어야 한다!
+  * **템플릿 경로를 모두 변경해야 함(`->` render 부분 수정)**
     
     * `articles/index.html`
     
@@ -48,19 +48,19 @@
 
 > 체계화된 데이터의 모임
 > 
-> 검색 및 구조화 같은 작업을 쉽게 하기 위해 조직화된 데이터를 수집하는 저장 시스템
+> **검색 및 구조화 같은 작업을 쉽게 하기 위해** 조직화된 데이터를 수집하는 저장 시스템
 
 ## ▶ 기본 구조
 
 ### 1️⃣ 스키마(Schema)
 
-* 데이터베이스에서 자료의 구조, 표현 방법, 관계 등을 정의한 구조 (=Structure)
+* **데이터베이스에서 자료의 구조, 표현 방법, 관계 등을 정의한 구조 (=Structure)**
 
 ![](Django_2_assets/2022-08-31-23-47-15-image.png)
 
 ### 2️⃣ 테이블(Table)
 
-* 필드와 레코드를 사용해 조직된 데이터 요소들의 집합
+* **필드와 레코드를 사용해 조직된 데이터 요소들의 집합**
 
 * 관계(Relation)라고도 부름
   
@@ -82,13 +82,13 @@
   
   * 기술적으로 <mark>**다른 항목과 절대로 중복되어 나타날 수 없는 단일값(unique)을 가짐**</mark>
   
-  * **데이터베이스 관리 및 테이블 간 관계 설정 시 주요하게 활용**
+  * **<mark>데이터베이스 관리 및 테이블 간 관계 설정 시 주요하게 활용</mark>**
 
 ![](Django_2_assets/2022-08-31-23-53-17-image.png)
 
 ### ✔ 쿼리(Query)
 
-* 데이터를 조회하기 위한 명령어를 의미
+> **데이터를 조회하기 위한 명령어**
 
 * **조건에 맞는 데이터를 추출하거나 조작하는 명령어** (주로 테이블형 자료구조에서)
 
@@ -100,23 +100,21 @@
 
 ![](Django_2_assets/2022-08-31-23-59-01-image.png)
 
-* Model을 통해 데이터에 접속하고 관리
+* **Model을 통해 데이터에 접속하고 관리**
 
 * **사용하는 데이터들의 필수적인 필드(column)들과 동작(인스턴스와 메서드)들을 포함**
 
-* 저장된 데이터베이스의 구조
+* 저장된 데이터베이스의 구조를 형성
 
 * **일반적으로 각각의 모델은 하나의 데이터베이스 테이블에 mapping**
   
-  * <mark>**모델 클래스 1개 == 데이터베이스 테이블 1개**</mark>
+  * <mark>**모델 클래스 1개 == 데이터베이스의 테이블 1개**</mark>
 
 ## ▶ Model 작성하기
 
 * models.py 작성
   
-  * 모델 클래스를 작성하는 것은 데이터베이스 <mark>**테이블의 스키마를 정의하는 것**</mark>
-  
-  * "모델 클래스 == 테이블 스키마"
+  * **모델 클래스를 작성하는 것**은 데이터베이스 <mark>**테이블의 스키마를 정의하는 것**</mark>
     
     ![](Django_2_assets/2022-09-01-00-12-45-image.png)
   
@@ -126,7 +124,7 @@
 
 * **`models.Model`** 상속
   
-  * 각 모델은 django.db.models 모듈의 Model 클래스를 상속받아 구성됨
+  * 각 모델은 `django.db.models` 모듈의 Model 클래스를 상속받아 구성됨
   
   * <mark>**클래스 상속 기반 형태의 Django 프레임워크 개발**</mark>
 
@@ -134,8 +132,8 @@
 
 * **`content = models.TextField()`**
   
-  * models 모듈을 통해 어떠한 타입의 DB 필드를 정의할 것인지 정의
-  - 클래스 변수명 = DB 필드의 이름
+  * **models 모듈을 통해 어떠한 타입의 DB 필드를 정의할 것인지 정의**
+  - `클래스 변수명 = DB 필드의 이름`
   - 클래스 변수 값(models 모듈의 Field 클래스) = DB 필드의 데이터 타입
 
 * **데이터베이스 스키마 생성**
@@ -152,7 +150,7 @@
 
 * <mark>**`CharField(max_length=None, **options)`**</mark>
   
-  * 길이의 제한이 있는 문자열을 넣을 때 사용
+  * **길이의 제한이 있는 문자열을 넣을 때 사용**
   
   * **<mark>`max_length`</mark>**
     
@@ -174,15 +172,17 @@
 
 #### 1️⃣ `python manage.py makemigrations`
 
-* 모델을 작성 혹은 변경한 것에 기반한 새로운 migration(설계도)을 만들 때 사용
-
-* **테이블을 만들기 위한 설계도를 생성하는 것**
+* **모델을 작성 혹은 변경한 것(class 작성)에 기반한 새로운 migration(설계도)을 만들 때 사용**
+  
+  * **테이블을 만들기 위한 설계도를 생성**
+    
+    ![](/Users/awake-ukey/Library/Application%20Support/marktext/images/2022-10-09-12-21-33-image.png)
 
 #### 2️⃣ `python manage.py migrate`
 
-* **makemigration 으로 만든 설계도를 실제 db.splite3 DB 파일에 반영하는 과정**
+* **makemigration 으로 만든 설계도를 실제 데이터베이스(db.splite3 DB 파일)에 반영하는 과정**
 
-* 결과적으로 **모델에서의 변경사항들과 DB의 스키마가 동기화를 이룸**
+* 결과적으로 **<mark>모델에서의 변경사항들과 DB의 스키마가 동기화</mark>를 이룸**
   
   * <mark>**모델과 DB의 동기화**</mark>
 
@@ -193,14 +193,18 @@
 * migrations 파일들이 migrate  완료 여부를 확인하는 용도
 
 * `[X]` 표시가 있으면 migrate 가 완료되었음을 의미
+  
+  * 미완료 시 `[]` 로 표현
 
 #### 4️⃣ `python manage.py sqlmigrate articles 001`
 
-* 해당 migrations 파일이 SQL문으로 어떻게 해석될지 미리 확인 가능
+* 해당 migrations 파일이 SQL문으로 어떻게 작성되는지 미리 확인 가능
 
 ### ✔ 추가 필드 정의 - Model 변경사항 반영하기
 
-* 기존에 id, title, content 컬럼을 가진 테이블에 2개의 컬럼을 추가(변경)하는 상황
+> models.py 에서 변경사항 발생 시 migration 생성 및 DB 재반영 필요함
+
+* 기존에 id, title, content 컬럼을 가진 **테이블에 2개의 컬럼을 추가(변경)하는 상황**
   
   * **`python manage.py makemigrations`**
 
@@ -212,15 +216,15 @@
 
 * **각 보기 번호의 의미**
   
-  1. 다음 화면으로 넘어가서 새 컬럼의 기본 값을 Django가 알아서 입력하는 방법
+  1. 다음 화면으로 넘어가서 새 컬럼의 기본 값을 직접 입력하는 방법
   
   2. 현재 과정에서 나가고 모델 필드에 default 속성을 직접 작성하는 방법
 
 ![](Django_2_assets/2022-09-01-00-46-02-image.png)
 
-* 1번 선택 후 그냥 Enter 입력하면 Django에서 기본적으로 timezone 모듈의 now 메서드 반환 값을 사용한다.
+* 1번 선택 후 **그냥 Enter 입력하면 Django에서 기본적으로 timezone 모듈의 now 메서드 반환 값을 사용한다.**
 
-* **새로운 설계도를 생성했기 때문에 DB와 동기화를 진행해야 함**
+* **새로운 설계도를 생성했기 때문에 DB와 동기화를 진행해야 함**❗
   
   * **`python manage.py migrate`**
 
@@ -250,7 +254,7 @@
   
   * **SQL을 잘 알지 못해도 객체지향 언어로 DB 조작 가능**
   
-  * 생산성이 높음 = 빠르게 개발할 수 있음
+  * 생산성이 높음 = 빠르게 개발할 수 있음 (우리는 python 언어로만 표현해도 요청/응답 가능)
 
 * **단점**
   
@@ -273,11 +277,11 @@
 
 * **objects manager**
   
-  * 데이터베이스 쿼리 작업을 가능하게 하는 인터페이스
+  * 데이터베이스 쿼리 작업을 가능하게 하는 인터페이스 (Django가 자동으로 생성)
   
   * 이 manager(objects)를 통해 특정 데이터를 조작(메서드)할 수 있음
   
-  * **DB를 Python class로 조작할 수 있도록 여러 메서드를 제공하는 manager**
+  * **<mark>DB를 Python class로 조작할 수 있도록 여러 메서드를 제공하는 manager</mark>**
 
 * **Query**
   
@@ -285,7 +289,7 @@
   
   * 쿼리문을 작성한다 = 원하는 데이터를 얻기 위해 데이터베이스에 요청할 코드 작성
   
-  * **ORM에 의해 SQL로 변환되어 DB에 전달 & DB의 응답 데이터를 ORM이 QuerySet이라는 자료 형태로 변환하여 우리에게 전달**
+  * **<mark>ORM에 의해 SQL로 변환되어 DB에 전달</mark> & DB의 응답 데이터를 <mark>ORM이 QuerySet이라는 자료 형태로 변환</mark>하여 우리에게 전달**
 
 * **QuerySet❗**
   
@@ -325,7 +329,7 @@ article.content = 'django'
 article.save()
 ```
 
-* save를 하지 않으면 아직 DB에 값이 저장되지 않는다❗
+* **save를 하지 않으면 아직 DB에 값이 저장되지 않는다**❗
 
 #### 2️⃣ 인스턴스 생성 시 초기 값을 함께 작성하여 생성
 
@@ -333,8 +337,6 @@ article.save()
 article = Article(title='second', content='django!')
 article.save()
 ```
-
-* 마찬가지로 save를 호출해야 저장된다‼
 
 #### 3️⃣ QuerySet API 중 create() 메서드 활용
 
@@ -362,9 +364,9 @@ Article.objects.create(title='third', content='django!')
 
 * `all()`
   
-  * 전체 데이터 조회 - QuerySet 으로 반환 = 반복문, 인덱스 조회 가능
+  * **전체 데이터 조회 - QuerySet 으로 반환 = 반복문, 인덱스 조회 가능**
   
-  * `Article.objects.all()`
+  * **`Article.objects.all()`**
 
 * **`get()`**
   
@@ -374,15 +376,15 @@ Article.objects.create(title='third', content='django!')
   
   * <mark>**pk 와 같이 고유성을 보장하는 조회에서만 사용 가능‼**</mark>
   
-  * `Article.objects.get(pk=1)`, `Post.objects.get(필드명=해당값)`
+  * **`Article.objects.get(pk=1)`**, `Post.objects.get(필드명=해당값)`
 
-* `filter()`
+* **`filter()`**
   
   * 지정된 조회 매개 변수와 일치하는 객체를 포함하는 새 QuerySet을 반환
   
   * **조회된 객체가 없거나 1개여도 QuerySet을 반환❗**
   
-  * `Article.objects.filter(title='first')`
+  * **`Article.objects.filter(title='first')`**
 
 * `Field lookups`
   
@@ -392,19 +394,19 @@ Article.objects.create(title='third', content='django!')
   
   * https://docs.djangoproject.com/en/3.2/ref/models/querysets/#field-lookups
   
-  * content 칼럼에 'dj'가 포함된 모든 데이터 조회해줘.
+  * content 칼럼에 'dj'가 포함된 모든 데이터 조회해줘.s
     
-    * 사용법: `__field-lookups`
+    * 사용법: **`__field-lookups`**
     
     * **`Article.objects.filter(content__contains='dj')`**
 
 ### ✔ Update - 수정
 
-> 수정 전에는 항상 인스턴스 객체에 먼저 조회해야 한다.
+> **수정 전에는 항상 인스턴스 객체에 먼저 조회해야 한다.**
 
 * 객체 조회 후 반환 값을 저장한 후 새로운 값으로 할당
 
-* `save()` 인스턴스 메서드 호출
+* 수정을 완료하기 위해서는 `save()` 인스턴스 메서드 호출
 
 ```python
 article = Article.objects.get(pk=1)
@@ -417,22 +419,33 @@ article.save()
 
 ### ✔ Delete - 삭제
 
-* 삭제하고자 하는 인스턴스 객체를 조회 후 반환값을 저장
+> 삭제하고자 하는 인스턴스 객체를 조회 후 반환값을 저장
 
-* `delete()` 인스턴스 메서드 호출
+* **`delete()` 인스턴스 메서드 호출**
 
 ```python
 article = Article.objects.get(pk=1)
 article.delete()
 ```
 
-* 삭제한 후 데이터를 생성하면 id 값은 여전히 그 다음 순번부터 시작한다.
+* 삭제한 후 데이터를 생성하면 id 값은 그 다음 순번부터 시작한다.
+
+### 📌 [참고] `__str__()`
+
+* 각각의 object가 사람이 읽을 수 있는 문자열을 반환 = 원하는 형태로 출력 가능
+  
+  * DB에 영향을 주는 함수는 아니므로 설계도 재생성 및 DB 동기화를 진행할 필요는 없다!
+
+```python
+def __str__(self):
+    return self.title
+```
 
 # 실제 적용해보기
 
 ## ▶ Read
 
-> 전체 게시글 조회
+> **전체 게시글 조회하기**
 
 * **views.py**
   
@@ -482,9 +495,9 @@ article.delete()
   
   ![](Django_2_assets/2022-09-01-16-42-37-image.png)
 
-* `label의 for`과 `input의 id` 를 통해 연결된다.
+* **`label의 for`과 `input의 id` 를 통해 연결된다.**
 
-* **`input의 name` 속성: input의 값을 조회할 때 key값이 name이다.**
+* **`input의 name` 속성!: input의 값을 조회할 때 key값이 name이다!**
 
 ### ✔ HTTP request method
 
@@ -494,15 +507,15 @@ article.delete()
   
   * 특정 리소스를 가져오도록 요청할 때 사용
   
-  * **반드시 데이터를 조회(Read)할 때만 사용 = DB에 변화를 주지 않음**
+  * **<mark>반드시 데이터를 조회(Read)할 때만 사용 = DB에 변화를 주지 않음</mark>**
   
-  * Ex. 네이버 - 검색 (검색은 서버에 영향 X, 특정 데이터를 조회만)
+  * Ex. 네이버에서 검색 (검색은 서버에 영향 X, 특정 데이터를 조회만)
 
 * **POST**
   
   * **서버로 데이터를 전송할 때 사용**
   
-  * **서버에 변경사항을 만든다 = Create/Update/Delete 역할**
+  * **<mark>서버에 변경사항을 만든다(DB 조작) = Create/Update/Delete 역할</mark>**
   
   * 리소스를 생성/변경하기 위해 데이터를 HTTP body에 담아 전송
   
@@ -530,7 +543,7 @@ article.delete()
     
     * **외부 URL로 향하는 POST form에 대해서는 CSRF 토큰이 유출되어 취약성을 유발할 수 있기 때문에 사용해서는 안됨**
   
-  * 해당 POST 요청이 내가 보낸 것인지를 검증하는 것
+  * **해당 POST 요청이 내가 보낸 것인지를 검증하는 것**
 
 ## ▶ Detail - 개별 상세 페이지
 
@@ -540,7 +553,7 @@ article.delete()
   
   * 글의 번호(pk)를 활용해서 하나의 뷰 함수와 템플릿 파일로 대응
   
-  * Variable Routing
+  * **Variable Routing**
 
 * **urls.py**
 
@@ -590,7 +603,7 @@ article.delete()
   
   * 모델 class를 admin.py 에 등록하고 관리
   
-  * 레코드 생성 여부 확인에 매우 유용하여 직접 레코드를 삽입 가능
+  * **레코드 생성 여부 확인에 매우 유용하여 직접 레코드를 삽입 가능**
 
 * **admin 계정 생성**
   

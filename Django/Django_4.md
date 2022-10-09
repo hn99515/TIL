@@ -1,6 +1,6 @@
 # Authentication system
 
-> Django는 인증(Authentication)과 권한(Authorization)부여를 함께 제공
+> **Django는 인증(Authentication)과 권한(Authorization)부여를 함께 제공**
 
 * 필수 구성은 `setting.py` 에 이미 포함되어 있으며 `INSTALLED_APPS` 에서 확인 가능
   
@@ -14,9 +14,13 @@
 
 * 2️⃣ **Authorization - 권한, 허가**
   
-  * 권한 부여
+  * 권한 부여 - admin, staff, 일반유저 등
   
   * 인증된 사용자가 수행할 수 있는 작업을 결정
+
+## ▶︎ 사전 설정
+
+* `auth`와 관련한 경로나 키워드들을 **Django 내부적으로 accounts 라는 이름으로 사용하고 있기 때문에 되도록 <mark>accounts로 지정</mark>하는 것을 권장**!
 
 # Substituting a custom User model
 
@@ -28,7 +32,7 @@
   
   * 일부 프로젝트에서는 django에서 제공하는 built-in User model의 기본 인증 요구사항이 적절하지 않을 수 있음
     
-    * ex. 회원가입 시 username 대신 email을 식별 값으로 사용하고 싶은 경우
+    * 예) *회원가입 시 username 대신 email을 식별 값으로 사용하고 싶은 경우*
 
 * Django는 현재 프로젝트에서 사용할 User Model을 결정하는 **`AUTH_USER_MODEL`** 설정값으로 **<mark>Default User Model을 재정의(override)</mark>할 수 있도록 한다.**
 
@@ -36,9 +40,9 @@
 
 > 프로젝트에서 User를 나타낼 때 사용하는 모델
 
-* 프로젝트가 진행되는 동안(모델을 만들고 마이그레이션 후) 변경 불가능❗
+* *프로젝트가 진행되는 동안(모델을 만들고 마이그레이션 후) 변경 불가능*❗❗
 
-* 프로젝트 시작 시 설정해야 하며, 참조하는 모델은 첫 번째 마이그레이션에서 사용할 수 있어야 함
+* **<mark>프로젝트 시작 시 설정</mark>해야 하며, 참조하는 모델은 첫 번째 마이그레이션에서 사용할 수 있어야 함**
   
   * 첫 번째 마이그레이션 전에 미리 확정지어야 하는 값
 
@@ -74,7 +78,7 @@
   
   ![](Django_4_assets/2022-09-07-16-54-59-image.png)
 
-### 📍 User 모델 상속 관계
+### 📍 [참고] User 모델 상속 관계
 
 ![](Django_4_assets/2022-09-07-16-59-36-image.png)
 
@@ -90,9 +94,9 @@
   
   * https://docs.python.org/3/library/abc.html
 
-### 📍 프로젝트 중간에 `AUTH_USER_MODEL` 변경하기❓
+### 📍 [참고] 프로젝트 중간에 `AUTH_USER_MODEL` 변경하기❓
 
-* 모델 관계에 영향을 미치기 때문에 훨씬 더 어려운 작업이 필요
+* *모델 관계에 영향을 미치기 때문에 훨씬 더 어려운 작업이 필요*
   
   * ex. 변경사항이 자동으로 수행될 수 없기 때문에 DB 스키마를 직접 수정하고, 이전 사용자 테이블에서 데이터를 이동하고, 일부 마이그레이션을 수동으로 다시 적용해야 하는 등의 불편함이 매우 큼
   

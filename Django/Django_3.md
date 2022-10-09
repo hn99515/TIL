@@ -1,12 +1,12 @@
 # Form
 
-> Django 서버는 들어오는 요청을 모두 수용하고 있는데, 이렇게 되면 비정상적인 혹은 악의적인 요청도 들어올 수 있다.
+> **Django 서버는 들어오는 요청을 모두 수용하고 있는데, 이렇게 되면 비정상적인 혹은 악의적인 요청도 들어올 수 있다.**
 
-* 사용자가 입력한 데이터가 우리가 원하는 데이터 형식이 맞는지에 대한 <mark>**유효성 검증이 반드시 필요**</mark>❗
+* **사용자가 입력한 데이터가** 우리가 원하는 데이터 형식이 맞는지에 대한 <mark>**유효성 검증이 반드시 필요**</mark>❗
 
-* Django Form은 반복 코드를 줄여주면서 쉽게 유효성 검증을 진행할 수 있게 함
+* **Django Form**은 반복 코드를 줄여주면서 쉽게 유효성 검증을 진행할 수 있게 함
 
-## ▶ Django의 역할
+## ▶ Form에 대한 Django의 역할
 
 * **Form 은 유효성 검사 도구 중 하나로 외부의 악의적 공격 및 데이터 손상에 대한 중요한 방어 수단**
 
@@ -14,7 +14,7 @@
   
   * 개발자는 안전하고 빠르게 코드 작성 가능 & 필요한 핵심만 집중할 수 있음
 
-### 📍 3가지 처리가 필요
+### 📍 Django는 Form에 관련된 작업의 3가지를 처리
 
 * 1️⃣ 렌더링을 위한 데이터 준비 및 재구성
 
@@ -112,7 +112,7 @@
 
 # ModelForm
 
-> **Model이랑 중복되는 부분이 많음 (Form Class에 필드 재정의)**
+> **Model이랑 중복되는 부분이 많음 (Form Class에 필드를 재정의 함)**
 
 * ModelForm 사용 시, Form을 더 쉽게 작성 가능
 
@@ -134,7 +134,7 @@
 
 * **ModelForm의 정보를 작성하는 곳**
 
-* **ModelForm을 사용할 경우, 참조할 모델이 있어야 하는데 Meta class 의 model 속성이 이를 구현함**
+* **<mark>ModelForm을 사용할 경우, 참조할 모델이 있어야 하는데</mark> Meta class 의 model 속성이 이를 구현함**
   
   * 참조하는 모델에 정의된 field 정보를 Form에 적용함
 
@@ -146,13 +146,13 @@
 
 * `fields`와 `exclude`를 함께 작성할 순 있으나, 권장하지는 않음‼
 
-### 📍 Meta data
+### 📍 [참고] Meta data
 
 > **데이터를 표현하기 위한 데이터**
 
 * 예) 사진 데이터의 데이터 = 촬영 시각, 렌즈, 조리개 값 등
 
-### 📍 참조값과 반환값
+### 📍 [참고] 참조값과 반환값
 
 * **참조값 = class를 호출하지 않고 이름만 작성하는 방식**
   
@@ -186,7 +186,7 @@
 
 * Meta 클래스는 왜 여기에 작성? 클래스 안에 클래스?(Inner class or Nested class)
   
-  * 문법적으로 너무 파고들지 말고 **`ModelForm`의 역할과 사용법을 숙지**하자
+  * 문법적으로 너무 파고들지 말고 **`ModelForm`의 역할과 사용법을 숙지**
 
 # ModelForm with view functions
 
@@ -194,11 +194,11 @@
 
 * 유효성 검사를 통과 후
   
-  * 데이터 저장 후 상세 페이지로 리다이렉트
+  * **데이터 저장 후 상세 페이지로 리다이렉트**
 
 * 유효성 검사 통과 못하면
   
-  * 작성 페이지로 리다이렉트
+  * **작성 페이지로 리다이렉트**
 
 ### ✔ `is_valid()` method
 
@@ -206,17 +206,27 @@
 
 ### ✔ `save()` method
 
-* **form 인스턴스에 바인딩(데이터가 들어감)된 데이터를 통해 데이터베이스 객체를 만들고 저장**
+* **form 인스턴스에 바인딩된(데이터가 들어감) 데이터를 통해 데이터베이스 객체를 만들고 저장**
 
-* **ModelForm의 하위 클래스는 키워드 인자 instance 여부를 통해 생성할 지, 수정할 지를 결정**❗
+* **ModelForm의 하위 클래스는 키워드 인자 <mark>instance 여부를 통해</mark> 생성할 지, 수정할 지를 결정**❗
   
-  * **제공되지 않은 경우 `save()` 는 지정된 모델의 새 인스턴스를 만듦 (CREATE)**
+  * **<mark>제공되지 않은 경우 `save()` 는 지정된 모델의 새 인스턴스를 만듦 (CREATE)</mark>**
+    
+    ```python
+    form = ArticleForm(request.POST)
+    form.save()
+    ```
   
-  * **제공되면 `save()` 는 해당 인스턴스를 수정 (UPDATE)**
+  * **<mark>제공되면 `save()` 는 해당 인스턴스를 수정 (UPDATE)</mark>**
+    
+    ```python
+    form = ArticleForm(request.POST, instance=article)
+    form.save()
+    ```
 
 ### ✔ form 인스턴스의 `errors` 속성
 
-* `is_valid()` 의 반환값이 False인 경우, form 인스턴스의 errors 속성에 값을 작성
+* `is_valid()` 의 반환값이 False인 경우, **form 인스턴스의 errors 속성에 값을 작성**
   
   * 유효성 검증을 실패한 원인이 dictionary 형태로 저장됨
     
@@ -234,7 +244,7 @@
 
 * 2️⃣ **`instance`**
   
-  * 수정이 되는 대상
+  * **수정이 되는 대상**
 
 ![](Django_3_assets/2022-09-06-12-10-43-image.png)
 
@@ -244,6 +254,8 @@
 
 ## 📌 Form & ModelForm 차이점
 
+> 공통점 - 사용자의 요청을 처리함
+
 * ModelForm 이 Form 보다 더 좋은 것이 아니라 **<mark>각자 역할이 다른 것</mark>**
 
 * **`Form`**
@@ -252,7 +264,7 @@
   
   * **<mark>DB에 영향을 미치지 않고 단순 데이터만 사용되는 경우</mark>**
     
-    * **ex. 로그인 - 사용자의 데이터를 받아 인증 과정에서만 사용 후 별도로 DB에 저장하지 않음**
+    * **ex. 로그인 - 사용자의 데이터를 받아 인증 과정에서만 사용 후 별도로 DB에 저장 X**
 
 * **`ModelForm`**
   
@@ -264,25 +276,25 @@
 
 ![](Django_3_assets/2022-09-06-13-53-00-image.png)
 
-* indent 유의하자!
+* indent와 `,` 유의하자!
 
 # Handling HTTP requests‼
 
-> HTTP requests 처리에 따른 view 함수 구조 변화
+> **HTTP requests 처리에 따른 view 함수 구조 변화**
 
 ### 📌 new - create, edit - update의 view 함수
 
 * **공통점**
   
-  * new-create는 모두 CREATE 로직을 구현하기 위한 공통 목적
+  * **new-create는 모두 CREATE 로직(생성)을 구현하기 위한 공통 목적**
   
-  * edit-update는 모두 UPDATE 로직을 구현하기 위한 공통 목적
+  * **edit-update는 모두 UPDATE 로직(수정)을 구현하기 위한 공통 목적**
 
 * **차이점**
   
-  * **`new`와 `edit`는 GET 요청에 대한 처리만을 진행** = 페이지 렌더링
+  * **`new`와 `edit`는 <mark>GET 요청에 대한 처리만</mark>을 진행** = **페이지 렌더링**
   
-  * **`create`와 `update`는 POST 요청에 대한 처리만을 진행** = DB 조작
+  * **`create`와 `update`는 <mark>POST 요청에 대한 처리만</mark>을 진행** = **DB 조작**
 
 * 공통점과 차이점을 통해, **<mark>하나의 view 함수에서 method에 따라 로직이 분리</mark>되도록 변경**
 
@@ -300,7 +312,7 @@
 
 * 템플릿 경로 및 관련 링크 모두 수정
 
-* **context의 들여쓰기 위치**⁉
+* **<mark>context의 들여쓰기 위치</mark>**⁉ (=`form`의 2가지 역할)
   
   * **역할 1️⃣ - 기존의 new 함수처럼 <mark>form 페이지 제공</mark>**
   
@@ -318,13 +330,15 @@
 
 ## ▶ Delete
 
-> POST 요청에 대해서만 삭제가 가능하도록 수정
+> **POST 요청에 대해서만 삭제가 가능하도록 수정**
+
+* 삭제 시 DB 조작이 되기 때문에 POST일 때만 삭제할 수 있도록 해주자!
 
 ![](Django_3_assets/2022-09-06-17-34-32-image.png)
 
 # View decorators
 
-> 기존에 작성된 함수에 기능을 추가하고 싶을 때 사용
+> 데코레이터 - 기존에 작성된 함수에 기능을 추가하고 싶을 때 해당 함수를 수정하지 않고 기능을 추가해주는 함수
 
 ## ▶ Allowed HTTP methods
 
@@ -334,16 +348,84 @@
 
 * **메서드 목록**
   
-  * 1️⃣ **`require_http_methods()`**
+  * 1️⃣ **`@require_http_methods(['GET', 'POST'])`**
     
     * View 함수가 **특정한 요청 method만 허용**하도록 하는 데코레이터
+    * 예) create 페이지, update 페이지
   
-  * 2️⃣ **`require_POST()`**
+  * 2️⃣ **`@require_POST`**
     
     * View 함수가 <mark>**POST 요청 method만 허용**</mark>하도록 하는 데코레이터
       
-      * **url로 delete 불가**
+      * 예) delete 페이지 - **url로 delete 불가해야 함**
   
-  * 3️⃣ **`require_safe()`**
+  * 3️⃣ **`@require_safe`**
     
     * View 함수가 <mark>**GET 요청 method만 허용**</mark>하도록 하는 데코레이터
+    * 예) index 페이지, detail 페이지 = 조회 및 page 전달
+
+# Form 태그의 디자인을 자유롭게 꾸미는 방법
+
+> Modelform 사용으로 인한 레이아웃 변경이 자유롭지 않을 때 여러 방법으로 꾸밀 수 있다.
+
+### 1️⃣ `working with form template` Django 공식 문서 내 `rendering fields manually`
+
+```html
+<h2>수동으로 Form 작성</h2>
+<form action="#">
+  <div>
+    {{ form.title.errors }}
+    {{ form.title.label_tag }}
+    {{ form.title }}
+  </div>
+</form>
+```
+
+* 다만, 필드가 많은 경우 모두 작성하기 어렵다는 단점이 존재
+
+### 2️⃣ Looping over the form's fields
+
+```html
+<h2>Looping over the form's fields</h2>
+<form action="#">
+  {% for field in form %}
+    {{ field.errors }}
+    {{ field.label_tag }}
+    {{ field }}
+  {% endfor %}
+</form>
+```
+
+### 3️⃣ Bootstrap 적용 - Bootstrap 문서에서 forms 확인
+
+```python
+# forms.py
+widget=forms.Textinput(
+    attrs={
+        'class': 'my-title form-control'
+    }
+)
+```
+
+* `widget` 의 `attrs` 내 **class 부분에 `form-control`을 적용해주자!**
+
+### 4️⃣ django bootstrap5 설치 - 외부 라이브러리 이용
+
+* 설치 방법 - `pip install django-bootstrap-v5`
+  
+  * settings.py - `INSTALLED_APPS` 내 `bootstrap5` 를 추가해야 사용 가능
+
+```html
+<!--Example template-->
+{% load bootstrap5 %}
+
+<h2>bootstrap v5 라이브러리 사용하</h2>
+<form action="#">
+  {% bootstrap_form form %}
+    {% buttons %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    {% endbuttons %}
+</form>
+```
+
+* 단점 - 외부라이브러리 이므로 문법 숙지 및 자유도 제한이 분명 있다.
