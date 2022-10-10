@@ -271,7 +271,7 @@
 * **`AuthenticationForm(request)`**
 
 ```python
-# accounts.views.py
+# accounts/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
@@ -363,7 +363,7 @@ def login(request):
   * 모두 삭제하는 이유는 다른 사람이 동일한 웹 브라우저를 사용하여 로그인하고, **이전 사용자의 세션 데이터에 액세스하는 것을 방지하기 위함**
 
 ```python
-# accounts.views.py
+# accounts/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout as auth_logout
@@ -376,11 +376,11 @@ def logout(request):
 
 ## ▶ 회원가입
 
-* 회원가입은 <mark>**User를 Create하는 것**이며 **`UserCreationForm`** </mark>buil-in form을 사용
+* 회원가입은 <mark>**User를 Create하는 것**이며 **`UserCreationForm`** </mark> (buil-in form)을 사용
 
 ### ✔ UserCreationForm
 
-* 주어진 username과 password로 권한이 없는 새 user를 생성하는 **ModelForm**
+* 주어진 username과 password로 권한이 없는 새 user(=일반 유저)를 생성하는 **<mark>ModelForm</mark>**
 
 * 3개의 필드를 가짐
   
@@ -392,21 +392,21 @@ def logout(request):
 
 ![](Django_4_assets/2022-09-07-22-12-31-image.png)
 
-* **위와 같이 작성 시 Error 발생**‼
+* **<mark>위와 같이 작성 시 Error 발생</mark>**‼
   
   * 회원가입에 사용하는 **`UserCreationForm`이 우리가 대체한 커스텀 user 모델이 아닌 <mark>기존 user 모델로 인해 작성된 클래스이기 때문에 상속을 통한 변경이 필요</mark>하다**❗
   
-  * 실제 UserCreationForm 코드
+  * 실제 UserCreationForm 코드 - 기존의 User 모델로 만들어진 것
     
     ![](Django_4_assets/2022-09-07-22-13-58-image.png)
 
 # Custom user & Built-in auth forms
 
-> Custom user로 인한 Built-in auth forms 변경
+> **Custom user로 인한 Built-in auth forms 변경**
 
 ## ▶ AbstractBaseUser의 모든 subclass와 호환되는 forms
 
-* 커스텀하지 않아도 사용 가능한 일반 Form 클래스 = 기존 User 모델을 참조하는 Form이 아니기 때문❗
+* **커스텀하지 않아도 사용 가능한 일반 Form 클래스 = 기존 User 모델을 참조하는 Form이 아니기 때문**❗
   
   * `AuthenticationForm`
   
@@ -418,23 +418,38 @@ def logout(request):
 
 ## ▶ 커스텀 유저 모델을 사용할 때 다시 작성해야하는 forms
 
-* 모두 **`class Meta: model = User` 가 등록된 form**이기 때문에 반드시 커스텀해야 함‼
+* 모두 **`class Meta: model = User`(기존 유저모델) 가 등록된 form**이기 때문에 **반드시 커스텀해야 함**‼
   
-  * **<mark>`UserCreationForm`</mark>** - 회원가입
+  * **<mark>`UserCreationForm`</mark>** - **회원가입**
   
-  * **<mark>`UserChangeForm`</mark>** - 회원정보수정
+  * **<mark>`UserChangeForm`</mark>** - **회원정보수정**
 
 ### ✔ UserCreationForm, UserChangeForm 커스텀
 
 ![](Django_4_assets/2022-09-07-22-39-41-image.png)
 
+### ✔ 회원가입 창에서 원하는 필드 출력하기
+
+* Meta 클래스 내 `fields` 속성을 변경해주면 원하는 필드를 출력할 수 있다.
+
+```python
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
+class CustomUserCreationForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = get_user_model()
+        fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name',)
+```
+
 #### 📌 `get_user_model()`
 
 * **<mark>현재 프로젝트에서 활성화된 사용자 모델(active user model)</mark>을 반환**
 
-* **직접 참조하지 않는 이유는**❓
+* <mark>**직접 참조하지 않는 이유는**</mark>❓
   
-  * ex. 기존 User 모델이 아닌 User 모델을 커스텀 한 상황에서는 커스텀 User 모델을 자동으로 반환해주기 때문이다.
+  * 예) **기존 User 모델이 아닌 User 모델을 커스텀 한 상황에서는 커스텀 User 모델을 자동으로 반환**해주기 때문이다.
 
 * Django는 User 클래스를 직접 참조하는 대신 **`get_user_model()` 을 사용해 참조해야 한다고 강조**
 
@@ -442,23 +457,39 @@ def logout(request):
 
 ![](Django_4_assets/2022-09-07-22-49-01-image.png)
 
-* 회원가입 후 **바로 로그인 상태로 유지시키려면 `auth_logint()` 을 통해 가능함**
+* 회원가입 후 **바로 로그인 상태로 유지시키려면 `auth_login()` 을 통해 가능함**
 
 ### 📍 `UserCreationForm`의 save 메서드
 
-* user를 반환하는 것을 공식 문서에서 확인할 수 있다.
+* **user를 반환**하는 것을 공식 문서에서 확인할 수 있다.
   
   ![](Django_4_assets/2022-09-07-22-51-19-image.png)
 
 ## ▶ 회원 탈퇴
 
-* 회원 탈퇴하는 것은 DB에서 유저를 Delete하는 것과 같음
+> **회원 탈퇴하는 것은 DB에서 유저를 Delete하는 것과 같음**
+
+```python
+# account/view.py
+def delete(request):
+    # 유저 정보를 삭제
+    request.user.delete()
+    return redirect('articles:index')
+```
 
 ### 📍 탈퇴하면서 해당 유저의 세션 정보도 함께 지우고 싶은 경우
 
 * **<mark>탈퇴 후 로그아웃의 순서</mark>를 꼭 지켜야 함**❗
   
   * **로그아웃을 먼저하면 해당 요청의 객체 정보가 없어지기 때문에 탈퇴에 필요한 정보 또한 사라지기 때문**
+
+```python
+# account/view.py
+def delete(request):
+    request.user.delete()    # 탈퇴 후 로그아웃을 해야 해당 유저의 정보를 제대로 삭제할 수 있다.
+    auth_logout(request)
+    return redirect('articles:index')
+```
 
 ## ▶ 회원정보 수정
 
@@ -468,11 +499,13 @@ def logout(request):
 
 ### ✔ UserChangeForm
 
-* 사용자의 정보 및 권한을 변경하기 위해 **admin 인터페이스에서 사용되는 ModelForm**
+* 사용자의 정보 및 권한을 변경하기 위해 **<mark>admin 인터페이스에서 사용되는 ModelForm</mark>**
+  
+  * admin page 에서 사용하고 있는 회원 수정 페이지
 
-* UserChangeForm 또한 **ModelForm**이기 때문에 **instance 인자로 기존 user 데이터 정보를 받는 구조 또한 동일하다.**
-
-* CustomUserChangeForm으로 사용해야 함❗
+* UserChangeForm 또한 **ModelForm이기 때문에 instance 인자로 기존 user 데이터 정보를 받는 구조 또한 동일하다.**
+  
+  * `CustomUserChangeForm`으로 변경해서 사용해야 함❗
 
 ### ✔ UserChangeForm 의 문제점
 
@@ -480,7 +513,7 @@ def logout(request):
   
   * <mark>**admin 인터페이스에서 사용되는 ModelForm이기 때문**</mark>
 
-* CustomUserChangeForm에서 접근 가능한 fields를 조정해줘야 한다❗
+* `CustomUserChangeForm`에서 접근 가능한 `fields`를 조정해줘야 한다❗
 
 ### ✔ CustomUserChangeForm fields 재정의
 
@@ -496,39 +529,39 @@ def logout(request):
 
 * **이전 비밀번호를 입력하여 비밀번호를 변경할 수 있도록 함**
 
-* 이전 비밀번호를 입력하지 않고 비밀번호를 설정할 수 있는 SetPasswordForm을 상속받는 서브 클래스
+* 이전 비밀번호를 입력하지 않고 비밀번호를 설정할 수 있는 `SetPasswordForm`을 상속받는 서브 클래스
   
-  * **user 인자를 필수적으로 하나 받아야 함**
+  * **user 인자를 필수적으로 하나 받아야 함**❗ - `PasswordChangeForm(request.user)`
 
 ![](Django_4_assets/2022-09-07-23-17-22-image.png)
 
-* **PasswordChangeForm 은 <mark>인자를 받는 순서가 다름</mark>에 유의**‼
+* **`PasswordChangeForm` 은 <mark>인자를 받는 순서가 다름에 유의</mark>**‼
 
-* 비밀번호 변경 후 로그인 상태가 지속되지 못하는 문제 발생
+* 비밀번호 변경 후 로그인 상태가 지속되지 못하는 문제가 발생하는 이유❓
   
-  * 기존의 세션과의 회원 인증 정보가 일치하지 않기 때문❗
+  * **기존의 세션과의 회원 인증 정보가 일치하지 않기 때문**❗
 
 ### ✔ update_session_auth_hash()
 
 * **`update_session_auth_hash(request, user)`**
 
-* 현재 요청과 새 session data가 파생될 업데이트 된 사용자 객체를 가져오고, session data를 적절하게 업데이트해줌
+* **현재 요청과 새 session data가 파생될 업데이트 된 사용자 객체를 가져오고, session data를 적절하게 업데이트함**
 
-* **암호가 변경되어도 로그아웃되지 않도록 새로운 password의 session data로 session을 업데이트**
+* **<mark>암호가 변경되어도 로그아웃되지 않도록</mark> 새로운 password의 session data로 session을 업데이트**
 
 ![](Django_4_assets/2022-09-07-23-21-43-image.png)
 
 # Limiting access to logged-in users
 
-> 로그인 사용자에 대한 접근 제한하기
+> **로그인 사용자에 대한 접근 제한하기**
 
-* 로그인 사용자에 대한 접근을 제한하는 2가지 방법
+* **로그인 사용자에 대한 접근을 제한하는 2가지 방법**
   
   * 1️⃣ The raw way
     
-    * **`is_authenticated`** attribute
+    * **<mark>`is_authenticated`</mark>** attribute
   
-  * 2️⃣ The **`login_required`** decorator
+  * 2️⃣ The **<mark>`login_required`</mark>** decorator
 
 ## ▶ is_authenticated
 
@@ -536,27 +569,27 @@ def logout(request):
 
 * 사용자가 인증되었는지 여부를 알 수 있는 방법
 
-* **모든 User 인스턴스에 대해 항상 True인 읽기 전용 속성**
+* **<mark>모든 User 인스턴스에 대해 항상 True</mark>인 읽기 전용 속성**
   
-  * **AnonymousUser에 대해서는 항상 False**
+  * **<mark>AnonymousUser에 대해서는 항상 False</mark>**
 
-* 일반적으로 `reqeust.user`에서 이 속성을 사용 <mark>**(`request.user.is_authenticated`)**</mark>
+* 일반적으로 `reqeust.user`에서 이 속성을 사용 = <mark>**`request.user.is_authenticated`**</mark>
 
-* **권한(permission)과는 관련이 없으며, 사용자가 활성화 상태(active)이거나 유효한 세션을 가지고 있는지도 확인하지 않음**‼
+* **권한(permission)과는 관련이 없으며, 사용자가 활성화 상태(active)이거나 유효한 세션을 가지고 있는지도 확인하지 않음**‼ = `True/Fasle` 만 확인
 
 ![](Django_4_assets/2022-09-07-23-27-22-image.png)
 
-* **로그인과 비로그인 상태에서 출력되는 링크를 다르게 설정**‼
+* **<mark>로그인과 비로그인 상태에서 출력되는 링크를 다르게 설정</mark>**‼
 
-* 단, 아직 비로그인 상태로도 URL을 직접 입력하면 게시글 작성 페이지로 갈 수 있음
+* **단, 아직 비로그인 상태로도 URL을 직접 입력하면 게시글 작성 페이지로 갈 수 있음**
 
 ![](Django_4_assets/2022-09-07-23-36-25-image.png)
 
-* 인증된 사용자라면 로그인 페이지를 수행할 수 없도록 처리 가능
+* **인증된 사용자라면 로그인 페이지를 수행할 수 없도록 처리 가능**
 
 ## ▶ login_required
 
-> login_required decorator
+> **login_required decorator**
 
 * 사용자가 로그인 되어 있으면 정상적으로 view 함수를 실행
 
@@ -568,39 +601,39 @@ def logout(request):
 
 ![](Django_4_assets/2022-09-07-23-38-34-image.png)
 
-* **로그인 상태에서만 글을 작성/수정/삭제할 수 있도록 변경**❗
+* <mark>**로그인 상태에서만 글을 작성/수정/삭제할 수 있도록 변경**</mark>❗
 
-* /articles/create/ 로 강제 접속 시도하여 로그인 페이지로 리다이렉트 하면
+* `/articles/create/` 로 강제 접속 시도하여 로그인 페이지로 리다이렉트
   
-  * /accounts/login/?next=/articles/create/ 로 url 을 확인
+  * /accounts/login/`?next=/articles/create/` 로 직전에 요청했던 url 포함
 
-* 로그인 성공 시 사용자가 redirect 되어야 하는 경로는 **next 라는 쿼리 문자열 매개 변수에 저장됨**‼
+* 로그인 성공 시 사용자가 redirect 되어야 하는 경로는 **next 라는 쿼리 문자열 매개 변수에 저장됨**‼ 그러나❗ next 쿼리 문자열 매개 변수가 없으면 넘어가지 않는다.
   
-  * ex. /accounts/login/**<mark>?next=/articles/create/</mark>**
+  * 예) /accounts/login/**<mark>?next=/articles/create/</mark>**
 
 ### ✔ 'next' query string parameter
 
-* 로그인이 정상적으로 진행되면 이전에 요청했던 주소록 redirect 하기 위해 Django가 제공해주는 쿼리 스트링 파라미터
+* **로그인이 정상적으로 진행되면 이전에 요청했던 주소록 redirect 하기 위해 Django가 제공해주는 쿼리 스트링 파라미터**
   
   * `/articles/create/` 로 강제 접속 시도
   
   * 로그인 페이지로 리다이렉트 되면 url 에는 **`/accounts/login/?next=/articles/create/`** 로 확인
 
-* **해당 값을 처리할지 말지는 자유이며 별도로 처리 해주지 않으면 view에 설정한 redirect 경로로 이동하게 된다.**
+* **<mark>해당 값을 처리할지 말지는 자유</mark>이며 별도로 처리 해주지 않으면 view에 설정한 redirect 경로로 이동하게 된다.**
 
 ![](Django_4_assets/2022-09-07-23-50-32-image.png)
 
-* **단축평가를 통해 위와 같이 표현 가능함**‼
+* **<mark>단축평가를 통해 위와 같이 표현 가능함</mark>**‼
   
   * **앞이 True 면 뒤는 확인 ❌ / 앞이 False 면 뒤를 확인❗**
   
-  * 단, login 템플릿에서 form action이 작성되어 있다면 동작하지 않음‼
+  * **단, login 템플릿에서 form action이 작성되어 있다면 동작하지 않음**‼
   
-  * 해당 action 주소 next 파라미터가 작성되어있는 현재 url이 아닌 /accounts/login/으로 요청을 보냈기 때문이다. = **사용하려면 비워두면 된다**❗
+  * 해당 action 주소 next 파라미터가 작성되어있는 현재 url이 아닌 /accounts/login/으로 요청을 보냈기 때문이다. = <mark>**사용하려면 비워두면 된다**</mark>❗
 
 ![](Django_4_assets/2022-09-07-23-54-13-image.png)
 
-### ✔ 두 개의 데코레이터로 인해 발생하는 구조적 문제
+### ✔ 두 개의 데코레이터로 인해 발생하는 구조적 문제 - delete
 
 * 1️⃣ **먼저 비로그인 상태로 detail 페이지에서 게시글 삭제 시도**
 
@@ -608,7 +641,7 @@ def logout(request):
 
 * 3️⃣ **redirect로 이동한 로그인 페이지에서 로그인 진행**
   
-  * 로그인 성공 이후 GET method로 next 파라미터 주소에 리다이렉트 되기 때문
+  * 로그인 성공 이후 GET method로 next 파라미터 주소에 리다이렉트 되면 delete가 실행 ❌ - 삭제 부분은 GET 에 대한 요청 처리 방안이 없기 때문
 
 * 4️⃣ **delete view 함수의 `@require_POST` 로 인해 405 상태 코드를 받게 됨**
   
@@ -622,8 +655,8 @@ def logout(request):
 
 #### 📌 해결 방안
 
-* **`@login_required`는 GET request method 를 처리할 수 있는 View 함수에서만 사용해야 한다.**
+* **<mark>`@login_required`는 GET request method 를 처리할 수 있는 View 함수에서만</mark> 사용해야 한다.**
 
-* POST method만 허용하는 delete 같은 함수는 내부에서 `is_authenticated` 속성 값을 사용해서 처리
+* **<mark>POST method만 허용하는 delete 같은 함수는 내부에서 `is_authenticated`을 사용</mark>해서 처리**
   
   ![](Django_4_assets/2022-09-08-00-23-59-image.png)
