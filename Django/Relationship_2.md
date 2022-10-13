@@ -190,7 +190,7 @@
 
 # ManyToManyField
 
-> `ManyToManyField(to, **options)`
+> **`ManyToManyField(to, **options)`**
 
 * 다대다 관계 설정 시 사용하는 모델 필드
 
@@ -202,9 +202,9 @@
 
 ## ▶ 데이터베이스에서의 표현
 
-> **다대다 관계를 나타내는 중개 테이블을 만듦**
+> **다대다 관계를 나타내는 중개 테이블을 만듦** (필드 생성 ❌)
 
-* 테이블 이름은 ManyToManyField 이름과 이를 포함하는 모델의 테이블 이름을 조합하여 생성됨
+* 중개 테이블 이름은 ManyToManyField 이름과 이를 포함하는 모델의 테이블 이름을 조합하여 자동 생성됨
 
 * `db_table` arguments 를 사용하여 중개 테이블의 이름을 변경할 수도 있음
 
@@ -212,13 +212,17 @@
 
 ### 1️⃣ related_name
 
-* **target model 이 source model 을 참조(역참조)할 때 사용할 manager name을 설정**
+* **<mark>target model 이 source model 을 참조(역참조)할 때 사용할 manager name을 설정</mark>**
+  
+  * 역참조명이 동일한 경우, 무조건 이 옵션을 사용해야 함❗
 
 * `ForeighKey`의 `related_name`과 동일
 
+* 역참조명(기본) = `모델명_set`
+
 ### 2️⃣ through
 
-* **중개 테이블을 직접 작성하는 경우, `through` 옵션을 사용하여 중개 테이블을 나타내는 Django 모델을 지정**
+* **<mark>중개 테이블을 직접 작성하는 경우</mark>, `through` 옵션을 사용하여 중개 테이블을 나타내는 Django 모델을 지정**
 
 * 일반적으로 중개 테이블에 추가 데이터를 사용하는 **다대다 관계와 연결하려는 경우(extra data with a many-to-many relationship)에 사용됨**
 
@@ -226,13 +230,13 @@
 
 * **기본 값 : True**
 
-* **ManyToManyField가 동일한 모델(on self)을 가리키는 정의에서만 사용**
+* **<mark>ManyToManyField가 동일한 모델(on self)을 가리키는 정의에서만 사용</mark>**
 
 ![](Relationship_2_assets/2022-10-12-10-37-27-image.png)
 
-* **True인 경우 - 역참조 manager 사용 불가**
+* **True인 경우**
   
-  * `_set` 매니저를 추가하지 않음
+  * `_set` 매니저를 추가하지 않음 = **역참조 manager 사용 불가**
   
   * source 모델의 인스턴스가 target 모델의 인스턴스를 참조하면 자동으로 target 모델 인스턴스도 source 모델 인스턴스를 참조하도록 함(대칭)
   
@@ -240,7 +244,7 @@
 
 * **<mark>대칭을 원하지 않는 경우 False로 설정</mark>**
   
-  * Follow 기능을 생각해보면 쉽다❗
+  * Follow 기능을 생각해보자❗
 
 ## ▶ Related Manager
 
@@ -264,7 +268,7 @@
 
 * **`add()`**
   
-  * 지정된 객체를 관련 객체 집합에 추가
+  * **지정된 객체를 관련 객체 집합에 추가**
   
   * 이미 존재하는 관계에 사용하면 관계가 복제되지 않음
   
@@ -272,7 +276,7 @@
 
 * **`remove()`**
   
-  * 관련 객체 집합에서 지정된 모델 객체를 제거
+  * **관련 객체 집합에서 지정된 모델 객체를 제거**
   
   * 내부적으로 QuerySet.delete()를 사용하여 관계가 삭제됨
   
@@ -280,7 +284,7 @@
 
 ## ▶ 중개 테이블 필드 생성 규칙
 
-* 1️⃣ 소스(source model) 및 대상(target model) 모델이 다른 경우
+* 1️⃣ **소스(source model) 및 대상(target model) 모델이 다른 경우**
   
   * id
   
@@ -290,7 +294,7 @@
     
     ![](Relationship_2_assets/2022-10-12-12-40-36-image.png)
 
-* 2️⃣ ManyToManyField가 동일한 모델을 가리키는 경우 = self 참조
+* 2️⃣ **ManyToManyField가 동일한 모델을 가리키는 경우 = self 참조**
   
   * id
   
@@ -415,5 +419,3 @@
 ## 2️⃣ M:N (Article - User) = Like
 
 ## 3️⃣ M:N (User - User) = Profile, Follow
-
-

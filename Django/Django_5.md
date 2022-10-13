@@ -1,6 +1,6 @@
 # Managing static files
 
-> **개발자가 서버에 미리 준비하거나 사용자가 업로드한 정적파일을 클라이언트에게 제공하는 방법**
+> **<mark>개발자가 서버에 미리 준비</mark>하거나 <mark>사용자가 업로드한 정적파일</mark>을 클라이언트에게 제공하는 방법**
 
 ## ▶ Static files - 서버가 제공하는 정적 파일
 
@@ -52,7 +52,7 @@
   
   * 예) **`my_app/static/sample_img.jpg`**
 
-* 4️⃣ **템플릿에서 static 템플릿 태그를 사용하여 지정된 경로에 있는 정적 파일의 URL 만들기**
+* 4️⃣ **템플릿에서 <mark>static 템플릿 태그를 사용</mark>하여 지정된 경로에 있는 정적 파일의 URL 만들기**
   
   ```python
   {% load static %}
@@ -65,10 +65,11 @@
 * **`{% load %}`**
   
   * 특정 라이브러리, 패키지에 등록된 모든 **템플릿 태그와 필터를 로드** (import와 유사)
+  * html 상단에 작성한 후 사용 가능
 
 * **`{% static '' %}`**
   
-  * **`STATIC_ROOT`에 저장된 정적 파일에 연결**
+  * **`STATIC_ROOT`에 저장된 정적 파일에 연결** (정적 파일의 경로를 지정)
 
 ## ▶ Static files 관련 Core settings
 
@@ -80,11 +81,13 @@
 
 * `collectstatic`이 배포를 위해 정적 파일을 수집하는 디렉토리의 **절대 경로**
 
-* **<mark>개발 과정에서 `settings.py`의 DEBUG 값이 True 로 설정되어 있으면 해당 값은 작용 ❌</mark>**
+* **개발 과정에서 `settings.py`의 DEBUG 값이 True 로 설정되어 있으면 해당 값은 작용 ❌**
 
-* **<mark>실 서비스 환경(배포 환경)에서 Django의 모든 정적 파일을 다른 웹 서버가 직접 제공하기 위해 사용</mark>**
+* **<mark>실 서비스 환경(배포 환경)에서 Django의 모든 정적 파일을 다른 웹 서버가 직접 제공</mark>하기 위해 사용**
 
 * **배포 환경에서는 Django를 직접 실행하는 것이 아니라, 다른 서버에 의해 실행되기 때문에 실행하는 <mark>다른 서버는 Django에 내장되어 있는 정적 파일들을 인식하지 못함</mark>❗ (내장되어 있는 정적 파일들을 밖으로 꺼내는 이유)**
+
+![](Django_5_assets/2022-10-13-09-15-59-image.png)
 
 ### 📌 [참고] 소프트웨어 배포 (Deploy)
 
@@ -113,15 +116,13 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 * **Default: [] (Empty list)**
 
+* App 폴더 외부에 존재
+
 * 추가 파일 디렉토리에 대한 전체 경로를 포함하는 문자열 목록으로 작성되어야 함
 
-```python
-# 작성 예시
+* 특정 app 에서만 사용하는 것이 아닌 프로젝트 전체에서 사용하는 정적 파일을 위함
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-```
+![](Django_5_assets/2022-10-13-09-19-05-image.png)
 
 ### 3️⃣ `STATIC_URL`❗
 
@@ -133,13 +134,9 @@ STATICFILES_DIRS = [
 
 * **<mark>실제 파일이나 디렉토리가 아니며, URL로만 존재</mark>**
 
-* 비어 있지 않은 값으로 설정한다면 반드시 slash(`/`)로 끝나야 함
+* 비어 있지 않은 값으로 설정한다면 **반드시 slash(`/`)로 끝나야 함**
 
-```python
-# 작성 예시
-
-STATIC_URL = '/static/'
-```
+![](Django_5_assets/2022-10-13-09-21-23-image.png)
 
 # Static files 사용하기
 
@@ -157,7 +154,7 @@ STATIC_URL = '/static/'
       
       ![](Django_5_assets/2022-10-11-13-18-55-image.png)
   
-  * **② <mark>추가 경로에 있는 static file 가져오기</mark>**
+  * **② <mark>추가 경로(App 외부)에 있는 static file 가져오기</mark>**
     
     * 추가 경로 작성
       
@@ -169,13 +166,13 @@ STATIC_URL = '/static/'
       ]
       ```
     
-    * **`static/경로` 에 이미지 파일 배치하기**
+    * **`static(App 외부)/경로` 에 이미지 파일 배치하기**
       
       ![](Django_5_assets/2022-10-11-13-20-57-image.png)
     
-    * static tag 를 사용해 이미지 파일 출력하기
+    * **static tag 를 사용해 이미지 파일 출력하기**
       
-      ![](Django_5_assets/2022-10-11-13-21-28-image.png)
+      ![](Django_5_assets/2022-10-13-09-25-35-image.png)
 
 ## ▶ STATIC_URL 확인하기
 
@@ -209,7 +206,8 @@ STATIC_URL = '/static/'
 
 * `ImageField` 인스턴스는 <mark>**최대 길이가 100자인 문자열로 DB에 생성**</mark>되며, `max_length` 인자를 사용하여 최대 길이를 변경할 수 있음
   
-  * 문자열이 들어가는 이유❓ 이미지 파일의 경로가 들어감
+  * **문자열이 들어가는 이유❓**
+    * **이미지 파일의 경로가 들어감**
 
 ## ▶ FileField()
 
@@ -253,11 +251,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 * Default: '' (Empty string)
 
-* **업로드된 파일의 주소(URL)를 만들어 주는 역할**
+* **<mark>업로드된 파일의 주소(URL)를 만들어 주는 역할</mark>**
   
   * 웹 서버 사용자가 사용하는 public URL
 
-* 비어 있지 않은 값으로 설정한다면 반드시 slash(`/`)로 끝나야 함
+* 비어 있지 않은 값으로 설정한다면 **반드시 slash(`/`)로 끝나야 함**
 
 * MEDIA_URL 은 STATIC_URL 과 반드시 다른 경로로 지정해야 함
 
@@ -319,7 +317,7 @@ MEDIA_URL = '/media/'
   
   * *"데이터 없음"에 대한 표현에 두 개의 가능한 값을 갖는 것은 좋지 않음*
   
-  * Django는 **문자열 기반 필드에서 NULL이 아닌 빈 문자열을 사용하는 것이 규칙**
+  * Django는 **<mark>문자열 기반 필드에서 NULL이 아닌 빈 문자열을 사용하는 것이 규칙</mark>**
 
 ## ▶ Mirgrations
 
@@ -343,7 +341,7 @@ MEDIA_URL = '/media/'
 
 * *하지만 이미지가 업로드 되지 않음*
 
-* **파일 또는 이미지 업로드 시에는 `form` 태그에 `enctype` 속성을 다음과 같이 변경**해야 함❗
+* **<mark>파일 또는 이미지 업로드 시에는 `form` 태그에 `enctype` 속성</mark>을 다음과 같이 변경**해야 함❗
 
 ![](Django_5_assets/2022-10-11-16-48-27-image.png)
 
@@ -399,9 +397,9 @@ MEDIA_URL = '/media/'
 
 ![](Django_5_assets/2022-10-11-17-13-17-image.png)
 
-* **`article.image.url` = 업로드 파일의 경로**
+* **`article.image.url` = <mark>업로드 파일의 경로</mark>**
 
-* **`article.image` = 업로드 파일의 파일 이름**
+* **`article.image` = <mark>업로드 파일의 파일 이름</mark>**
 
 * 이미지를 업로드하지 않은 게시물은 detail 템플릿을 출력할 수 없는 문제를 해결해야 함
   
@@ -514,5 +512,3 @@ MEDIA_URL = '/media/'
 * **이미지가 출력되는 다른 detail 페이지에 이동할 때마다 썸네일이 생성됨**
 
 ![](Django_5_assets/2022-10-12-01-18-13-image.png)
-
-
