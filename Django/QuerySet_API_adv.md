@@ -142,7 +142,7 @@
 
 * 나이가 30살 이상이고 계좌 잔고가 50만원 초과인 사람들의 이름, 나이, 계좌 잔고 조회
   
-  * **`User.objects.filter(age__gte=30, balance__gte=500000).values('first_name', 'age', 'balance')`**
+  * **`User.objects.filter(age__gte=30, balance__gt=500000).values('first_name', 'age', 'balance')`**
 
 * 이름에 '호'가 포함되는 사람들의 이름과 성 조회
   
