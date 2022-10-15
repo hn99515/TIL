@@ -199,3 +199,69 @@
     ![](QuerySet_API_adv_assets/2022-10-12-02-05-52-image.png)
 
 # Aggregation (Grouping data)
+
+> 일반적으로 import 후에 사용 가능
+> 
+> `from django.db.models import Avg, Max, Sum, `
+
+## ▶️ aggregate()
+
+* 전체 queryset에 대한 값을 계산
+
+* 특정 필드 전체의 합, 평균, 개수 등을 계산할 때 사용
+
+* **딕셔너리를 반환 - key를 통해 값을 추출해서 사용**
+
+* `aggregation functions`
+  
+  * `Avg`, `Count`, `Max`, `Min`, `Sum`
+
+* 나이가 30이상인 사람들의 평균 나이 조회
+  
+  * `User.objects.filter(age__gte=30).aggregate(Avg('age'))`
+  
+  * 결과에 대한 필드명(key) 변경을 원하는 경우
+    
+    * `User.objects.filter(age__gte=30).aggregate(age=Avg('age'))`
+
+* 가장 높은 계좌 잔액 조회
+  
+  * `User.objects.aggregate(Max('balance'))`
+
+* 모든 계좌 잔액 총액 조회
+  
+  * `User.objects.aggregate(Sum('balance'))`
+
+## ▶️ annotate()
+
+* 쿼리의 각 항목에 대한 요약 값을 계산
+
+* SQL의 `GROUP BY`에 해당
+
+* '주석을 달다'라는 사전적 의미를 지님
+
+* 각 지역별로 몇 명씩 살고 있는지 조회
+  
+  * `User.objects.values('country').annotate(Count('country'))`
+
+* 각 지역별로 몇 명씩 살고 있는지 + 지역별 계좌 잔액 평균 조회
+  
+  * `User.objects.values('country').annotate(Count('country'), avg_balance=Avg('balance'))`
+
+* 각 성씨가 몇 명씩 있는지 조회
+  
+  * `User.objects.values('last_name').annotate(Count('last_name'))`
+
+## ▶️ N:1 인 경우
+
+```python
+# Comment - Article 관계가 N:1인 경
+Article.objects.annotate(
+    number_of_comment=Count('comment')
+    pub_date=Count('comment', filter=Q(comment_created_at__lte='2000-01-01'))
+)
+```
+
+* 전체 게시글을 조회하면서 `annotate`로 각 게시글의 댓글 개수와 2000-01-01보다 나중에 작성된 댓글의 개수를 함께 조회하는 것
+
+
