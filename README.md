@@ -6,6 +6,8 @@
 
 ### ✅ SQL
 1. [SQL 기초](./SQL/sql_basic.md)
+2. [Database(RDB, SQL, DDL, SQLite Data types, Constraints, DML)](./SQL/Database.md)
+3. [Data Modeling(Entity, Attribute, Relation, Identifiers)](./SQL/SQLD_data_model.md)
 
 ### ✅ Web
 1. [Web(HTML, CSS)](./Web/Web.md)
