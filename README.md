@@ -41,3 +41,5 @@
 3. [Form(Form class, widgets, ModelForm, CRUD_Ad, View decorators)](./Django/Django_3.md)
 4. [Authentication System(Custom User Model, DB 초기화, HTTP Cookies, Session, Limiting access)](./Django/Django_4.md)
 5. [Relationship(RDB, N:1, Foreign Key, Relationship Field, Related manager)](./Django/Relationship.md)
+6. [Relationship2(M:N, ManyToManyField, realte_name, through, symmetrical)](./Django/Relationship_2.md)
+7. [QuerySet API(CRUD, Sorting data, Filtering data, Q object, Aggregation, annotate)](./Django/QuerySet_API_adv.md)
