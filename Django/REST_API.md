@@ -127,16 +127,16 @@
        * 예) google.com 의 IP 주소는 `142.251.42.142`
     
     2* **Port**
-       
-       * 웹 서버의 리소스에 접근하는데 사용되는 기술적인 문(Gate)
-       
-       * HTTP 프로토콜의 표준 포트는 다음과 같고 생략이 가능 (나머지는 생략 불가)
-         
-         * HTTP - 80
-         
-         * HTTPS - 443
-       
-       * Django의 경우 `8000(80+00)`이 기본 포트로 설정되어 있음
+    
+    * 웹 서버의 리소스에 접근하는데 사용되는 기술적인 문(Gate)
+    
+    * HTTP 프로토콜의 표준 포트는 다음과 같고 생략이 가능 (나머지는 생략 불가)
+      
+      * HTTP - 80
+      
+      * HTTPS - 443
+    
+    * Django의 경우 `8000(80+00)`이 기본 포트로 설정되어 있음
     
     **<mark>www.example.com</mark>:<mark>80</mark>**
 
@@ -369,8 +369,8 @@
             model = Article
             fields = '__all__'
     ```
-    
-    ![](REST_API_assets/2022-10-17-20-43-17-image.png)
+
+![](REST_API_assets/2022-10-17-20-43-17-image.png)
 
 ## ▶ Serialization
 
@@ -424,7 +424,7 @@ from .models import Article
 
 
 class ArticleListSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Article
         fields = ('id', 'title', 'content',)
@@ -610,7 +610,7 @@ def article_detail(request, article_pk):
     if request.method == 'GET':
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
-    
+
     elif request.method == 'DELETE':
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -629,7 +629,7 @@ def article_detail(request, article_pk):
     if request.method == 'GET':
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
-    
+
     elif request.method == 'DELETE':
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -779,14 +779,14 @@ def comment_detail(request, comment_pk):
 
 * 기존 필드 override
 
-* 게시글 조회 시 해당 게시글의 댓글 목록까지 함께 출력하기
+* **게시글 조회 시 해당 게시글의 댓글 목록까지 함께 출력하기**
 
-* Serializer는 기존 필드를 override 하거나 추가적인 필드를 구성할 수 있음
+* **`Serializer`는 기존 필드를 override 하거나 추가적인 필드를 구성할 수 있음**
 1. **`PrimaryKeyRelatedField()`**
 
 ![](REST_API_assets/2022-10-17-22-22-05-image.png)
 
-* **역참조 이름은 models.py에서 related_name을 통해 변경 가능**
+* **역참조 이름은 `models.py`에서 related_name을 통해 변경 가능**
 
 ![](REST_API_assets/2022-10-17-22-23-04-image.png)
 
@@ -794,9 +794,9 @@ def comment_detail(request, comment_pk):
 
 ![](REST_API_assets/2022-10-17-22-24-32-image.png)
 
-* 모델 관계 상으로 참조된 대상은 참조하는 대상의 표현에 포함되거나 중첩될 수 있음
+* 모델 관계 상으로 참조된 대상은 참조하는 대상의 표현에 **포함되거나 중첩될 수 있음**
 
-* 중첩된 관계는 serializers를 필드로 사용하여 표현 가능
+* **중첩된 관계는 `serializers`를 필드로 사용하여 표현 가능**
 
 ## 2️⃣ **특정 게시글에 작성된 댓글의 개수 출력하기**
 
@@ -808,7 +808,7 @@ def comment_detail(request, comment_pk):
 
 * **<mark>`source`</mark>**
   
-  * 필드를 채우는 데 사용할 속성의 이름
+  * **필드를 채우는 데 사용할 속성의 이름**
   
   * 점 표기법을 사용하여 속성을 탐색할 수 있음
 
@@ -838,4 +838,4 @@ def comment_detail(request, comment_pk):
 
 ### 📌 왜 사용하는 걸까?
 
-* 클라이언트 입장에서 "서버에 오류가 발생하여 요청을 수행할 수 없다(500)"라는 원인이 정확하지 않은 에러를 마주하기 보다는 서버가 적절한 예외 처리를 하고 클라이언트에게 올바른 에러를 전달하는 것 또한 중요한 요소
+* 클라이언트 입장에서 "서버에 오류가 발생하여 요청을 수행할 수 없다(500)"라는 원인이 정확하지 않은 에러를 마주하기 보다는 서버가 적절한 예외 처리를 하고 클라이언트에게 올바른 에러를 전달하는 것 또한 중요한 요소 = 서버가 잘못한 것이 아니므로 적절한 오류를 보내주어야 한다❗
