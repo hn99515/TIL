@@ -52,11 +52,11 @@
   
   * 선택적으로 사용 가능
   
-  * 세미콜론이 없으면 ASI(Automatic Semicolon Insertion)에 의해 자동으로 세미콜론이 삽입됨
+  * 세미콜론이 없으면 `ASI(Automatic Semicolon Insertion)`에 의해 **자동으로 세미콜론이 삽입됨**
 
 * **들여쓰기와 코드 블럭**
   
-  * **JavaScript 는 2칸 들여쓰기를 사용**
+  * **<mark>JavaScript 는 2칸 들여쓰기</mark>를 사용**
   
   * **<mark>블럭(block)</mark>은 if, for, 함수에서 <mark>중괄호 `{}` 내부</mark>를 말함**
     
@@ -128,7 +128,7 @@
 
 * **할당**: 선언된 변수에 값을 저장하는 행위 또는 시점
 
-* 초기화: 선언된 변수에 처음으로 값을 저장하는 행위 또는 시점
+* **초기화**: 선언된 변수에 처음으로 값을 저장하는 행위 또는 시점
 
 ```javascript
 let foo    // 선언
@@ -145,7 +145,7 @@ console.log(bar)
 
 * if, for, 함수 등의 중괄호 내부를 가리킴
 
-* 블록 스코프를 가지는 변수는 블록 바깥에서 접근 불가능
+* **<mark>블록 스코프를 가지는 변수는 블록 바깥에서 접근 불가능</mark>**
 
 ![](JavaScript_assets/2022-10-19-10-23-56-image.png)
 
@@ -195,7 +195,7 @@ console.log(bar)
 
 * `var` 로 선언된 변수는 선언 이전에 참조할 수 있으며, 이러한 현상을 호이스팅
 
-* **변수 선언 이전의 위치에서 접근 시 `undefined`를 반환**
+* **<mark>변수 선언 이전의 위치에서 접근 시 `undefined`를 반환</mark>**
   
   ![](JavaScript_assets/2022-10-19-10-31-29-image.png)
 
@@ -223,13 +223,13 @@ console.log(bar)
 
 > **정수 또는 실수형 숫자를 표현하는 자료형**
 
-* **`NaN`** (Not-A-Nuber)
+* **`NaN`** (Not-A-Number)
   
   * 숫자가 아님을 나타냄
   
   * **`Number.isNaN()`** 의 경우
     
-    * **<mark>주어진 값의 유형이 Number이고 값이 NaN</mark>이면 true, 아니면 false를 반환**
+    * **<mark>주어진 값의 유형이 Number이고 값이 NaN이면 true</mark>, 아니면 false를 반환**
       
       ![](JavaScript_assets/2022-10-19-10-38-26-image.png)
   
@@ -252,14 +252,30 @@ console.log(bar)
 * 작은 따옴표 또는 큰 따옴표 모두 가능
 
 * **곱셈, 나눗셈, 뺄셈은 안되지만 <mark>덧셈을 통해 문자열 붙일 수 있음</mark>**
+  
+  ```javascript
+  const firstName = 'Tony'
+  const lastName = 'Stark'
+  const fullName = firstName + lastName
+  
+  console.log(fullName)
+  ```
 
 * Quote를 사용하면 선언 시 줄 바꿈이 안됨
 
 * 대신 escape sequence를 사용할 수 있기 때문에 `\n`를 사용해야 함
-
-* **Template Literal 을 사용하면 줄바꿈이 되며, 문자열 사이에 변수도 삽입 가능**
   
-  * python의 'f-string'
+  ```javascript
+  const word = 'hello
+  please' // SyntaxError
+  
+  const word2 = 'hello \n please'
+  console.log(word2)
+  ```
+
+* **`Template Literal` 을 사용하면 줄바꿈이 되며, 문자열 사이에 변수도 삽입 가능**
+  
+  * python의 'f-string' 과 동일
     
     ```javascript
     const age = 10
@@ -278,13 +294,14 @@ console.log(bar)
 
 > **값이 존재하지 않음을 표현하는 값**
 
-* null 과 undefined가 존재
+* `null` 과 `undefined`가 존재
 
-* **null**
+* **`null`**
   
   * **<mark>변수의 값이 없음을 의도적으로 표현할 때 사용</mark>**
+  * 개발자가 의도적으로 사용
 
-* **undefined**
+* **`undefined`**
   
   * **변수 선언 이후 <mark>직접 값을 할당하지 않으면 자동으로 할당됨</mark>**
 
@@ -294,7 +311,7 @@ console.log(bar)
 
 ## ▶ Boolean
 
-> **참과 거짓을 표현하는 값 = true/false**
+> 참과 거짓을 표현하는 값 = `true`/`false`
 
 * **조건문 또는 반복문에서 유용하게 사용**
   
@@ -304,9 +321,23 @@ console.log(bar)
   
   ![](JavaScript_assets/2022-10-19-10-49-33-image.png)
 
-* **JavaScript에서 빈 배열(`[]`)은 `true` 이다.**
+* **JavaScript에서 <mark>빈 배열`[]`은 `true`</mark> 이다.**
 
 # 연산자
+
+## ▶ 비교 연산자
+
+* 피연산자들(숫자, 문자, Boolean 등)을 비교하고 결과값을 true/false로 반환
+
+* 문자열은 유니코드 값을 사용하며 표준 사전 순서를 기반으로 비교
+  
+  * 예) 알파벳끼리 비교
+    
+    * 알파벳 순서상 후순위가 더 크다.
+    
+    * 소문자가 대문자보다 더 크다.
+      
+      ![](JavaScript_assets/2022-10-20-01-12-49-image.png)
 
 ## ▶ 동등 연산자 (`==`)
 
@@ -326,19 +357,19 @@ console.log(bar)
 
 ## ▶ 논리 연산자
 
-* and = `&&`, or = `||`, not = `!`
+* **and = `&&`, or = `||`, not = `!`**
 
 * 단축 평가 지원
   
-  * false && true => `false`
+  * false && true = `false`
   
-  * true || false => `true`
+  * true || false = `true`
 
 ## ▶ 삼항 연산자
 
 > 3개의 피연산자를 사용하여 조건에 따라 값을 반환하는 연산자
 
-* 가장 앞의 조건식이 참이면 `:` 앞의 값이 반환, 반대인 경우 `:` 뒤의 값이 반환
+* **가장 앞의 조건식이 <mark>참이면 `:` 앞의 값이 반환, 반대인 경우 `:` 뒤의 값이 반환</mark>**
 
 * 삼항 연산자의 결과 값이기 때문에 변수에 할당 가능
 
@@ -358,9 +389,9 @@ console.log(result) // Nope
   
   * 조건 표현식의 결과값을 **boolean 타입으로 변환 후 참/거짓을 판단**
   
-  * **조건은 소괄호 `()` 안에 작성**
+  * **<mark>조건은 소괄호 `()` 안에 작성</mark>**
   
-  * **실행할 코드는 중괄호 `{}` 안에 작성**
+  * **<mark>실행할 코드는 중괄호 `{}` 안에 작성</mark>**
   
   * 블록 스코프 생성
     
@@ -368,7 +399,7 @@ console.log(result) // Nope
 
 * **`switch`**
   
-  * **조건 표현식의 결과값이 어느 값에 해당하는지 판별**
+  * **<mark>조건 표현식의 결과값이 어느 값에 해당하는지 판별</mark>**
   
   * 주로 특정 변수의 값에 따라 조건을 분기할 때 활용
     
@@ -378,17 +409,17 @@ console.log(result) // Nope
   
   * break 및 default 문은 [선택적]으로 사용 가능
   
-  * break 문이 없는 경우, break 문을 만나거나 default 문을 실행할 때까지 다음 조건문 실행
+  * **break 문이 없는 경우, break 문을 만나거나 default 문을 실행할 때까지 다음 조건문 실행**
     
     ![](JavaScript_assets/2022-10-19-11-14-07-image.png)
   
   * 위 경우 모든 console이 출력 (=Fall-through)
     
-    * `break`를 작성하여 의도한대로 동작 가능
+    * **`break`를 작성하여 의도한대로 동작 가능**
       
       ![](JavaScript_assets/2022-10-19-11-14-57-image.png)
 
-* **`if / switch`**
+* **`if / switch`** 비교
   
   * 조건이 많은 경우 switch 문을 통해 가독성 향상을 기대할 수 있음
   
@@ -400,12 +431,12 @@ console.log(result) // Nope
 
 * **`while`**
   
-  * 조건문이 참이기만 하면 문장을 계속해서 수행
+  * 조건문이 참이기만 하면 문장을 계속해서 수행 = 조건문이 false 일 때까지 수행
     
     ```javascript
     let i = 0
     
-    while (i < 6) { // 
+    while (i < 6) {
       console.log(i)
       i += 1  
     }
@@ -425,9 +456,9 @@ console.log(result) // Nope
 
 * **`for ... in`**
   
-  * **객체(object)의 속성을 순회할 때 사용**
+  * **객체(object)의 <mark>속성을 순회</mark>할 때 사용**
     
-    * **객체란? key: value 값으로 구성된 것을 의미**
+    * **객체란? key: value 값으로 구성된 것을 의미** - 딕셔너리와 유사
   
   * ***배열도 순회 가능하지만 <mark>인덱스 순으로 순회한다는 보장이 없으므로 권장 ❌</mark>***
     
@@ -435,36 +466,36 @@ console.log(result) // Nope
     const fruits = {a: 'apple', b: 'banana'}
     
     for (const key in fruits) {
-      console.log(key)
-      console.log(fruits[key])
+      console.log(key) // a, b
+      console.log(fruits[key]) // apple, banana
     }
     ```
 
 * **`for ... of`**
   
-  * 반복 가능한 객체를 순회할 때 사용
+  * **반복 가능한 객체를 순회할 때 사용**
   
-  * **반복 가능한 객체의 종류 = Array, Set, String 등**
+  * **반복 가능한 객체의 종류 = <mark>Array, Set, String</mark> 등**
     
     ```javascript
     const numbers = [0, 1, 2, 3]
     
     for (const number of numbers) {
-      console.log(number)
+      console.log(number) // 0, 1, 2, 3
     }
     ```
 
-* **`for ... in` 과 `for ... of` 차이**
+* **`for ... in` 과 `for ... of` 차이❗**
   
-  * `for ... in` 은 **속성 이름을 통해 반복** (객체)
+  * `for ... in` 은 속성 이름을 통해 반복 **(객체)**
   
-  * `for ... of` 는 **속성 값을 통해 반복** (객체를 제외한 나머지)
+  * `for ... of` 는 속성 값을 통해 반복 **(객체를 제외한 나머지)**
     
     ```javascript
     const arr = [3, 5, 7]
     
     for (const i in arr) {
-        console.log(i) // 0 1 2
+        console.log(i) // 0 1 2 (index 가 아니라 object의 key 값!)
     }
     
     for (const i of arr) {
@@ -474,9 +505,11 @@ console.log(result) // Nope
 
 ### 📌 [참고] for ... in, for ... of 와 const
 
-* 일반적인 for문 `for (let i = 0; i < arr.length; i++) {...}` 의 경우에는 **최초 정의한 i를 재할당하면서 사용하기 때문에 const를 사용하면 에러 발생**
+* 일반적인 for문 `for (let i = 0; i < arr.length; i++) {...}` 의 경우에는 **최초 정의한 i를 재할당하면서 사용하기 때문에 `const`를 사용하면 에러 발생**
 
-* 다만 `for...in`, `for...of` 의 경우에는 **재할당이 아니라, 매 반복 시 해당 변수를 새로 정의하여 사용하므로 에러가 발생** ❌
+* 다만 `for...in`, `for...of` 의 경우에는 **재할당이 아니라, <mark>매 반복 시 해당 변수를 새로 정의하여 사용</mark>하므로 `const` 사용해도 에러 발생** ❌
+  
+  ![](JavaScript_assets/2022-10-20-01-26-17-image.png)
 
 ![](JavaScript_assets/2022-10-19-12-41-49-image.png)
 
@@ -514,7 +547,7 @@ console.log(result) // Nope
   
   * 표현식에서 함수 이름을 명시하는 것도 가능
   
-  * 다만, 이 경우 함수 이름은 호출에 사용되지 못하고 디버깅 용도로 사용
+  * *다만, 이 경우 함수 이름은 호출에 사용되지 못하고 디버깅 용도로 사용*
     
     ```javascript
     const mySub = function namedSub(num1, num2) {
@@ -539,7 +572,7 @@ console.log(result) // Nope
 
 * **<mark>매개변수와 인자의 개수 불일치 허용</mark>**
   
-  * **매개변수보다 인자의 개수가 많을 경우**
+  * **매개변수보다 인자의 개수가 많을 경우❗**
     
     ```javascript
     const noArgs = function() {
@@ -555,7 +588,7 @@ console.log(result) // Nope
     twoArgs(1, 2, 3) // [1, 2]
     ```
   
-  * **매개변수보다 인자의 개수가 적을 경우** = `undefined`
+  * **매개변수보다 인자의 개수가 적을 경우❗** = `undefined`
     
     ```javascript
     const threeArgs = function(arg1, arg2, arg3) {
@@ -600,7 +633,7 @@ console.log(result) // Nope
 
 ## ▶ 호이스팅 - 선언식
 
-* 함수 선언식으로 정의한 함수는 var로 정의한 변수처럼 호이스팅이 발생
+* 함수 선언식으로 정의한 함수는 var로 정의한 변수처럼 **호이스팅이 발생**
 
 * **즉, 함수 호출 이후에 선언해도 동작**
   
@@ -616,7 +649,7 @@ console.log(result) // Nope
 
 * 반면 함수 표현식으로 선언한 함수는 **함수 정의 전에 호출 시 <mark>에러 발생</mark>**
 
-* **함수 표현식으로 정의된 함수는 변수로 평가되어 변수의 scope 규칙을 따름**
+* **<mark>함수 표현식으로 정의된 함수는 변수로 평가되어 변수의 scope 규칙을 따름</mark>**
 
 ![](JavaScript_assets/2022-10-19-13-51-03-image.png)
 
@@ -646,7 +679,7 @@ const greeting1 = (name) => {
   return `Hi ${name}`
 }
 
-// 2단계 - 함수의 매개 변수가 하나라면 가능
+// 2단계 - 함수의 매개 변수가 하나라면 가능 = 보통은 이처럼 표현 
 const greeting2 = name => {
   return `Hi ${name}`
 }
@@ -675,32 +708,31 @@ const greeting3 = name => `Hi ${name}`
   function(num) {
       return num ** 3
   }
-  ```
-  
-  (num) => {return num ** 3}
-  ((num) => num ** 3)(2)  // 8
-  (num => num ** 3)(2)  // 8
   
   (function(num) { return num ** 3 })(2) // 8
-
-```
-# Array 와 Object
-
-> JavaScript의 데이터 타입 중 **<mark>참조 타입(reference)에 해당하는 타입은 array(list)와 object(dict)</mark>이며 객체라고 말함**
-
-* 객체는 속성들의 모음(collection)
-
-## ▶ 배열(Array)
-
-* 키와 속성들을 담고 있는 참조 타입의 객체
-
-* 순서를 보장하는 특징
-
-* **주로 `[]`를 이용하여 생성하고, <mark>0을 포함한 양의 정수 인덱스로 특정 값에 접근 가능</mark>**
-
-* **배열의 길이는 `array.length` 형태로 접근 가능**
-
-* (참고) **<mark>배열의 마지막 원소는 `array.length - 1`로 접근</mark>**
+  
+  
+  (num) => {return num ** 3}
+  (num => num ** 3)(2) // 8
+  ```
+  
+  # Array 와 Object
+  
+  > JavaScript의 데이터 타입 중 **참조 타입(reference)에 해당하는 타입은 array(list)와 object(dict)이며 객체라고 말함**
+  
+  - 객체는 속성들의 모음(collection)
+  
+  ## ▶ 배열(Array)
+  
+  - 키와 속성들을 담고 있는 참조 타입의 객체
+  
+  - **순서를 보장하는 특징**
+  
+  - **주로 `[]`를 이용하여 생성하고, 0을 포함한 양의 정수 인덱스로 특정 값에 접근 가능**
+  
+  - **배열의 길이는 `array.length` 형태로 접근 가능**
+  
+  - (참고) **배열의 마지막 원소는 `array.length - 1`로 접근**
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5]
@@ -708,7 +740,7 @@ const numbers = [1, 2, 3, 4, 5]
 console.log(numbers[0])
 console.log(numbers[-1])  // undefined
 console.log(numbers.length)
-console.log(numbers[numbers.length - 1])  // 음수 인덱싱 불가
+console.log(numbers[numbers.length - 1])  // 5, 음수 인덱싱 불가
 ```
 
 ## ▶ 배열 메서드 기초❗
@@ -730,7 +762,7 @@ console.log(numbers.includes(1)) // true
 console.log(numbers.includes(100)) // false
 
 console.log(numbers.indexOf(3)) // 2
-console.log(numbers.indexOf(100)) // 2
+console.log(numbers.indexOf(100)) // -1
 
 console.log(numbers.join()) // 5,4,3,2,1
 console.log(numbers.join('')) // 54321
@@ -740,7 +772,7 @@ console.log(numbers.join('-')) // 5-4-3-2-1
 
 * `array.join([separator)`
 
-## ▶ 배열 메서드 심화
+## ▶ 배열 메서드 심화❗
 
 * **Array Helper Methods**❗
   
@@ -906,7 +938,7 @@ const avgNum = numbers.reduce((result, number) => result + number, 0) / numbers.
   
   * 콜백 함수의 반환값이 참이면, 조건을 만족하는 첫번째 요소를 반환
   
-  * **찾는 값이 배열에 없으면 undefined 반환**
+  * **찾는 값이 배열에 없으면 `undefined` 반환**
 
 ```javascript
 const avengers = [
@@ -1001,7 +1033,7 @@ chars.forEach(char => {
 
 * **객체 요소 접근은 `.` 또는 `[]`로 가능**
   
-  * **key 이름에 띄어쓰기 같은 구분자가 있으면 대괄호 접근만 가능**
+  * **<mark>key 이름에 띄어쓰기 같은 구분자가 있으면 대괄호 접근만 가능</mark>**
 
 ```javascript
 const myInfo = {
@@ -1038,7 +1070,7 @@ console.log(myInfo['samsung products'].galaxy)
 
 3️⃣ **계산된 속성 (computed property name)**
 
-* 객체를 정의할 때 **key의 이름을 표현식을 이용하여 동적으로 생성 가능**
+* 객체를 정의할 때 **key의 이름을 표현식을 이용(`[]`)하여 동적으로 생성 가능**
   
   ![](JavaScript_assets/2022-10-19-15-44-59-image.png)
 
