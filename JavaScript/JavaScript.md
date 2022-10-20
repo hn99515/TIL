@@ -715,24 +715,24 @@ const greeting3 = name => `Hi ${name}`
   (num) => {return num ** 3}
   (num => num ** 3)(2) // 8
   ```
-  
-  # Array 와 Object
-  
-  > JavaScript의 데이터 타입 중 **참조 타입(reference)에 해당하는 타입은 array(list)와 object(dict)이며 객체라고 말함**
-  
-  - 객체는 속성들의 모음(collection)
-  
-  ## ▶ 배열(Array)
-  
-  - 키와 속성들을 담고 있는 참조 타입의 객체
-  
-  - **순서를 보장하는 특징**
-  
-  - **주로 `[]`를 이용하여 생성하고, 0을 포함한 양의 정수 인덱스로 특정 값에 접근 가능**
-  
-  - **배열의 길이는 `array.length` 형태로 접근 가능**
-  
-  - (참고) **배열의 마지막 원소는 `array.length - 1`로 접근**
+
+# Array 와 Object
+
+> JavaScript의 데이터 타입 중 **참조 타입(reference)에 해당하는 타입은 array(list)와 object(dict)이며 객체라고 말함**
+
+- 객체는 속성들의 모음(collection)
+
+## ▶ 배열(Array)
+
+- 키와 속성들을 담고 있는 참조 타입의 객체
+
+- **순서를 보장하는 특징**
+
+- **주로 `[]`를 이용하여 생성하고, 0을 포함한 양의 정수 인덱스로 특정 값에 접근 가능**
+
+- **배열의 길이는 `array.length` 형태로 접근 가능**
+
+- (참고) **배열의 마지막 원소는 `array.length - 1`로 접근**
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5]
@@ -821,7 +821,7 @@ colors.forEach((color) => {
   
   * 배열의 각 요소에 대해 콜백 함수를 한 번씩 실행
   
-  * **콜백 함수의 반환 값을 요소로 하는 새로운 배열 반환** = **`forEach + return`**
+  * **<mark>콜백 함수의 반환 값을 요소로 하는 새로운 배열 반환</mark>** = **`forEach + return`**
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5]
