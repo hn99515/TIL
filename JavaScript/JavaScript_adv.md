@@ -154,7 +154,7 @@
 
     console.log(document.querySelector('.text'))
     console.log(document.querySelectorAll('body > ul > li'))
-    
+
   </script>
 </body>
 </html>
@@ -321,7 +321,7 @@
   <body>
     <button id="btn">버튼</button>
     <p id="counter">0</p>
-    
+  
     <script>
       const btn = document.querySelector('#btn')
       let countNum = 0
@@ -404,7 +404,7 @@
   <div>
     <h1>정말 중요한 내용</h1>
   </div>
-  
+
   <script>
     const h1Tag = document.querySelector('h1')
     h1Tag.addEventListener('copy', function (event) {
@@ -432,11 +432,11 @@
         // 1. 공이 들어갈 컨테이너 생성
         const ballContainer = document.createElement('div')
         ballContainer.classList.add('ball-container')
-        
+  
         // 2. 랜덤한 숫자 6개 만들기 - lodash 라이브러리 활용
         const numbers = _.sampleSize(_.range(1, 46), 6)
         console.log(numbers)
-        
+  
         // 3. 공 만들기 - div 태그
         numbers.forEach((number) => {
           const ball = document.createElement('div')
@@ -479,7 +479,7 @@
           // 입력된 값을 ul 태그에 넣기
           const liTag = document.createElement('li')
           liTag.innerText = data
-    
+  
           const ulTag = document.querySelector('ul')
           ulTag.appendChild(liTag)
         } else {
@@ -488,7 +488,7 @@
         // 버튼 클릭하면 input 의 데이터가 초기화
         event.target.reset()   
       }
-      
+  
       formTag.addEventListener('submit', addTodo)
     </script>
   </body>
