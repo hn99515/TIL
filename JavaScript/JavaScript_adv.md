@@ -101,6 +101,8 @@
     ```
 
 * document는 window의 속성임 (`window.document`)
+  
+  * `window` 는 생략 가능
 
 * 파싱(Parsing)
   
@@ -126,7 +128,7 @@
 
 * **`document.querySelector(selector)`**
   
-  * 제공한 선택자와 일치하는 element 한 개 선택
+  * **제공한 선택자와 일치하는 element 한 개 선택**
   
   * 제공한 CSS selector를 만족하는 **<mark>첫 번째 element 객체를 반환</mark>** (없다면 null 반환)
 
@@ -134,7 +136,7 @@
   
   * **제공한 선택자와 일치하는 모든 element를 선택**
   
-  * 매칭 할 하나 이상의 셀렉터를 포함하는 유효한 CSS selector를 인자(문자열)로 받음
+  * 매칭할 하나 이상의 셀렉터를 포함하는 유효한 CSS selector를 인자(문자열)로 받음
   
   * 제공한 CSS selector를 만족하는 **NodeList를 반환**
 
@@ -175,7 +177,7 @@
 
 * **`querySelectorAll()`에 의해 반환되는 NodeList만 <mark>DOM의 변경사항을 실시간으로 반영하지 않음</mark>❗**
   
-  * NodeList의 **항목을 순회하거나, 특히 리스트의 길이를 캐시해야 할 때**는 이 구분을 유지하는 것이 좋기 때문
+  * `NodeList`의 **항목을 순회하거나, 특히 리스트의 길이를 캐시해야 할 때**는 실시간으로 반영되지 않는 것이 좋기 때문
 
 ## ▶ 조작 관련 메서드
 
@@ -197,7 +199,7 @@
   
   * **한 번에 오직 하나의 Node만 추가할 수 있음**
   
-  * 추가된 Node 객체를 반환
+  * **추가된 Node 객체를 반환**
   
   * 만약 주어진 Node가 이미 문서에 존재하는 다른 Node를 참조한다면 현재 위치에서 새로운 위치로 이동
 
@@ -263,7 +265,7 @@
 
 * **클릭 말고도 웹에서는 각양각색의 Event 존재**
   
-  * 키보드 키 입력, 브라우저 닫기, 데이터 제출, 텍스트 복사 등
+  * 키보드 키 입력, 브라우저 닫기, 데이터 제출(`Submit`), 텍스트 복사 등
 
 ## ▶ Event object
 
@@ -271,13 +273,13 @@
 
 * **Event 발생**
   
-  * **마우스를 클릭하거나 키보드를 누르는 등 사용자 행동으로 발생**할 수 있음
+  * <mark>**마우스를 클릭하거나 키보드를 누르는 등 사용자 행동으로 발생**</mark>할 수 있음
   
-  * **특정 메서드를 호출하여 프로그래밍적으로도 만들어 낼 수 있음**
+  * **<mark>특정 메서드를 호출하여 프로그래밍적으로도 만들어 낼 수 있음</mark>**
 
 * **① DOM 요소는 Event를 받고 (<mark>"수신"</mark>)**
 
-* ② 받은 Event를 **<mark>"처리"</mark>할 수 있음**
+* ② **받은 Event를 <mark>"처리"</mark>할 수 있음**
   
   * Event 처리는 주로 **`addEventListener()`라는 Event 처리기(Event handler)를 사용해 다양한 html 요소에 <mark>"부착"</mark>하게 됨**
 
@@ -289,7 +291,7 @@
     
     * **지정한 Event가 대상에 전달될 때마다 호출할 함수를 설정**
     
-    * Event를 지원하는 **모든 객체(Element, Document, Window 등)를 대상(EventTarget)으로 지정 가능**
+    * Event를 지원하는 **모든 객체(Element, Document, Window 등)를 <mark>대상(EventTarget)으로 지정 가능</mark>**
 
 * **`type`**
   
@@ -305,7 +307,7 @@
   
   * **JavaScript function 객체(<mark>콜백 함수</mark>)여야 함**
   
-  * **콜백 함수는 발생한 Event의 데이터를 가진 Event 기반 객체를 유일한 매개변수로 받음**
+  * **콜백 함수는 발생한 Event의 데이터를 가진 <mark>Event 객체를 유일한 매개변수로 받음</mark>**
 
 * "~하면 ~한다."
   
@@ -383,7 +385,7 @@
 </body>
 ```
 
-## ▶ Event 취소 - event.preventDefault()
+## ▶ Event 취소 - event.preventDefault()❗
 
 > **현재 Event의 기본 동작을 중단**
 
@@ -498,7 +500,7 @@
 
 * 모듈성, 성능 및 추가 기능을 제공하는 JavaScript 유틸리티 라이브러리
 
-* **array, object 등 자료구조를 다룰 때 사용하는 유용하고 간편한 유틸리티 함수들을 제공**
+* **<mark>array, object 등 자료구조를 다룰 때 사용</mark>하는 유용하고 간편한 유틸리티 함수들을 제공**
 
 * 함수 예시
   
@@ -550,9 +552,9 @@
     myFunc() // global
     ```
 
-* **Method (Funtion in Object, 객체의 메서드로서)**
+* **<mark>Method (Funtion in Object, 객체의 메서드로서)</mark>❗**
   
-  * **메서드로 선언하고 호출한다면, 객체의 메서드이므로 해당 객체가 바인딩**
+  * **<mark>메서드로 선언하고 호출한다면, 객체의 메서드이므로 해당 객체가 바인딩</mark>**
     
     ```javascript
     const myObj = {
@@ -566,7 +568,7 @@
     myObj.myFunc() // myObj
     ```
 
-* **Nested (Function 키워드)**
+* **Nested (Function 키워드) - 중첩된 형태**
   
   * **forEach의 콜백 함수에서의 this가 메서드의 객체를 가리키지 못하고 <mark>전역 객체 window를 가리킴</mark>**
   
@@ -589,11 +591,11 @@
     myObj.myFunc()
     ```
 
-* **Nested (화살표 함수)**
+* **Nested (화살표 함수)❗**
   
-  * 이전에 일반 function 키워드와 달리 **메서드의 객체를 잘 가리킴**
+  * 이전에 일반 function 키워드와 달리 **<mark>메서드의 객체를 가리킴</mark>**
   
-  * **<mark>화살표 함수에서 this는 자신을 감싼 정적 범위</mark>**
+  * **화살표 함수에서 this는 자신을 감싼 정적 범위**
   
   * **<mark>자동으로 한 단계 상위의 scope의 context를 바인딩</mark>**
     
@@ -626,9 +628,9 @@
 
 ## ▶ this 와 addEventListener❗
 
-* 하지만, `addEventListener`에서의 콜백 함수는 특별하게 **function 키워드의 경우 `addEventListener`를 호출한 대상을 (event.target) 뜻함**
+* 하지만, `addEventListener`에서의 **콜백 함수는 특별하게 <mark>function 키워드의 경우 `addEventListener`를 호출한 대상을 (event.target) 뜻함</mark>**
 
-* **반면 화살표 함수의 경우 상위 스코프를 지칭하기 때문에 window 객체(전역)가 바인딩 됨**
+* **<mark>반면 화살표 함수의 경우 상위 스코프를 지칭하기 때문에 window 객체</mark>(전역)가 바인딩 됨**
 
 * 결론
   
