@@ -356,7 +356,7 @@
         pTag.innerText = event.target.value
       })
     </script>
-  </body>
+  </body>    
   ```
 
 * `button_input` = input에 입력하면 값을 실시간으로 출력하고 버튼을 클릭하면 출력된 값의 클래스를 토글하기
