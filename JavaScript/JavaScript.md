@@ -711,10 +711,18 @@ const greeting3 = name => `Hi ${name}`
   
   (function(num) { return num ** 3 })(2) // 8
   
-  
   (num) => {return num ** 3}
   (num => num ** 3)(2) // 8
   ```
+
+```javascript
+const numbers = [1, 2, 3, 4, 5]
+
+console.log(numbers[0])
+console.log(numbers[-1])  // undefined
+console.log(numbers.length)
+console.log(numbers[numbers.length - 1])  // 5, 음수 인덱싱 불가
+```
 
 # Array 와 Object
 
@@ -733,15 +741,6 @@ const greeting3 = name => `Hi ${name}`
 - **배열의 길이는 `array.length` 형태로 접근 가능**
 
 - (참고) **배열의 마지막 원소는 `array.length - 1`로 접근**
-
-```javascript
-const numbers = [1, 2, 3, 4, 5]
-
-console.log(numbers[0])
-console.log(numbers[-1])  // undefined
-console.log(numbers.length)
-console.log(numbers[numbers.length - 1])  // 5, 음수 인덱싱 불가
-```
 
 ## ▶ 배열 메서드 기초❗
 

@@ -219,7 +219,7 @@
     const div = document.querySelector('div')
     // div 태그의 자식 요소로 추가
     div.appendChild(h1Tag)
-    // div의 h1 요소 삭
+    // div의 h1 요소 삭제
     div.removeChild(h1Tag)
   </script>
 </body>
@@ -315,7 +315,7 @@
 
 ## ▶ Event 실습
 
-* `button` = 버튼을 클릭하면 특정 변수 값 변경하기
+* `button` : 버튼을 클릭하면 특정 변수 값 변경하기
   
   ```javascript
   <body>
@@ -336,7 +336,7 @@
   </body>
   ```
 
-* `input` = 입력 값을 실시간으로 출력하기
+* `input` : 입력 값을 실시간으로 출력하기
   
   ```javascript
   <body>
@@ -357,7 +357,7 @@
   </body>
   ```
 
-* `button_input` = input에 입력하면 값을 실시간으로 출력하고 버튼을 클릭하면 출력된 값의 클래스를 토글하기
+* `button_input` : input에 입력하면 값을 실시간으로 출력하고 버튼을 클릭하면 출력된 값의 클래스를 토글하기
 
 ```javascript
 <body>
@@ -397,7 +397,7 @@
 
 ## ▶ Event 취소 실습
 
-* `event.preventDefault()` - 복사를 시도하면 경고창 띄우기
+* **`event.preventDefault()`** - 복사를 시도하면 경고창 띄우기
 
 ```javascript
 <body>
@@ -482,13 +482,12 @@
   
           const ulTag = document.querySelector('ul')
           ulTag.appendChild(liTag)
+          // 버튼 클릭하면 input 의 데이터가 초기화
+          event.target.reset()  
         } else {
           alert('내용을 입력하세요!')
         }
-        // 버튼 클릭하면 input 의 데이터가 초기화
-        event.target.reset()   
       }
-  
       formTag.addEventListener('submit', addTodo)
     </script>
   </body>
