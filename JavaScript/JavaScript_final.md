@@ -176,7 +176,7 @@ if response.status_code == 200:
     print(response.json())
 else: 
     print('실패했다옹')
-    
+
 print('야옹야옹')
 ```
 
@@ -310,5 +310,57 @@ print('야옹야옹')
   * 각각의 callback은 주어진 순서대로 하나하나 실행하게 됨
   
   * Chaning은 Promise의 가장 뛰어난 장점
+
+# AJAX
+
+> Asynchronous JavaScript And XML (비동기식 Javascript와 XML)
+
+* 비동기 통신을 이용하면 **화면 전체를 새로고침 하지 않아도 서버로 요청을 보내고, 데이터를 받아 화면의 일부분만 업데이트 가능**
+
+* 이러한 비동기 웹 통신을 위한 라이브러리 중 하나가 Axios
+
+## ▶ AJAX 특징
+
+* 페이지 전체를 reload(새로고침)없이 서버에 요청
+
+* 서버로부터 응답(데이터)을 받아 작업을 수행
+
+# 비동기(Async) 적용하기
+
+> 팔로우 & 좋아요 기능을 비동기 적용
+
+## ▶ 팔로우(follow)
+
+
+
+## ▶ 좋아요(like)
+
+> 좋아요 비동기 적용은 **<mark>"팔로우와 동일한 흐름 + forEach() + querSelectorAll()"</mark>**
+
+* dataset
+  
+  * HTML 속성으로 특정값을 전달하고 싶을 때 사용
+  
+  * `.dataset.변수명`
+
+* 정리
+  
+  1. 내가 누른 버튼의 DOM 조작
+     
+     form / addListener / dataset / id,
+  
+  2. axios 요청으로 좋아요 보내기
+     
+     url, method 설정 요청 -> 오류 발생(403 Forbidden Error)
+     
+     csrf_token을 얻기 위해 {% csrf_token %}으로 생성된 값을 추출
+     
+     (속성 선택자=querySelector로 [name=csrfmiddlewaretoken] 요소를 선택해서 value 값을 추출) -> headers 라는 곳, X-CSRF Token 
+     
+     url + method + csrf_token 까지 같이 보내야 전달됨
+  
+  3. 응답받은 데이터를 통해 프론트를 수정
+
+
 
 
