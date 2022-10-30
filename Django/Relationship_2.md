@@ -100,7 +100,7 @@
 
 ![](Relationship_2_assets/2022-10-12-09-42-29-image.png)
 
-*  데이터베이스 초기화 후 Migration 진행
+* 데이터베이스 초기화 후 Migration 진행
 
 * **생성된 중개 테이블 hospitals_patient_doctors 확인**
 
