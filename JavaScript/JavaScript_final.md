@@ -331,6 +331,8 @@ print('야옹야옹')
 
 ## ▶ 팔로우(follow)
 
+<<<<<<< HEAD
+
 * 각각의 템플릿에서 script 코드를 작성하기 위한 block tag 영역 작성 & axios CDN 작성
 
 ```html
@@ -488,16 +490,137 @@ return redirect('accounts:login')
       }
     })
 </script>
+=======
+* base.html 에 script 코드를 작성하기 위한 block tag 영역 및 axios CDN 작성
+
+```html
+<!-- axios 사용을 위한 CDN 불러오기 -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  {% block script %}
+  {% endblock script %}
+```
+
+* form 요소 선택을 위해 id 속성 지정 및 선택 (불필요해진 action과 method 속성 삭제)
+
+```html
+<form id="follow-form">
+...
+</form>
+
+
+<script>
+    const followForm = document.querySelector('#follow-form')
+</script>
+```
+
+* form 요소에 이벤트 핸들러 작성 및 submit 이벤트 취소
+
+```javascript
+<script>
+    const followForm = document.querySelector('#follow-form')
+    console.log(followForm)
+    followForm.addEventListener('submit', function (event) {
+      event.preventDefault()  // form 태그의 원래 기능을 막기
+    })
+```
+
+* axios 요청 준비
+  
+  * **url에 작성할 user pk는 어떻게 작성?**
+    
+    * HTML 에서 **`data-user-id`** 속성을 사용
+    
+    * HTML의 data를 JavaScript 로 가져오기 = **`event.target.dataset.userId`**
+    
+    * **HTML과 DOM 사이에서 교환할 수 있는 방법**
+  
+  * **csrftoken은 어떻게 보냄?**
+    
+    * 먼저 csrf 값을 가진 input 태그를 선택해야 함
+    
+    * AJAX로 csrftoken을 보내야 함 (Django 공식문서에서 확인 가능)
+
+```html
+<form id="follow-form" data-user-id="{{ person.pk }}">
+```
+
+```javascript
+// 필요한 데이터(user_pk, csrftoken 가져오기)
+const userId = event.target.dataset.userId
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+```
+
+```javascript
+axios({
+        method: 'POST',
+        url: `/accounts/${userId}/follow/`,
+        headers: {'X-CSRFToken': csrftoken},
+})
+```
+
+* 팔로우 버튼을 토글하기 위해서는 현재 팔로우가 된 상태인지 여부 확인이 필요
+  
+  * `is_followed` 변수 작성 및 JSON 응답
+
+* axios 요청을 통해 받는 response 객체를 활용해 view 함수를 통해서 팔로우 여부를 파악 할 수 있는 변수를 담아 JSON 타입으로 응답하기
+  
+  * view 함수에서 응답한 `is_followed`를 사용해 버튼 토글하기
+
+```python
+@require_POST
+def follow(request, user_pk):
+    if request.user.is_authenticated:
+        User = get_user_model()
+        me = request.user
+        you = User.objects.get(pk=user_pk)
+        if me != you:
+            if you.followers.filter(pk=me.pk).exists():
+                you.followers.remove(me)
+                # 팔로우 안한 상태를 전달
+                is_followed = False
+            else:
+                you.followers.add(me)
+                # 팔로우 하고 있는 상태를 전달
+                is_followed = True
+            data = {
+                'is_followed': is_followed,
+            }
+            return JsonResponse(data)
+        return redirect('accounts:profile', you.username)
+    return redirect('accounts:login')
+```
+
+```javascript
+.then(function (response) {
+        // console.log(response.data)
+        // 팔로우 데이터(T/F) 저장 & 팔로우 버튼 선택
+        const isFollowed = response.data.is_followed
+        console.log(isFollowed)
+        // const followInp = document.querySelector('#follow-form > input[type=submit]')
+        const followInp = document.querySelector('#followinp')
+        if (isFollowed === true) {
+          followInp.setAttribute('value', '팔로우 취소')
+        } else {
+          followInp.setAttribute('value', '팔로우')
+        }
+>>>>>>> 5349143b85b4c39f84d4dff9e210ee93ab06b4fb
 ```
 
 ## ▶ 팔로워 & 팔로잉 수 비동기 적용
 
+<<<<<<< HEAD
+
 * **해당 요소를 선택할 수 있도록 span 태그와 id 속성 작성**
+  =======
+* 해당 요소를 선택할 수 있도록 span 태그와 id 속성 작성
+  
+  > > > > > > > 5349143b85b4c39f84d4dff9e210ee93ab06b4fb
 
 ```html
 {% block content %}
   <h1>{{ person.username }}님의 프로필</h1>
   <div>
+<<<<<<< HEAD
     : <span id="followers-count">{{ person.followers.all|length }}</span> /
     : <span id="followings-count">{{ person.followings.all|length }}</span>
   </div>
@@ -595,16 +718,55 @@ return redirect('accounts:login')
 > **사용자 지정 데이터 특성을 만들어 임의의 데이터를 HTML과 DOM 사이에서 교환할 수 있는 방법**
 
 * `data-test-value`라는 이름의 특성을 지정했다면 JavaScript에서는 `element.dataset.testValue` 로 접근할 수 있음
+  =======
+  
+    팔로워 : <span id="followers-cnt">{{ person.followers.all|length }}</span> / 
+    팔로잉 : <span id="followings-cnt">{{ person.followings.all|length }}</span>
+  
+  </div>
+  ```
+
+* 위에서 작성한 span 태그를 각각 선택
+
+```javascript
+// 팔로워, 팔로인 개수 계산
+const followersCntTag = document.querySelector('#followers-cnt')
+const followingsCntTag = document.querySelector('#followings-cnt')
+```
+
+* 팔로워, 팔로잉 인원 수 연산은 view 함수에서 진행하여 결과를 응답으로 전달
+
+```python
+data = {
+    'is_followed': is_followed,
+    # 팔로워, 팔로잉 수 전달
+    'followers_cnt': you.followers.count(),
+    'followings_cnt': you.followings.count(),
+}
+return JsonResponse(data)
+```
+
+* view 함수에서 응답한 연산 결과를 사용해 각 태그의 인원 수 값 변경하기
+
+```javascript
+// 팔로워, 팔로인 개수 계산       
+const followersCnt = response.data.followers_cnt
+const followingsCnt = response.data.followings_cnt
+followersCntTag.innerText = followersCnt
+followingsCntTag.innerText = followingsCnt
+```
+
+> > > > > > > 5349143b85b4c39f84d4dff9e210ee93ab06b4fb
 
 ## ▶ 좋아요(like)
 
 > 좋아요 비동기 적용은 **<mark>"팔로우와 동일한 흐름 + forEach() + querSelectorAll()"</mark>**
 
-* dataset
+* **dataset**
   
-  * HTML 속성으로 특정값을 전달하고 싶을 때 사용
+  * **HTML 속성으로 특정값을 전달하고 싶을 때 사용**
   
-  * `.dataset.변수명`
+  * **`.dataset.변수명`**
 
 * 정리
   
@@ -624,17 +786,123 @@ return redirect('accounts:login')
   
   3. 응답받은 데이터를 통해 프론트를 수정
 
-```html
-<!-- articles/index.html -->
-
-```
-
-```python
-# articles/views.py
-
-```
-
 ```javascript
 // articles/index.html
 
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Articles</h1>
+  {% if request.user.is_authenticated %}
+    <a href="{% url 'articles:create' %}">CREATE</a>
+  {% endif %}
+  <hr>
+  {% for article in articles %}
+    <p>
+      <b>작성자 : <a href="{% url 'accounts:profile' article.user %}">{{ article.user }}</a></b>
+    </p>
+    <p>글 번호 : {{ article.pk }}</p>
+    <p>제목 : {{ article.title }}</p>
+    <p>내용 : {{ article.content }}</p>
+    <div>
+      {% comment %} 좋아요 form 태그 {% endcomment %}
+      <form class="like-form" data-article-id="{{ article.pk }}" method="POST">
+        {% comment %} 데이터를 활용하기 위해 data-article-id를 pk값으로 기재 {% endcomment %}
+        {% csrf_token %}
+        {% if request.user in article.like_users.all %}
+          <input id="like-{{ article.pk }}" type="submit" value="좋아요 취소">
+        {% else %}
+          <input id="like-{{ article.pk }}" type="submit" value="좋아요">
+        {% endif %}
+      </form>
+      <p>
+        {% comment %} 좋아요 개수를 표현해주는 부분 {% endcomment %}
+        <span id="like-count-{{ article.pk }}">
+          {{ article.like_users.all|length }}
+        </span>
+        명이 이 글을 좋아합니다.
+      </p>
+    </div>
+    <a href="{% url 'articles:detail' article.pk %}">상세 페이지</a>
+    <hr>
+  {% endfor %}
+{% endblock content %}
+```
+
+```python
+@require_POST
+def likes(request, article_pk):
+    if request.user.is_authenticated:
+        article = Article.objects.get(pk=article_pk)
+        # 게시글을 좋아요 누른 유저 목록에 사용자가 존재하면 좋아요 취소 가능
+        if article.like_users.filter(pk=request.user.pk).exists():
+            article.like_users.remove(request.user)
+            is_liked = False    # 좋아요 누르지 않은 상태를 전달
+        else:
+            # 좋아요 누른 유적 목록에 사용자가 없다면 좋아요 가능
+            article.like_users.add(request.user)
+            is_liked = True      # 좋아요 누른 상태를 전달
+        data = {
+            'is_liked': is_liked,
+            'like_cnt': article.like_users.count(),     # 좋아요 개수 데이터
+        }
+        # 백엔드는 프론트에서 사용할 데이터를 JSON 형태로 전달
+        return JsonResponse(data)
+        # return redirect('articles:index')
+    return redirect('accounts:login')
+```
+
+```javascript
+{% block script %}
+  <script>
+    // 좋아요 버튼이 게시글 수 만큼 생길 수 있으니까 form tag에 Event Handler를 부착
+    const formLike = document.querySelectorAll('.like-form')
+    // console.log(formLike)
+    // 게시글이 여러 개면 폼 태그도 여러 개라서 forEach를 통해 각각 하나씩 접근
+    formLike.forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault() // 버튼 클릭 시 현재 상태 그대로 유지하기 위해 원래 기능을 막음 단, csrf_token도 함께 이동하지 못함
+
+        // 몇 번째 버튼인지 알아야하기 때문에 dataset(문법)을 통해 article.pk를 가져온다.
+        const articleId = event.target.dataset.articleId
+        // console.log(articleId)
+
+        // axios로 서버에 요청하기 (csrf_token을 함께 전달해줘야 한다.)
+        // csrf_token 보내는 방법(장고 공식 문서를 통해 확인 가능)
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        axios({
+          method: 'POST',
+          url: `/articles/${articleId}/likes/`,
+          headers: {'X-CSRFToken': csrftoken},
+        })
+        .then(function (response) {
+          // 좋아요를 누른 여부는 response.data에서 확인 가능
+          console.log(response.data)
+          const isLiked = response.data.is_liked // 좋아요 누른 여부 (T/F)
+          // console.log(isLiked)
+          const likeCnt = response.data.like_cnt // 좋아요 개수
+          // 특정 게시글의 좋아요 input을 선택해야 함
+          const likeInp = document.querySelector(`#like-${articleId}`)
+          // console.log(likeInp)
+
+          // 좋아요 누른 여부를 확인하여 input의 속성인 value 수정 가능 = DOM 조작을 통해
+          if (isLiked) {
+            likeInp.setAttribute('value', '좋아요 취소')
+          } else {
+            likeInp.setAttribute('value', '좋아요')
+          }
+
+          // 좋아요 개수를 변경하는 부분
+          const likeCntText = document.querySelector(`#like-count-${articleId}`)
+          likeCntText.innerText = likeCnt
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      })
+    })
+
+  </script>
+{% endblock script %}
+>>>>>>> 5349143b85b4c39f84d4dff9e210ee93ab06b4fb
 ```
