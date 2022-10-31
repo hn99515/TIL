@@ -409,7 +409,7 @@ axios.get(
   
   * HTML id 혹은 class와 마운트(연결) 가능
 
-* **<mark>Vue insatance 와 연결되지 않은 DOM 외부는 Vue의 영향을 받지 않음</mark>**
+* **<mark>Vue instance 와 연결되지 않은 DOM 외부는 Vue의 영향을 받지 않음</mark>**
   
   * *Vue 속성 및 메서드 사용 불가*
 
@@ -586,21 +586,13 @@ axios.get(
 
 - **v-html** directive을 사용하여 data와 바인딩
 
-- directive-HTML 기반 template syntax
-
-- HTML의 기본 속성이 아닌 Vue가 제공하는 특수 속성의 값으로 data를 작성
-
 ### 📌 [참고] JS 표현식
 
-* 표현식 형태로 작성 가능
+* 표현식 형태로도 작성 가능
 
 ```javascript
 <body>
-  <!-- 1. Text interpolation -->
   <div id="app">
-    <p>메시지: {{ msg }}</p>   
-    <p>HTML 메시지 : {{ rawHTML }}</p>
-    <p>HTML 메시지 : <span v-html="rawHTML"></span></p>
     <p>{{ msg.split('').reverse().join('') }}</p>
   </div>
 ```
@@ -637,15 +629,6 @@ axios.get(
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <script>
-    // 1. Text interpolation
-    const app = new Vue({
-      el: '#app',
-      data: {
-        msg: 'Text interpolation',
-        rawHTML: '<span style="color:red"> 빨간 글씨</span>'
-      }
-    })
-
     // 2. v-text && v-html
     const app2 = new Vue({
       el: '#app2',
@@ -654,6 +637,7 @@ axios.get(
         html: '<a href="https://www.google.com">GOOGLE</a>'
       }
     })
+  </script>
 ```
 
 ## ▶ v-text
@@ -671,9 +655,6 @@ axios.get(
     <p v-text="message"></p>
     <!-- 같음 -->
     <p>{{ message }}</p>
-
-    <!-- 2-2. v-html -->
-    <p v-html="html"></p>
   </div>
 ```
 
@@ -684,24 +665,20 @@ axios.get(
   - <mark>**단, 사용자가 입력하거나 제공하는 컨텐츠에는 절대 사용 금지**</mark>❗❗
 
 ```html
-<!-- 2. v-text & v-html -->
-  <div id="app2">
-    <!-- 2-1. v-text & {{}} -->
-    <p v-text="message"></p>
-    <!-- 같음 -->
-    <p>{{ message }}</p>
-
+<div id="app2">
     <!-- 2-2. v-html -->
     <p v-html="html"></p>
-  </div>
-<!-- 2. v-text && v-html -->
-    const app2 = new Vue({
+</div>
+<script>
+    // 2. v-text && v-html
+    const app2 = new Vue({ 
       el: '#app2',
       data: {
         message: 'Hello!',
         html: '<a href="https://www.google.com">GOOGLE</a>'
       }
     })
+  </script>
 ```
 
 ## ▶ v-show
@@ -718,23 +695,26 @@ axios.get(
 <!-- 3. v-show && v-if -->
   <div id="app3">
     <p v-show="isActive">보이니? 안보이니?</p>
+  </div>
 
 <!-- 3. v-show && v-if -->
+<script>
     const app3 = new Vue({
       el: '#app3',
       data: {
         isActive: false
       }
     })
+</script>
 ```
 
-* 바인딩 된 is Active의 값이 false이므로 첫 방문 시 p tag는 보이지 않음
+* **바인딩 된 is Active의 값이 false이므로 첫 방문 시 p tag는 보이지 않음**
   
   * vue dev tools에서 isActive 변경 시 화면에 출력
   
   * 값을 false로 변경 시 다시 사라짐
 
-* 화면에서만 사라졌을 뿐, DOM에는 존재
+* **화면에서만 사라졌을 뿐, DOM에는 존재**
   
   * display 속성이 변경되었을 뿐
 
@@ -751,17 +731,18 @@ axios.get(
 ```html
 <!-- 3. v-show && v-if -->
   <div id="app3">
-    <p v-show="isActive">보이니? 안보이니?</p>
     <p v-if="isActive">안보이니? 보이니?</p>
   </div>
 
 <!-- 3. v-show && v-if -->
+<script>
     const app3 = new Vue({
       el: '#app3',
       data: {
         isActive: false
       }
     })
+</script>
 ```
 
 ## ▶ v-show VS v-if
@@ -805,12 +786,12 @@ axios.get(
         myStr: 'Hello, World!',
       }
     })
-  </script>
+</script>
 ```
 
 * **배열 역시 문자열과 동일하게 사용 가능**
 
-* 각 요소가 객체라면 `dot notation`으로 접근할 수 있음
+* **각 요소가 객체라면 `dot notation`으로 접근할 수 있음**
 
 ```html
 <h2>Array</h2>
@@ -820,16 +801,13 @@ axios.get(
 
     <div v-for="(item, index) in myArr2" :key="`arry-${index}`">
       <p>{{ index }}번째 아이템</p>
-		  <p>{{ item.name }}</p>
+          <p>{{ item.name }}</p>
     </div>
 
 <script>
     const app = new Vue({
       el: '#app',
       data: {
-        // 1. String
-        myStr: 'Hello, World!',
-
         // 2-1. Array
         myArr: ['python', 'django', 'vue.js'],
 
@@ -838,7 +816,7 @@ axios.get(
           { id: 1, name: 'python', completed: true},
           { id: 2, name: 'django', completed: true},
           { id: 3, name: 'vue.js', completed: false},
-	    ],
+        ],
       }
     })
   </script>
@@ -896,7 +874,7 @@ axios.get(
 
     <div v-for="(item, index) in myArr2" :key="`arry-${index}`">
       <p>{{ index }}번째 아이템</p>
-		  <p>{{ item.name }}</p>
+          <p>{{ item.name }}</p>
     </div>
 ```
 
@@ -957,7 +935,7 @@ axios.get(
           }
         }
       })
-  </script>
+  </script> 
   ```
 
 * **`:` 을 통해 전달된 인자에 따라 특별한 modifiers(수식어)가 있을 수 있음**
@@ -996,7 +974,14 @@ axios.get(
 
 ```html
 <div id="app2">
-    <a v-bind:href="url">Go To GOOGLE</a>
+  <a v-bind:href="url">Go To GOOGLE</a>
+  
+  <p v-bind:class="redTextClass">빨간 글씨</p>
+  <p v-bind:class="{ 'red-text': true }">빨간 글씨</p>
+  <p v-bind:class="[redTextClass, borderBlack]">빨간 글씨, 검은 테두리</p>
+
+  <p :class="theme">상황에 따른 활성화</p>
+  <button @click="darkModeToggle">dark Mode {{ isActive }}</button>  
 </div>
 
 <script>
@@ -1287,7 +1272,7 @@ axios.get(
           })
           return oddNums
         },
-        
+
         getUnderTenNums: function (nums) {
           const underTen = nums.filter((num) => {
             return num < 10
@@ -1299,5 +1284,3 @@ axios.get(
   </script>
 </body>
 ```
-
-
