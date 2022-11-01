@@ -331,8 +331,6 @@ print('야옹야옹')
 
 ## ▶ 팔로우(follow)
 
-<<<<<<< HEAD
-
 * 각각의 템플릿에서 script 코드를 작성하기 위한 block tag 영역 작성 & axios CDN 작성
 
 ```html
@@ -490,14 +488,6 @@ return redirect('accounts:login')
       }
     })
 </script>
-=======
-* base.html 에 script 코드를 작성하기 위한 block tag 영역 및 axios CDN 작성
-
-```html
-<!-- axios 사용을 위한 CDN 불러오기 -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  {% block script %}
-  {% endblock script %}
 ```
 
 * form 요소 선택을 위해 id 속성 지정 및 선택 (불필요해진 action과 method 속성 삭제)
@@ -603,24 +593,19 @@ def follow(request, user_pk):
         } else {
           followInp.setAttribute('value', '팔로우')
         }
->>>>>>> 5349143b85b4c39f84d4dff9e210ee93ab06b4fb
 ```
 
 ## ▶ 팔로워 & 팔로잉 수 비동기 적용
 
-<<<<<<< HEAD
-
 * **해당 요소를 선택할 수 있도록 span 태그와 id 속성 작성**
   =======
+
 * 해당 요소를 선택할 수 있도록 span 태그와 id 속성 작성
-  
-  > > > > > > > 5349143b85b4c39f84d4dff9e210ee93ab06b4fb
 
 ```html
 {% block content %}
   <h1>{{ person.username }}님의 프로필</h1>
   <div>
-<<<<<<< HEAD
     : <span id="followers-count">{{ person.followers.all|length }}</span> /
     : <span id="followings-count">{{ person.followings.all|length }}</span>
   </div>
@@ -720,9 +705,10 @@ return redirect('accounts:login')
 * `data-test-value`라는 이름의 특성을 지정했다면 JavaScript에서는 `element.dataset.testValue` 로 접근할 수 있음
   =======
   
-    팔로워 : <span id="followers-cnt">{{ person.followers.all|length }}</span> / 
-    팔로잉 : <span id="followings-cnt">{{ person.followings.all|length }}</span>
-  
+  ```html
+  <div>
+  팔로워 : <span id="followers-cnt">{{ person.followers.all|length }}</span> / 
+  팔로잉 : <span id="followings-cnt">{{ person.followings.all|length }}</span>
   </div>
   ```
 
@@ -755,8 +741,6 @@ const followingsCnt = response.data.followings_cnt
 followersCntTag.innerText = followersCnt
 followingsCntTag.innerText = followingsCnt
 ```
-
-> > > > > > > 5349143b85b4c39f84d4dff9e210ee93ab06b4fb
 
 ## ▶ 좋아요(like)
 
@@ -904,5 +888,4 @@ def likes(request, article_pk):
 
   </script>
 {% endblock script %}
->>>>>>> 5349143b85b4c39f84d4dff9e210ee93ab06b4fb
 ```

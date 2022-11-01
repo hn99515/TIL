@@ -407,7 +407,7 @@ axios.get(
   
   * **View와 Model을 연결하는 역할**
   
-  * HTML id 혹은 class와 마운트(연결) 가능
+  * **<mark>HTML id</mark> 혹은 class와 마운트(연결) 가능**
 
 * **<mark>Vue instance 와 연결되지 않은 DOM 외부는 Vue의 영향을 받지 않음</mark>**
   
@@ -458,6 +458,8 @@ axios.get(
 
 ## ▶ data
 
+> **Vue instance에서 사용하는 변수들을 모아둔 곳**
+
 * **Vue instance의 <mark>데이터 객체</mark> 혹은 <mark>인스턴스 속성</mark>**
 
 * **데이터 객체는 <mark>반드시 기본 객체</mark> `{}`(Object)여야 함**
@@ -485,7 +487,7 @@ axios.get(
 
 * data 객체에 **`message`** 값 추가
 
-* **추가된 객체의 각 값들은 `this.message` 형태로 접근 가능**
+* **<mark>추가된 객체의 각 값들은 `this.message` 형태로 접근 가능</mark>**
 
 ## ▶ methods
 
@@ -561,7 +563,6 @@ axios.get(
       el: '#app',
       data: {
         msg: 'Text interpolation',
-        rawHTML: '<span style="color:red"> 빨간 글씨</span>'
       }
     })
 </script>
@@ -569,7 +570,7 @@ axios.get(
 
 * 가장 기본적인 바인딩(연결) 방법
   
-  * 중괄호 2개로 표기
+  * **중괄호 2개로 표기**
   
   * DTL과 동일한 형태로 작성
 
@@ -681,13 +682,13 @@ axios.get(
   </script>
 ```
 
-## ▶ v-show
+## ▶ v-show❗
 
-* 표현식에 작성된 값에 따라 element를 보여줄 것인지 결정
+* **표현식에 작성된 값에 따라 element를 보여줄 것인지 결정**
   
   * boolean 값이 변경될 때 마다 반응
 
-* 대상 element의 display 속성을 기본 속성과 none으로 toggle
+* **<mark>대상 element의 display 속성을 기본 속성과 none으로 toggle</mark>**
 
 * 요소 자체는 항상 DOM에 랜더링 됨
 
@@ -708,23 +709,23 @@ axios.get(
 </script>
 ```
 
-* **바인딩 된 is Active의 값이 false이므로 첫 방문 시 p tag는 보이지 않음**
+* **<mark>바인딩 된 is Active의 값이 false이므로 첫 방문 시 p tag는 보이지 않음</mark>**
   
   * vue dev tools에서 isActive 변경 시 화면에 출력
   
   * 값을 false로 변경 시 다시 사라짐
 
-* **화면에서만 사라졌을 뿐, DOM에는 존재**
+* **<mark>화면에서만 사라졌을 뿐, DOM에는 존재</mark>**
   
   * display 속성이 변경되었을 뿐
 
-## ▶ v-if
+## ▶ v-if❗
 
 * v-show 와 사용방법은 동일
 
-* isActive의 값이 변경될 때 반응
+* **isActive의 값이 변경될 때 반응**
   
-  * **단, 값이 false인 경우 DOM에서 사라짐**
+  * **<mark>단, 값이 false인 경우 DOM에서 사라짐</mark>**
 
 * **`v-if`, `v-else-if`, `v-else` 형태로 사용**
 
@@ -745,19 +746,19 @@ axios.get(
 </script>
 ```
 
-## ▶ v-show VS v-if
+## ▶ v-show VS v-if❗
 
-* **v-show (Expensive initial load, cheap toggle)**
+* **v-show (Expensive initial load, cheap toggle)** = 만들어 놓고 on / off
   
   * 표현식 결과와 관계없이 렌더링 되므로 *초기 렌더링에 필요한 비용은 v-if보다 높을 수 있음*
   
   * **<mark>display 속성 변경으로 표현 여부를 판단하므로 렌더링 후 toggle 비용은 적음</mark>**
 
-* **v-if (Cheap initial load, expensive toggle)**
+* **v-if (Cheap initial load, expensive toggle)** = 그렸다 / 지웠다
   
   * **표현식 결과가 false인 경우 렌더링조차 되지 않으므로 <mark>초기 렌더링 비용은 v-show보다 낮을 수 있음</mark>**
     
-    * *단, 표현식 값이 자주 변경되는 경우 잦은 재 렌더링으로 비용이 증가할 수 있음*
+    * *단, 표현식 값이 자주 변경되는 경우 잦은 재 렌더링으로 비용이 증가할 수 있음* = toggle 비용은 비쌈
 
 ## ▶ v-for
 
@@ -791,7 +792,7 @@ axios.get(
 
 * **배열 역시 문자열과 동일하게 사용 가능**
 
-* **각 요소가 객체라면 `dot notation`으로 접근할 수 있음**
+* **<mark>각 요소가 객체라면 `.` (dot notation)으로 접근</mark>할 수 있음**
 
 ```html
 <h2>Array</h2>
@@ -860,7 +861,7 @@ axios.get(
   
   * *따라서 key가 중복되어서는 안됨*
 
-* **<mark>각 요소가 고유한 값을 가지고 있다면 생략 가능</mark>**
+* 각 요소가 고유한 값을 가지고 있다면 생략 가능
 
 ```html
 <div v-for="(char, index) in myStr" :key="index">
@@ -878,7 +879,7 @@ axios.get(
     </div>
 ```
 
-## ▶ v-on
+## ▶ v-on = EventListner
 
 * **`:` 을 통해 전달받은 인자를 확인**
 
@@ -905,7 +906,7 @@ axios.get(
 </script>
 ```
 
-* method를 통한 data 조작도 가능
+* **method를 통한 data 조작도 가능**
 
 * method에 인자를 넘기는 방법은 일반 함수를 호출할 때와 동일한 방식
   
@@ -944,7 +945,7 @@ axios.get(
     
     * 엔터키를 눌렀을 때
 
-* **`@` shortcut 제공**
+* **`@` <mark>shortcut 제공</mark>**
   
   * 예) `@keyup.click`
 
@@ -975,7 +976,7 @@ axios.get(
 ```html
 <div id="app2">
   <a v-bind:href="url">Go To GOOGLE</a>
-  
+
   <p v-bind:class="redTextClass">빨간 글씨</p>
   <p v-bind:class="{ 'red-text': true }">빨간 글씨</p>
   <p v-bind:class="[redTextClass, borderBlack]">빨간 글씨, 검은 테두리</p>
@@ -1010,7 +1011,7 @@ axios.get(
 
 * Vue data의 변화에 반응하여 DOM에 반영하므로 상황에 따라 유동적 할당 가능
 
-* **`:` shortcut 제공**
+* **`:` <mark>shortcut 제공</mark>**
   
   * 예) `:class` 등
   
@@ -1025,7 +1026,9 @@ axios.get(
 
 ## ▶ v-model
 
-* **Vue instance와 DOM의 양방향 바인딩**
+* **<mark>Vue instance와 DOM의 양방향 바인딩</mark>**
+  
+  * **<mark>사용자로부터 입력을 받는 Tag에 주로 사용 (input, textarea, select 등)</mark>**
 
 * Vue data 변경 시 v-model로 연결된 사용자 입력 element에도 적용
 
@@ -1085,25 +1088,31 @@ axios.get(
 
 * computed 객체에 정의한 함수를 페이지가 최초로 렌더링 될 때 호출하여 계산
   
-  * 계산 결과가 변하기 전까지 함수를 재호출하는 것이 아닌 계산된 값을 반환
+  * **계산 결과가 변하기 전까지 함수를 재호출하는 것이 아닌 <mark>계산된 값을 반환</mark>**
 
-## ▶ method VS computed
+## ▶ method VS computed❗
 
 * **`method()`**
   
   * **호출될 때마다 함수를 실행**
+    
+    * 보통 호출될 때마다 동작을 실행함
   
   * **<mark>같은 결과여도 매번 새롭게 계산</mark>**
 
 * **`computed`**
   
   * **<mark>함수의 종속 대상의 변화</mark>에 따라 계산 여부가 결정됨**
+    
+    * 함수 내부에서 사용하는 변수가 변하면 계산을 새로 한다
+    
+    * 계산한 값을 메모리에 저장
   
   * **<mark>종속 대상이 변하지 않으면 항상 저장(캐싱)된 값을 반환</mark>**
 
 ## ▶ watch
 
-* 특정 데이터의 변화를 감지하는 기능
+* **특정 데이터의 변화를 감지하는 기능** = 감지한 후 특정 동작을 실행
   
   ① watch 객체를 정의
   
@@ -1111,9 +1120,9 @@ axios.get(
   
   ③ data가 변할 시 실행할 함수를 정의
 
-* 첫 번째 인자는 변동 전 data = 현재
+* **첫 번째 인자는 변동 전 data = 현재**
 
-* 두 번째 인자는 변동 후 data = 과거
+* **두 번째 인자는 변동 후 data = 과거**
 
 ```html
 <div id="app">
@@ -1139,11 +1148,11 @@ axios.get(
 </script>
 ```
 
-* 실행 함수를 Vue method로 대체 가능
+* **실행 함수를 Vue method로 대체 가능**
   
   1️⃣ 감시 대상 data의 이름으로 객체 생성
   
-  2️⃣ 실행하고자 하는 method를 handler에 문자열 형태로 할당
+  2️⃣ **실행하고자 하는 method를 `handler`에 문자열 형태로 할당**
   
   ```html
   <body>
@@ -1193,7 +1202,7 @@ axios.get(
   </body>
   ```
 
-* **Array, Object의 내부 요소 변경을 감지를 위해서는 deep 속성 추가 필요**
+* **Array, Object의 내부 요소 변경을 감지를 위해서는 `deep` 속성 추가 필요**
 
 ```html
 <body>
@@ -1248,9 +1257,11 @@ axios.get(
 
 * interpolation 혹은 v-bind를 이용할 때 사용 가능
 
-* **필터는 자바스크립트 표현식 마지막에 `|`와 함께 추가되어야 함**
+* return 작성이 필요
 
-* **이어서 사용(chaining) 가능**
+* **필터는 <mark>자바스크립트 표현식 마지막에 `|`와 함께 추가</mark>되어야 함**
+
+* **<mark>이어서 사용(chaining) 가능</mark>**
 
 ```html
 <body>
@@ -1284,3 +1295,39 @@ axios.get(
   </script>
 </body>
 ```
+
+# Style Guide
+
+> Vue.js 스타일 가이드 준수
+
+* 우선순위
+  
+  * 필수 = 오류를 방지하는데 도움이되므로 준수
+  
+  * 적극 권장 = 규칙을 어겨도 코드 실행은 되지만, 규칙 위반은 드물어야 함
+  
+  * 권장
+  
+  * 주의 필요 = 잠재적 위험 특성을 고려
+
+## 1️⃣ v-for 는 항상 key와 함께 사용하기
+
+* 데이터의 예측 가능한 행동을 유지 시키기 위해 key를 사용 (객체 불변성)
+
+## 2️⃣ v-for를 쓴 엘리먼트에 절대 v-if 를 사용하지 않기
+
+1️⃣ **목록의 항목을 필터링할 때**
+
+* `v-if` 가 먼저 계산되고, 해당 처리 시점에 반복 변수인 user가 존재하지 않기 때문에 에러 발생
+  
+  * 해결법
+    
+    * 1. `computed` 속성을 대신 반복하여 해결할 수 있음
+    
+    * 2. `v-for` 가 있는 `<template>` 태그로 `<li>` 감싸서 분리 시켜주기
+
+* `v-if` 가 `v-for` 보다 높은 우선 순위를 가짐
+
+2️⃣ **숨김 목록의 렌더링을 피할 때**
+
+* `v-if` 와 `v-for` 구문은 같이 쓰지 않고 분리 시킨다.
