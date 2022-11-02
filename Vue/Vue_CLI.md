@@ -62,6 +62,8 @@
   
   * **`.gitignore`에 넣어주어야 하며,** Vue 프로젝트를 생성하면 자동으로 추가됨
 
+* `npm install` = node_modules 가 생성됨 (git pull 이후 해야 할 작업)
+
 ## ▶ Babel (node_modules)
 
 > JavaScript compiler
@@ -102,7 +104,7 @@
 
 * 자연스럽게 파일을 여러 개로 분리하여 관리를 하게 되었고, 이때 분리된 파일 각각이 모듈 **즉, js 파일 하나가 하나의 모듈**
 
-* **<mark>모듈은 대개 기능 단위로 분리</mark>하며, 클래스 하나 혹은 특정한 목적을 가진 복수의 함수로 구성된 라이브러리 하나로 구성됨**
+* **<mark>모듈은 기능 단위로 분리</mark>하며, 클래스 하나 혹은 특정한 목적을 가진 복수의 함수로 구성된 라이브러리 하나로 구성됨**
 
 * 여러 모듈 시스템
   
@@ -126,7 +128,7 @@
 
 ## ▶ Webpack - static module bundler
 
-image
+![](Vue_CLI_assets/2022-11-02-19-57-34-image.png)
 
 * 의존성을 Webpack이 담당해 주므로 개발자는 npm install을 사용해 다양한 모듈을 한 번에 설치하고 각 모듈을 사용해 개발에 집중할 수 있음 But, 무겁다
 
@@ -145,8 +147,6 @@ image
   * **<mark>사용할 패키지의 버전 고정</mark> = 개발 과정 간의 의존성 패키지 충돌 방지**
 
 * python의 `requirements.txt` 역할
-
-* `npm install` = node_modules 가 생성됨 (git pull 이후 해야 할 작업)
 
 ## ▶ public/index.html
 
@@ -177,6 +177,8 @@ image
   * webpack이 빌드를 시작할 때 가장 먼저 불러오는 entry point
   
   * **`public/index.html`과 `src/App.vue`를 연결시키는 작업이 이루어지는 곳**
+  
+  * Vue 전역에서 활용할 모듈을 등록할 수 있는 파일
 
 # Component
 
@@ -198,7 +200,7 @@ image
   
   * 하나의 컴포넌트를 만들어주면 반복되는 UI를 쉽게 처리할 수 있음
 
-image
+![](Vue_CLI_assets/2022-11-02-20-13-45-image.png)
 
 ## ▶ Django에서의 예시
 
@@ -206,13 +208,13 @@ image
   
   * 즉, 한 화면은 여러 개의 컴포넌트로 이루어질 수 있음
 
-image
+![](Vue_CLI_assets/2022-11-02-20-14-19-image.png)
 
-* base.html을 변경하면 이를 extends하는 모든 화면에 영향을 미침
-  
-  * 유지보수가 쉬움
+* base.html을 변경하면 이를 extends하는 모든 화면에 영향을 미침 = 유지보수 쉬움
 
-image
+![](Vue_CLI_assets/2022-11-02-20-14-32-image.png)
+
+* index.html에서 for문을 통해 여러 게시글을 하나의 형식에 맞춰서 출력 = 재사용
 
 ### 📌 [참고] component based architecture 특징
 
@@ -246,9 +248,9 @@ image
   
   * **이 Vue instance를 기능 단위로 작성하는 것이 핵심**❗
 
-* 컴포넌튼 기반 개발의 핵심 기능
+* 컴포넌트 기반 개발의 핵심 기능
 
-* HTML, CSS, 그리고 JavaScript를 .vue라는 확장자를 가진 파일 안에서 관리하면 개발
+* HTML, CSS, 그리고 JavaScript를 .vue라는 확장자를 가진 파일 안에서 관리하며 개발
 
 * Vue CLI가 Vue를 Component based하게 사용하도록 도와줌
 
@@ -264,7 +266,7 @@ image
   
   * 눈으로 보여지는 요소 작성
   
-  * 
+  * 다른 컴포넌트를 HTML 요소처럼 추가 가능
 
 * **스크립트(JavaScript)**
   
@@ -280,11 +282,13 @@ image
 
 * 컴포넌트들이 tree 구조를 이루어 하나의 페이지를 만듦
 
-* root에 해당하는 최상단의 component가 App.vue
+* **root에 해당하는 최상단의 component가 <mark>App.vue</mark>**
 
 * App.vue를 index.html과 연결
 
 * <mark>**결국 index.html 파일 하나만을 rendering = SPA 방식**</mark>❗
+
+![](Vue_CLI_assets/2022-11-02-20-35-17-image.png)
 
 # Vue component 실습
 
@@ -336,17 +340,17 @@ img & code
 
 > MyComponent의 자식(하위) 컴포넌트를 만들기
 
-* `src/compnents/` 안에 `MyChild.vue` 생성
+* **`src/compnents/` 안에 `MyChild.vue` 생성**
   
   * 3단계 진행
 
-* `MyComponent`에 MyChild 등록
+* **`MyComponent`에 MyChild 등록**
   
   * 3단계 진행
 
-* component의 재사용 가능
-
-* 
+* **component의 재사용성**
+  
+  * 인스턴스명으로 여러 번 사용 가능
 
 # Pass Props & Emit Event
 
@@ -384,19 +388,19 @@ img & code
   
   * **유지 보수하기 쉬움**
 
-img
+![](Vue_CLI_assets/2022-11-02-21-56-03-image.png)
 
 ## ▶ pass props & emit event
 
-* 부모 => 자식으로의 데이터 흐름
+* **부모 => 자식으로의 데이터 흐름**
   
-  * **pass props 방식 (데이터)**
+  * pass props 방식 (데이터)
 
-* 자식 => 부모로의 데이터 흐름
+* **자식 => 부모로의 데이터 흐름**
   
-  * **emit event 방식 (이벤트)**
+  * emit event 방식 (이벤트)
 
-## ▶ Pass Props
+## ▶ Static Props
 
 > **<mark>부모 컴포넌트는 요소의 속성(property)을 사용하여 데이터를 전달</mark>**
 
@@ -453,7 +457,7 @@ export default {
   
   * **`camelCase`**
 
-* 부모 템플릿(html)에서 ~~
+* 부모 템플릿(html)에서 kebab-case 로 넘긴 변수를 자식의 script(vue)에서 자동으로 camelCase로 변환하여 인식함
 
 ## ▶ Dynamic props
 
@@ -463,29 +467,19 @@ export default {
   
   ```javascript
   <template>
-    <div class="border"
-      <MyComponentItem static-props="MyComponent에서 보낸 데이터"/>
-      <!-- 문자열 -->
-      <a href="url"></a>
+    <div class="border">
       <!-- v-bind를 통해 JS 표현식을 사용할 수 있음 -->
       <a :href="url"></a>
     </div>
   </template>
   
   <script>
-  // 1. 불러오기
-  import MyComponentItem from '@/components/MyComponentItem'
-  
   export default {
     // 이름을 지어주어야 상위 폴더에서 쉽게 사용 가능!
     name: 'MyComponent',
     data: {
       url: 'https://www.naver.com'
     },
-    // 2. 등록하기
-    components: {
-      MyComponentItem,
-    }
   }
   </script>
   ```
@@ -498,15 +492,12 @@ export default {
 // MyComponent.vue
 <template>
   <div class="border">
-    <h1>싸피, 이거는 내가 만든 새로운 컴포넌트!</h1>
     <!-- dynamic props -->
-    <MyComponentItem static-props="MyComponent에서 보낸 데이터" :dynamic-props="dynamicProps"/>
+    <MyComponentItem :dynamic-props="dynamicProps"/>
   </div>
 </template>
 
 <script>
-import MyComponentItem from '@/components/MyComponentItem'
-
 export default {
   name: 'MyComponent',
   // dynamic props 실습
@@ -515,11 +506,6 @@ export default {
       dynamicProps: "It's in data"
     }
   },
-
-  // 2. 등록하기
-  components: {
-    MyComponentItem,
-  }
 }
 </script>
 ```
@@ -528,8 +514,6 @@ export default {
 // MyChild.vue
 <template>
   <div>
-    <h3>나는 MyComponent의 하위 컴포넌트</h3>
-    <p>{{ staticProps }}</p>
     <p>{{ dynamicProps }}</p>
   </div>
 </template>
@@ -538,8 +522,7 @@ export default {
 export default {
   name: 'MyComponentItem',
   props: {
-    staticProps: String,
-    ㅡProps: String,
+    dynamicProps: String,
   }
 }
 </script>
@@ -559,15 +542,15 @@ data: function() {
 
 ## ▶ Pass Props
 
-* `:dynamic-props="dynamicProps"` 는 앞의 key값이란 이름으로 뒤의 " " 안에 오는 데이터를 전달하겠다는 뜻
+* **`:dynamic-props="dynamicProps"` 는 앞의 key값이란 이름으로 뒤의 " " 안에 오는 데이터를 전달하겠다는 뜻**
 
 * 즉 `:my-props="dynamicProps"` 로 데이터를 넘긴다면, 자식 컴포넌트에서 `myProps`로 데이터를 받아야함
 
 * v-bind로 묶여있는 " "안의 구문은 javascript의 구문으로 볼 수 있음
   
-  * 따라서 dynamicProps라고 하는 변수에 대한 data를 전달할 수 있는 것
+  * **따라서 `dynamicProps`라고 하는 변수에 대한 data를 전달할 수 있는 것**
 
-* 숫자를 props로 전달하기 위해서 `<SomeComponent :num-props="1"/>` 으로 작성❗
+* **<mark>숫자를 props로 전달하기 위해서</mark> `<SomeComponent :num-props="1"/>` 으로 작성**❗
   
   * `<SomeComponent num-props="1"/>` 방식은 static props로 "1"(문자열)을 전달
 
@@ -790,5 +773,3 @@ export default {
   * emit 이벤트를 발생시키면 HTML 요소가 이벤트를 청취함 = `kebab-case`
   
   * 메서드, 변수명 등은 JavaScript에서 사용함 = `camelCase`
-
-
