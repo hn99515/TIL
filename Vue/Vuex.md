@@ -262,7 +262,7 @@ export default {
   
   * **A = 호출하고자 하는 actions 함수**
   
-  * **B = 넘겨주는 데이터(playload) = 저장하고자 하는 data**
+  * **B = 넘겨주는 데이터(payload) = 저장하고자 하는 data**
   
   ```html
   <template>
