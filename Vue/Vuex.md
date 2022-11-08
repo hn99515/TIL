@@ -46,7 +46,7 @@
 
 * 각 component는 중앙 저장소의 데이터를 사용
 
-* **<mark>component의 계층에 상관없이</mark> 중앙 저장소에 접근해서 데이터를 얻거나 변경 가능**
+* **<mark>component의 계층에 상관없이</mark> 중앙 저장소에 접근해서 데이터를 얻거나 변경 가능❗**
 
 * 중앙 저장소의 데이터가 변경되면 각각의 component는 해당 데이터의 변화에 반응하여 새로 변경된 데이터를 반영함
 
@@ -131,19 +131,19 @@ export default new Vuex.Store({
   
   * mutation, action에서 호출되는 함수를 handler 함수라고 함
 
-* **<mark>첫 번째 인자로 state를</mark> 받으며, <mark>component 혹은 Actions에서 `commit()` 메서드로 호출</mark>됨**
+* **<mark>첫 번째 인자로 state를</mark> 받으며, component 혹은 Actions에서 `commit()` 메서드로 호출됨❗**
 
 ## ▶ 3️⃣ Actions
 
 * **mutations와 비슷하지만 <mark>비동기 작업을 포함</mark>할 수 있다는 차이가 있음**
   
-  * **mutations가 하지 못하는 작업 모두를 Actions가 담당**
+  * **mutations가 하지 못하는 작업 모두를 Actions가 담당**❗
 
 * **<mark>state를 직접 변경하지 않고 commit() 메서드로 mutations를 호출해서 state를 변경❗</mark>**
 
-* **`context`** 객체를 인자로 받으며, 이 객체를 통해 store.js의 모든 요소와 메서드에 접근할 수 있음 **(== 즉, state를 직접 변경할 수 있지만 하지 않아야 함❗)**
+* **`context`** 객체를 인자로 받으며, 이 객체를 통해 store.js의 모든 요소와 메서드에 접근할 수 있음 **(== 즉, <mark>state를 직접 변경할 수 있지만 하지 않아야 함</mark>❗)**
 
-* **component에서 `dispatch()` 메서드에 의해 호출됨**
+* **component에서 `dispatch()` 메서드에 의해 호출됨❗**
 
 ## ▶ Mutations & Actions
 
@@ -157,7 +157,7 @@ export default new Vuex.Store({
 
 > Vue 인스턴스의 computed에 해당
 
-* **<mark>state를 활용하여 계산된 값을 얻고자 할 때 사용</mark>**
+* **<mark>state를 활용하여 계산된 값을 얻고자 할 때 사용❗</mark>**
   
   * state의 원본데이터를 건들지 않고 계산된 값을 얻을 수 있음
 
@@ -165,9 +165,11 @@ export default new Vuex.Store({
 
 * **getters에서 계산된 값은 state에 영향을 미치지 않음**
 
-* **<mark>첫 번째 인자로 `state`</mark>, 두 번째 인자로 `getter`를 받음**
+* **<mark>첫 번째 인자로 `state`</mark>, 두 번째 인자로 `getter`를 받음❗**
 
 ## ▶ 모든 데이터를 Vuex에서 관리해야 하나❓
+
+> **3단계 이상 데이터를 이동시켜야 하는 경우에는 적극 권장**
 
 * 모든 데이터를 state에 넣어야 하는 것은 아님
 
@@ -389,11 +391,11 @@ export default new Vuex.Store({
 
 * **Vue 인스턴스가 생성된 경우, 인스턴스를 DOM에 마운트하는 경우, 데이터가 변경되어 DOM을 업데이트하는 경우 등**
 
-* Lifecycle Hooks = **각 단계가 트리거가 되어 특정 로직을 실행할 수 있음**
+* Lifecycle Hooks = **<mark>각 단계가 트리거가 되어 특정 로직을 실행할 수 있음</mark>**
 
 ![](Vuex_assets/2022-11-07-14-04-43-image.png)
 
-## ▶ created
+## ▶ created()
 
 > **Vue instance가 생성된 후 호출됨**
 
@@ -401,7 +403,9 @@ export default new Vuex.Store({
 
 * **서버에서 받은 데이터를 vue instance의 data에 할당하는 로직을 구현하기 적합**
   
-  * *단, mount되지 않아 요소에 접근할 수 없음 = DOM(HTML)과 연결되지 않았음*
+  * 서버의 값을 받아서 초기화 시키고 싶을 때 사용
+  
+  * *단, mount되지 않아 요소에 접근할 수 없음 = DOM(HTML)과 연결되지 않았기 때문*
 
 * 버튼을 누르지 않아도 첫 실행 시 기본 사진이 출력되록 하고 싶다면❓
   
@@ -416,11 +420,11 @@ export default {
 },
 ```
 
-## ▶ mounted
+## ▶ mounted()
 
 > **Vue instance가 요소에 mount된 후 호출됨**
 
-* **mount된 요소를 조작할 수 있음 = HTML에 대한 조작 가능**
+* **mount된 요소를 조작할 수 있음 = HTML에 대한 조작 가능❗**
 
 ```javascript
 export default {
@@ -447,7 +451,8 @@ export default {
 
 ## ▶ updated
 
-* **데이터가 변경되어 DOM에 변화를 줄 때 호출됨**
+* **데이터가 변경되어 DOM에 변화를 줄 때 호출됨**❗
+  * (주의) 무한 루프에 빠질 위험이 있음
 
 ```javascript
 export default {
@@ -501,7 +506,7 @@ export default {
   
   **App.vue 생성 => ChildComponent 생성 => ChildComponent 부착 => App.vue 부착 => ChildComponent 업데이트 순으로 동작한 것**
 
-* 부모 컴포넌트의 mounted hook이 실행되었다고 해서 자식이 mount 된 것이 아니고, 부모 컴포넌트가 updated hook이 실행되었다고 해서 자식이 updated 된 것이 아님❗
+* 부모 컴포넌트의 mounted hook이 실행되었다고 해서 자식이 mounted 된 것이 아니고, 부모 컴포넌트가 updated hook이 실행되었다고 해서 자식이 updated 된 것이 아님❗
   
   * <mark>**부착 여부가 부모-자식 관계에 따라 순서를 가지고 있지 않은 것**❗</mark>
 
@@ -686,8 +691,8 @@ export default {
 
 * TodoList.vue => TodoListItem.vue
 
-```javascript
-// components/TodoList.vue
+```html
+<!-- components/TodoList.vue -->
 <template>
   <div>
     <TodoListItem
@@ -699,7 +704,7 @@ export default {
 </template>
 ```
 
-* **todo 데이터 내려받기**
+* **부모에게 받은 todo 데이터 내려받기**
 
 ```javascript
 // components/TodoListItem.vue
@@ -723,7 +728,7 @@ export default {
 
 * todoTitle을 입력 받을 input 태그 생성
 
-* todoTitle을 저장하기 위해 data를 정의하고 input과 v-model을 이용해 양방향 바인딩
+* **todoTitle을 저장하기 위해 data를 정의하고 input과 v-model을 이용해 양방향 바인딩**
 
 * enter 이벤트를 사용해 createTodo 메서드 출력 확인
 
@@ -758,7 +763,7 @@ export default {
 
 ## ▶ Actions
 
-* createTodo 메서드에서 actions을 호출(`dispatch`)
+* **createTodo 메서드에서 actions을 호출(`dispatch`)**
 
 * todoTitle까지 함께 전달하기
 
@@ -805,8 +810,6 @@ export default new Vuex.Store({
       console.log(todoItem)
     }
   },
-  modules: {  
-  }
 })
 ```
 
@@ -919,31 +922,308 @@ export default {
 </script>
 ```
 
-d
+## ▶ Actions
 
-d
+* deleteTodo 메서드에서 deleteTodo actions 메서드 호출 (`dispatch`)
 
-d
+* 삭제되는 todo를 함께 전달
 
-d
+```javascript
+// components/TodoListItem.vue
+<script>
+export default {
+  name: 'TodoListItem',
+  props: {
+    todo: Object,
+  },
+
+  methods: {
+    deleteTodo() {
+      // console.log('Todo 삭제')
+      this.$store.dispatch('deleteTodo', this.todo)
+    },
+  },
+}
+</script>
+```
+
+## ▶ Mutations
+
+* DELETE_TODO 메서드 작성
+
+* 전달된 todoItem에 해당하는 todo 삭제
+
+```javascript
+// index.js
+export default new Vuex.Store({
+  ...
+  mutations: {
+    CREATE_TODO(state, todoItem) {
+      state.todos.push(todoItem)
+    },
+    DELETE_TODO(state, todoItem) {
+      // console.log(todoItem)
+      const index = state.todos.indexOf(todoItem)
+      state.todos.splice(index, 1)
+    },
+  },
+})
+```
 
 # Update Todo
 
-d
+> is_completed 변수값을 toggle 하는 것을 의미
+
+* **todo를 클릭하면 완료 표시의 의미로 취소선 스타일을 적용하는 기능 구현**
+  
+  * 즉, todo의 isCompleted 값을 토글하기
+
+* TodoListItem 컴포넌트에 클릭 이벤트를 추가 후 관련 actions 메서드 호출
+
+```javascript
+// components/TodoListItem.vue
+<template>
+  <div>
+    <span @click="updateTodoStatus">{{ todo.title }}</span>
+    <button @click="deleteTodo">Delete</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'TodoListItem',
+  props: {
+    todo: Object,
+  },
+  methods: {
+    ...
+    updateTodoStatus() {
+      this.$store.dispatch('updateTodoStatus', this.todo)
+    },
+  },
+}
+```
+
+## ▶ Actions
+
+* **updateTodoStatus 메서드 작성**
+
+* 관련 mutations 메서드 호출
+
+```javascript
+// index.js
+export default new Vuex.Store({
+  ...
+  actions: {
+    ...
+    updateTodoStatus(context, todoItem) {
+      context.commit('UPDATE_TODO_STATUS', todoItem)
+    },
+  },
+})
+```
+
+## ▶ Mutations
+
+* UPDATE_TODO_STATUS 메서드 작성
+
+* **map 메서드를 활용해 선택된 todo의 isCompleted를 반대로 변경 후 기존 배열 업데이트**
+
+```javascript
+// index.js
+export default new Vuex.Store({
+  ...
+  mutations: {
+    ...
+    UPDATE_TODO_STATUS(state, todoItem) {
+      // console.log(todoItem)
+      state.todos = state.todos.map((todo) => {
+        if (todo === todoItem) {
+          todo.isCompleted = !todo.isCompleted
+        }
+        return todo
+      })
+    },
+  },
+})
+```
+
+* 취소선 스타일링 = CSS 작성
+
+```css
+<style>
+  .is-completed {
+    text-decoration: line-through;
+}
+</style>
+```
+
+* **v-bind 를 활용해 isCompleted 값에 따라 CSS 클래스가 토글 방식으로 적용되도록 작성**
+
+```html
+<!-- components/TodoListItem.vue -->
+<template>
+  <div>
+    <span
+      @click="updateTodoStatus"
+      :class="{ 'is-completed' : todo.isCompleted }"
+    >
+      {{ todo.title }}
+    </span>
+    <button @click="deleteTodo">Delete</button>
+  </div>
+</template>
+```
 
 # 상태별 todo 개수 계산
 
 > getters 사용
 
+## ▶ 전체 todo의 개수
+
 * allTodosCount getters 작성
 
-* state에 있는 todos 배열의 길이 계산
+* **state에 있는 todos 배열의 길이 계산**
 
-d
+```javascript
+// index.js
+export default new Vuex.Store({
+  state: {
+    todos: [],
+  },
+  getters: {
+    allTodosCount(state) {
+      return state.todos.length
+    },
+  },
+})
+```
 
-d
+* getters에 계산된 값을 각 컴포넌트의 computed에서 사용하기
 
-d
+```javascript
+// App.vue
+<template>
+  <div id="app">
+    <h1>Todo List</h1>
+    <h2>All Todos: {{ allTodosCount }}</h2>
+    <TodoList/>
+    <TodoForm/>
+  </div>
+</template>
+
+<script>
+export default {
+  ...
+  computed: {
+    appTodosCount() {
+      return this.$store.getters.allTodosCount
+    },
+  }
+}
+</script>
+```
+
+## ▶ 완료된 todo의 개수
+
+* completedTodosCount getters 작성
+
+* **isCompleted가 true인 todo들만 필터링한 배열을 만들고 길이 계산**
+
+* **`filter`를 활용하여 완료 여부에 따른 새로운 객체 목록을 작성 후 길이 반환**
+
+```javascript
+// index.js
+export default new Vuex.Store({
+  ...
+  getters: {
+    allTodosCount(state) {
+      return state.todos.length
+    },
+    completedTodosCount(state) {
+      const completedTodos = state.todos.filter((todo) => {
+        return todo.isCompleted == true
+      })
+      return completedTodos.length
+    },
+  },
+})
+```
+
+* getters에 계산된 값을 각 컴포넌트의 computed에서 사용
+
+```html
+<template>
+  <div id="app">
+    <h1>Todo List</h1>
+    <h2>All Todos: {{ allTodosCount }}</h2>
+    <h2>Completed Todo: {{ completedTodosCount }}</h2>
+    <TodoList/>
+    <TodoForm/>
+  </div>
+</template>
+```
+
+```javascript
+<script>
+export default {
+  ...
+  computed: {
+    completedTodosCount() {
+      return this.$store.getters.completedTodosCount
+    },
+  },
+}
+```
+
+## ▶ 미완료된 todo 개수
+
+* 미완료된 todo 개수 === 전체 개수 - 완료된 개수
+
+* getters 가 두 번째 인자로 getters를 받는 것으로 활용!
+
+* unCompletedTodosCount getters 작성
+
+```javascript
+// index.js
+export default new Vuex.Store({
+  state: {
+    todos: [],
+  },
+  getters: {
+    ...
+    unCompletedTodosCount(state, getters) {
+      return getters.allTodosCount - getters.completedTodosCount
+    },
+  },
+})
+```
+
+* getters에 계산된 값을 각 컴포넌트의 computed에서 사용하기
+
+```javascript
+// App.vue
+<template>
+  <div id="app">
+    ...
+    <h2>unCompleted Tod: {{ unCompletedTodosCount }}</h2>
+    <TodoList/>
+    <TodoForm/>
+  </div>
+</template>
+
+<script>
+export default {
+  ...
+  computed: {
+    ...
+    unCompletedTodosCount() {
+      return this.$store.getters.unCompletedTodosCount
+    },
+  },
+}
+</script>
+```
 
 # Local Storage
 
