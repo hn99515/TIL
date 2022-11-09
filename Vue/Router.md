@@ -170,7 +170,7 @@
 
 * 이후에 모든 동작은 하나의 HTML 문서 위에 JavaScript 코드를 활용
   
-  * DOM을 그리는데 필요한 추가적인 데이터가 있다면 axios와
+  * DOM을 그리는데 필요한 추가적인 데이터가 있다면 axios와 같은 AJAX 요청을 보낼 수 있는 도구를 사용하여 데이터를 가져오고 처리
 
 * **<mark>하나의 URL만 가질 수 있음</mark>**
 
@@ -212,21 +212,21 @@
 
 ## ▶ Vue Router 시작하기
 
-`vue create vue-router-app` = Vue 프로젝트 생성
+**`vue create vue-router-app`** = Vue 프로젝트 생성
 
-`cd vue-router-app` = 디렉토리 이동
+**`cd vue-router-app`** = 디렉토리 이동
 
-`vue add router` = Vue CLI를 통해 router plugin 적용
+**`vue add router`** = Vue CLI를 통해 router plugin 적용
 
-* `commit` 없는데 다음으로 넘어가면 변경사항이 생긴다. `commit` 권장하는데도 그냥 진행할래?
+* (warning) `commit` 없는데 다음으로 넘어가면 변경사항이 생긴다. `commit` 권장하는데도 그냥 진행할래?
   
   * yes
 
-* `history mode` 사용여부 => Yes
+* (warning) **`history mode` 사용여부** => Yes
 
 * App.vue
   
-  * **router-link 요소 및 router-view가 추가됨**
+  * **`router-link` 요소 및 `router-view`가 추가됨**
 
 ```html
 <template>
@@ -258,13 +258,13 @@
 
 * **<mark>새로고침 없이 URL 이동 기록을 남길 수 있음</mark>**
   
-  * 뒤로 가기를 할 수 있음❗
+  * **즉, <mark>뒤로 가기 기능을 가능</mark>하게 함**❗
 
 * **우리에게 익숙한 URL 구조로 사용 가능 (`/`)**
   
   * 예) http://localhost:8080/index
 
-* [참고] History mode를 사용하지 않으면 Default 값인 hash mode로 설정 (`#`)
+* [참고] History mode를 사용하지 않으면 **Default 값인 hash mode로 설정 (`#`)**
   
   * 예) http://localhost:8080#index 
 
@@ -274,7 +274,7 @@
   
   * **routes에 등록된 컴포넌트와 매핑됨**
   
-  * 히스토리 모드에서 **<mark>router-link는 클릭 이벤트를 차단</mark>하여 a 태그와 달리 <mark>브라우저가 페이지를 다시 로드하지 않도록 함</mark>**
+  * 히스토리 모드에서 **<mark>router-link는 클릭 이벤트를 차단</mark>하여 a 태그와 달리 <mark>브라우저가 페이지를 다시 로드(새로고침 ❌)하지 않도록 함</mark>**
 
 * **<mark>목표 경로는 `to` 속성</mark>으로 지정**
 
@@ -286,7 +286,7 @@
 
 ## ▶ router-view
 
-> 주어진 URL에 대해 일치하는 컴포넌트를 렌더링하는 컴포넌트
+> **주어진 URL에 대해 일치하는 컴포넌트를 렌더링하는 컴포넌트**
 
 * **<mark>실제 component가 DOM에 부착되어 보이는 자리를 의미</mark>**
 
@@ -294,7 +294,7 @@
 
 * Django에서의 `block tag`와 비슷함
   
-  * **App.vue는 base.html 의 역할**
+  * App.vue는 base.html 의 역할
   
   * **router-view는 block 태그로 감싼 부분**
 
@@ -312,11 +312,11 @@
 
 ## ▶ src/Views
 
-> router-view에 들어갈 component 작성
+> router-view에 들어갈 component 작성 (규약은 아님)
 
 * 기존에 컴포넌트를 작성하던 곳은 components 폴더 뿐이었지만 이제 두 폴더로 나뉨
 
-* *각 폴더 안의 .vue 파일들이 기능적으로 다른 것은 아님* = 경로만 달라진 것 뿐
+* ***각 폴더 안의 .vue 파일들이 기능적으로 다른 것은 아님* = 경로만 달라진 것 뿐**
 
 * **`views/`**
   
@@ -324,11 +324,11 @@
   
   * **다른 컴포넌트와 구분하기 위해 <mark>이름 마지막에 View로 끝나도록 만드는 것을 권장</mark>**
     
-    * 예) App 컴포넌트 내부의 AboutView & HomeView 컴포넌트
+    * 예) App 컴포넌트 내부의 `AboutView` & `HomeView` 컴포넌트
 
 * **`components/`**
   
-  * **routes에 매핑된 컴포넌트의 하위 컴포넌트를 모아두는 폴더**
+  * **<mark>routes에 매핑된 컴포넌트의 하위 컴포넌트를 모아두는 폴더</mark>**
     
     * 예) HomeView 컴포넌트 내부의 HelloWorld 컴포넌트
 
@@ -336,9 +336,9 @@
 
 ## ▶ 주소를 이동하는 2가지 방법
 
-1️⃣ **선언적 방식 네비게이션**
+### 1️⃣ **선언적 방식 네비게이션**
 
-* **router-link의 `to` <mark>속성으로 주소 전달</mark>**
+* **`router-link`의 `to` <mark>속성으로 주소 전달</mark>**
   
   * routes에 등록된 주소와 매핑된 컴포넌트로 이동
 
@@ -356,7 +356,7 @@
 
 ![](Router_assets/2022-11-09-10-27-11-image.png)
 
-2️⃣ **프로그래밍 방식 네비게이션❗**
+### 2️⃣ **프로그래밍 방식 네비게이션❗**
 
 * **Vue 인스턴스 내부에서 <mark>라우터 인스턴스에 `$router`로 접근할 수 있음</mark>**
 
@@ -374,15 +374,15 @@
 
 ## ▶ Dynamic Route Matching
 
-* 동적 인자 전달
+> 동적 인자 전달
+
+* URL의 특정값을 변수처럼 사용할 수 있음
   
-  * URL의 특정값을 변수처럼 사용할 수 있음
-    
-    * 예) Django에서의 variable routing
+  * 예) Django에서의 variable routing
 
 * `HelloView.vue` 작성 및 route 추가
-
-* route를 추가할 때 동적 인자를 명시
+  
+  * route를 추가할 때 동적 인자를 명시
 
 ```javascript
 // index.js
@@ -424,9 +424,9 @@ export default {
 
 ## ▶ Dynamic Route Matching = 선언적 방식 네비게이션
 
-* App.vue에서 harry에게 인사하는 페이지로 이동해보기
+- App.vue에서 harry에게 인사하는 페이지로 이동해보기
 
-* **params를 이용하여 동적 인자 전달 가능**
+- **params를 이용하여 동적 인자 전달 가능**
 
 ```html
 <!-- App.vue -->
@@ -442,7 +442,10 @@ export default {
 </template>
 ```
 
-* **AboutView에서 데이터를 입력 받아 HelloView로 이동하여 입력받은 데이터에게 인사**
+## ▶ Dynamic Route Matching = 프로그래밍 방식 네비게이션
+
+* **<mark>AboutView에서 데이터를 입력 받아 HelloView로 이동하여 입력받은 데이터에게 인사</mark>**
+  * 흐름 = `input tag => data => 프로그래밍 방식 네비게이션`
 
 ```javascript
 // AboutView.vue
@@ -514,7 +517,9 @@ const routes = [
 
 * *모든 파일을 한 번에 로드하려고 하면 모든 걸 다 읽는 시간이 매우 오래 걸림*
 
-* **미리 로드를 하지 않고 <mark>특정 라우트에 방문할 때 매핑된 컴포넌트의 코드를 로드</mark>하는 방식을 활용할 수 있음**
+* 첫 로딩에 렌더링 하지않고 해당 라우터가 동작할 때 컴포넌트를 렌더링 함
+
+* **미리 로드 하지 않고 <mark>특정 라우트에 방문할 때 매핑된 컴포넌트의 코드를 로드</mark>하는 방식**
   
   * **모든 파일을 한 번에 로드하지 않아도 되기 때문에 <mark>최초에 로드하는 시간이 빨라짐</mark>**
   
@@ -528,11 +533,11 @@ const routes = [
 
 ## ▶ 네비게이션 가드의 종류
 
-* **전역 가드** = 애플리케이션 전역에서 동작
+* 1️⃣ **전역 가드** = 애플리케이션 전역에서 동작
 
-* **라우터 가드** = 특정 URL에서만 동작
+* 2️⃣ **라우터 가드** = 특정 URL에서만 동작
 
-* **컴포넌트 가드** = 라우터 컴포넌트 안에 정의
+* 3️⃣ **컴포넌트 가드** = 라우터 컴포넌트 안에 정의
 
 # 전역 가드
 
@@ -540,7 +545,7 @@ const routes = [
 
 > **<mark>다른 url 주소로 이동할 때 항상 실행</mark>**
 
-* `router/index.js` 에 **<mark>`router.beforeEach()` 를 사용</mark>하여 설정**
+* **`router/index.js`** 에 **<mark>`router.beforeEach()` 를 사용</mark>하여 설정**
 
 * **콜백 함수의 값으로 다음과 같이 3개의 인자를 받음**
   
@@ -550,17 +555,17 @@ const routes = [
   
   * **`next`**: **<mark>지정한 URL로 이동하기 위해 호출하는 함수</mark>**
     
-    * 콜백 함수 내부에서 반드시 한 번만 호출되어야 함
+    * 콜백 함수 내부에서 **반드시 한 번만 호출되어야 함❗**
     
     * **기본적으로 `to`에 해당하는 URL로 이동**
 
 * **URL이 변경되어 화면이 전환되기 전 `router.beforeEach()`가 호출됨**
   
-  * *next()가 없다면 화면이 전환되지 않고 대기 상태가 됨*
+  * *`next()`가 없다면 화면이 전환되지 않고 대기 상태가 됨*
 
 * **변경된 URL로 라우팅하기 위해서는 `next()`를 호출해줘야 함**
   
-  * **<mark>next()가 호출되기 전까지 화면이 전환되지 않음</mark>**
+  * **<mark>`next()`가 호출되기 전까지 화면이 전환되지 않음</mark>**
 
 ## ▶ 실습
 
@@ -578,7 +583,7 @@ router.beforeEach((to, from, next) => {
 })
 ```
 
-* **next()가 호출되어야 화면이 전환됨**
+* **`next()`가 호출되어야 화면이 전환됨**
 
 * About으로 이동하면,
   
@@ -631,18 +636,24 @@ const routes = [
 ```
 
 * HelloView에 로그인을 해야만 접근할 수 있도록 만들기
-
-* 로그인 여부에 대한 임시 변수 생성
+  
+  * 로그인 여부에 대한 임시 변수 생성 => 실제로는 서버(Django)에서 데이터를 받은 후 사용
+  
+  * **`const isLoggedIn = true/false`**
 
 * 로그인이 필요한 페이지를 저장
   
-  * 로그인이 필요한 페이지들의 이름(라우터에 등록한 name)을 작성
+  * **`const authPages = ['hello']`**
+  
+  * **로그인이 필요한 페이지들의 이름(라우터에 등록한 name)을 작성**
 
 * 앞으로 이동할 페이지(`to`)가 로그인이 필요한 사이트인지 확인
+  
+  * **`const isAuthRequired = !authPages.includes(to.name)`**
 
-* `isAuthRequired` 값에 따라 로그인 되어있지 않으면 Login 페이지로 이동
-
-* 그렇지 않으면 기존 루도로 이동
+* 로그인을 해야만 들어갈 수 있는 페이지이면서 유저가 로그인 되어있지 않으면 Login 페이지로 이동
+  
+  * **`if (isAuthRequired && !isLoggedIn)`**
 
 * next() 인자가 없을 경우 `to`로 이동
 
@@ -668,7 +679,7 @@ router.beforeEach((to, from, next) => {
   
   * **`/hello/harry`을 렌더링하지 않고 Login 페이지로 이동됨**
 
-* Home => Login으로 이동했는데 console창에 log가 2개가 찍힌 이유
+* 비로그인 상태에서 Home => Login으로 이동했는데 console창에 log가 2개가 찍힌 이유
   
   * **첫 번째 출력은 `/hello/harr/`로 접속 시도 후 (전역 가드에 막힘) 전역 가드에서 login으로 이동 요청할 때 출력**
   
@@ -705,13 +716,13 @@ router.beforeEach((to, from, next) => {
 
 # 라우터 가드
 
-> 전체 route가 아닌 **특정 route에 대해서만 가드를 설정하고 싶을 때 사용**
+> 전체 route가 아닌 **<mark>특정 route에 대해서만 가드를 설정하고 싶을 때 사용</mark>**
 
-* **`beforeEnter()`**
+* <mark>**`beforeEnter()`**</mark>
   
   * **route에 진입했을 때 실행**
   
-  * **라우터를 등록한 위치에 추가**
+  * **<mark>라우터를 등록한 위치에 추가</mark>**
   
   * *단 매개변수, 쿼리, 해시 값이 변경될 때는 실행되지 않고 다른 경로에서 탐색할 때만 실행됨*
   
@@ -755,7 +766,7 @@ const routes = [
 
 * *Login을 제외한 다른 페이지로 이동하면 라우터 가드를 따로 설정해주지 않았기 때문에 라우터 가드가 동작하지 않음*
 
-* **이런식으로 <mark>특정 라우터만 따로 가드를 하고 싶은 경우에는 라우터 가드를 사용</mark>**
+* **<mark>특정 라우터만 따로 가드를 하고 싶은 경우에는 라우터 가드를 사용</mark>**
 
 * **isLoggedIn = false로 변경하면 Login 페이지로 정상 이동 가능**
 
@@ -763,7 +774,7 @@ const routes = [
 
 > **특정 컴포넌트 내에서 가드를 지정하고 싶을 때 사용**
 
-* **`beforeRouteUpdate()`**
+* <mark>**`beforeRouteUpdate()`**</mark>
   
   * **해당 컴포넌트를 렌더링하는 경로가 변경될 때 실행**
 
@@ -773,11 +784,11 @@ const routes = [
 
 * **navbar에 있는 Hello를 눌러 harry에게 인사하는 페이지로 이동**
   
-  * *URL은 변하지만 페이지는 변하지 않음*
+  * *Hello page에서 Hello 를 클릭하면 URL은 변했지만 페이지는 변하지 않음*
 
 ![](Router_assets/2022-11-09-13-50-17-image.png)
 
-* *변하지 않는 이유*
+* *변하지 않는 이유❗*
   
   * **컴포넌트가 재사용되었기 때문**
   
@@ -789,18 +800,20 @@ const routes = [
 
 * **`beforeRouteUpdate()`를 사용해서 처리**
   
-  * userName을 이동할 params에 있는 userName으로 재할당
+  * **userName을 이동할 params에 있는 userName으로 재할당**
 
 ```javascript
+// HelloView.vue
 <script>
 export default {
   name: 'HelloView',
-  data: function () {
+  data() {
     return {
       userName: this.$route.params.userName
     }
   },
   beforeRouteUpdate(to, from, next) {
+    // 재사용하더라도 새로운 유저명을 넣어줌 = params의 변화를 감지
     this.userName = to.params.userName
     next()  
   }
@@ -958,7 +971,6 @@ export default new Vuex.Store({
 * indexView 컴포넌트 및 라우터 작성
 
 * ArticleItem 컴포넌트 작성
-
 - IndexView 컴포넌트에서 ArticleItem 컴포넌트 등록 및 props 데이터 전달
 
 ```javascript
@@ -1093,7 +1105,6 @@ export default {
 
 ```javascript
 // views/CreateView.vue
-
 ```
 
 * IndexView 컴포넌트에 게시글 작성 페이지로 이동하는 링크 추가
@@ -1101,7 +1112,6 @@ export default {
 ```javascript
 // views/IndexView.vue
 <template>
-
 ```
 
 # Detail
