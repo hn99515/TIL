@@ -905,34 +905,105 @@ const routes = [
   
   * routes에 등록 = '*'보다 상단에 등록
 
-```javascript
-
+```html
+<!-- DogView.vue -->
+<template>
+  <div>
+    <img :src="imgSrc" alt="">
+  </div>
+</template>
 ```
 
 ```javascript
+<script>
+import axios from 'axios'
 
+export default {
+  name: 'DogView',
+  data() {
+    return {
+      imgSrc: null,
+    }
+  },
+  methods: {
+    getDogImg() {
+      const breed = this.$route.params.breed
+      const dogImgUrl = `https://dog.ceo/api/breed/${breed}/images/random`
+      axios({
+        method: 'get',
+        url: dogImgUrl,
+      })
+        .then((response) => {
+          const imgSrc = response.data.message
+          this.imgSrc = imgSrc
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+  },
+  created() {
+    this.getDogImg()
+  }
+}
+</script>
 ```
 
 * /dog/hound에 접속하면 hound 품종에 대한 랜덤 사진이 출력
 
-* axios 요청이 오는 중 동작하고 있음을 표현하기 위한 로딩 메시지 정의
+* **axios 요청이 오는 중 동작하고 있음을 표현하기 위한 로딩 메시지 정의**
 
 ```javascript
+// DogView.vue
+<template>
+  <div>
+    <p v-if="!imgSrc">{{ message }}</p>
+    <img :src="imgSrc" alt="">
+  </div>
+</template>
 
+<script>
+import axios from 'axios'
+
+export default {
+  name: 'DogView',
+  data() {
+    return {
+      imgSrc: null,
+      message: '로딩중...',
+    }
+  },}
+  },
 ```
 
-* axios 요청이 실패할 경우 자료가 없음을 표현하기
+* axios 요청이 실패할 경우 자료가 없음을 표현 가능
 
-```javascript
-
-```
-
-* 404 Not Found
+* 404 Not Found (대부분은 이 에러 표시를 사용)
   
   * axios 요청이 실패할 경우 404 페이지로 이동시킬 수도 있음
 
 ```javascript
-
+// DogView.vue
+methods: {
+    getDogImg() {
+      const breed = this.$route.params.breed
+      const dogImgUrl = `https://dog.ceo/api/breed/${breed}/images/random`
+      axios({
+        method: 'get',
+        url: dogImgUrl,
+      })
+        .then((response) => {
+          console.log(response)
+          const imgSrc = response.data.message
+          this.imgSrc = imgSrc
+        })
+        .catch((error) => {
+          // this.message = `${this.$route.params.breed}는 없는 품종입니다.`
+          this.$router.push('/404')
+          console.log(error)
+        })
+    }
+  },
 ```
 
 # Articles with Vue
@@ -1088,13 +1159,31 @@ export default {
 - actions에서는 넘어온 데이터를 활용하여 article 생성 후 mutations 호출
   
   - 이 때 id로 article_id 활용
+  
+  ```javascript
+  actions: {
+      createArticle(context, payload) {
+        const article = {
+          id: context.state.article_id,
+          title: payload.title,
+          content: payload.content,
+          createdAt: new Date().getTime()
+        }
+        context.commit('CREATE_ARTICLE', article)
+      }
+    },
+  ```
 
 - mutations에서는 전달된 article 객체를 사용해 게시글 작성
   
   - 다음 게시글을 위해 article_id 값 1 증가
 
 ```javascript
-
+mutations: {
+    CREATE_ARTICLE(state, article) {
+      state.articles.push(article)
+      state.article_id = state.article_id + 1
+    },
 ```
 
 * CreateView 컴포넌트에 Index 페이지로 이동하는 뒤로가기 링크 추가
@@ -1114,6 +1203,18 @@ export default {
 
 ```javascript
 // views/CreateView.vue
+methods: {
+    createArticle() {
+      const title = this.title
+      const content = this.content
+      // 데이터를 객체로 만들어서 전달
+      const payload = {
+        title, content
+      }
+      this.$store.dispatch('createArticle', payload)
+      this.$router.push({ name: 'index' })
+    }
+  }
 ```
 
 * IndexView 컴포넌트에 게시글 작성 페이지로 이동하는 링크 추가
@@ -1121,6 +1222,246 @@ export default {
 ```javascript
 // views/IndexView.vue
 <template>
+  <div>
+    <h1>Articles</h1>
+    <router-link :to="{ name: 'create' }">게시글 작성</router-link>
+    <ArticleItem
+      v-for="article in articles"
+      :key="article.id"
+      :article=article
+    />
+  </div>
+</template>
 ```
 
 # Detail
+
+* DetailView 컴포넌트 및 라우터 작성
+
+* id를 동적인자로 전달
+
+* article 정의 및 state에서 articles 가져오기
+
+```javascript
+// DetailView.vue
+<script>
+export default {
+  name: 'DetailView',
+  data() {
+    return {
+      article: null,
+    }
+  },
+  computed: {
+    articles() {
+      return this.$store.state.articles
+    },
+  },
+}
+</script>
+```
+
+* articles에서 동적인자를 통해 받은 id에 해당하는 article 가져오기
+
+* 이 때 동적 인자를 통해 받은 id는 str형이므로 형변환을 해서 비교
+
+* created lifecycle hook을 통해 인스턴스가 생성되었을 때 article을 가져오는 함수 호출
+
+```javascript
+// DetailView.vue
+methods: {
+    getArticleById(id) {
+      // 문자열로 받아오기 때문에 number로 형변환 후 비교 진행
+      // const id = this.$route.params.id
+      for (const article of this.articles) {
+        if (article.id === Number(id)) {
+          this.article = article
+          break
+        }
+      }
+   }
+},
+created() {
+      this.getArticleById(this.$route.params.id)
+}
+```
+
+* article 출력
+
+```html
+<template>
+  <div>
+    <h1>Detail</h1>
+    <p>글 번호 : {{ article?.id }}</p>
+    <p>글 제목 : {{ article?.title }}</p>
+    <p>글 내용 : {{ article?.content }}</p>
+    <!-- <p>글 작성시간 : {{ article?.createdAt }}</p> -->
+    <p>작성시간 : {{ articleCreatedAt }}</p>
+    <button @click="deleteArticle">삭제</button>
+    <router-link :to="{ name: 'index' }">뒤로가기</router-link>
+  </div>
+</template>
+```
+
+## ▶ 만약 서버에서 데이터를 가져왔다면❓
+
+> 실제로는 서버로부터 가져옴
+
+* 데이터를 가져오는데 시간이 걸림
+
+* optional chaining(`?.`)을 통해 article 객체가 있을 때만 출력되도록 수정
+  
+  * optional chaining(`?.`) 앞의 평가 대상이 undefined나 null 이면 에러가 발생하지 않고 undefined 를 반환
+
+## ▶ Date in JavaScript
+
+> JavaScript 에서 시간을 나타내는 Date객체는 1970년 1월 1일 UTC 자정과의 시간 차이를 밀리초로 나타내는 정수값을 담음
+
+* `Date().toLocaleString()`을 사용하여 변환
+
+* 로컬 시간으로 변환해주는 computed 값 작성 및 출력
+
+```javascript
+<script>
+export default {
+  ...
+  computed: {
+    ...
+    articleCreatedAt() {
+      const article = this.article
+      const createdAt = new Date(article?.createdAt).tolocaleSting()
+      return createdAt
+    }
+  },
+</script>
+```
+
+```html
+<template>
+  <div>
+    ...
+    <!-- <p>글 작성시간 : {{ article?.createdAt }}</p> -->
+    <p>작성시간 : {{ articleCreatedAt }}</p>
+  </div>
+</template>
+```
+
+* 각 게시글을 클릭하면 detail 페이지로 이동하도록 ArticleItem에 이벤트 추가
+
+* v-on 이벤트 핸들러에도 인자 전달 가능
+
+```javascript
+// ArticleItem.vue
+<template>
+  <div @click="goDetail(article.id)">
+    <p>글 번호: {{ article.id }}</p>
+    <p>글 제목: {{ article.title }}</p>
+    <hr>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ArticleItem',
+  props: {
+    article: Object,
+  },
+  methods: {
+    goDetail(id) {
+      this.$router.push({ name: 'detail', params: {id}})
+      // this.$router.push({ name: 'detail', params: `${this.article.id}`})
+    }
+  }
+}
+</script>
+```
+
+# Delete
+
+* DetailView 컴포넌트에 삭제 버튼을 만들고, mutations를 호출
+  
+  * 삭제 후 index 페이지로 이동하도록 네비게이션 작성
+
+```javascript
+<template>
+  <div>
+    ...
+    <button @click="deleteArticle">삭제</button>
+    <router-link :to="{ name: 'index' }">뒤로가기</router-link>
+  </div>
+</template>
+
+<script>
+export default {
+  ...
+  methods: {
+    ...
+    // actions에 할 일이 없기 때문에 바로 mutations로 보내자
+    deleteArticle() {
+      this.$store.commit('DELETE_ARTICLE', this.article.id)
+      this.$router.push({ name: 'index'})
+    },
+  }
+}
+</script>
+```
+
+* mutations에서 id에 해당하는 게시글을 지움
+
+```javascript
+// store/index.js
+mutations: {
+    DELETE_ARTICLE(state, article_id) {
+      state.articles = state.articles.filter((article) => {
+        // 일치하는 애들 빼고 새로운 배열 반환
+        return !(article.id === article_id)
+      })
+    }
+  },
+```
+
+# 404 Not Found
+
+* NotFound404 컴포넌트 및 라우터 작성
+
+* Detail에 대한 route보다 먼저 등록해줘야 함
+  
+  * Why❓ /404로 등록하면 404번째 게시글과 혼동할 수 있음
+
+* DetailView 컴포넌트에 id에 해당하는 article이 없으면 404 페이지로 이동
+
+```javascript
+// DetailView.vue
+methods: {
+    getArticleById(id) {
+      // 문자열로 받아오기 때문에 number로 형변환 후 비교 진행
+      // const id = this.$route.params.id
+      for (const article of this.articles) {
+        if (article.id === Number(id)) {
+          this.article = article
+          break
+        }
+      }
+      // 없는 게시글이라면 404 에러 
+      if (this.article === null) {
+        this.$router.push({ name: 'NotFound404' })
+      }
+    },
+    ...
+  }
+```
+
+* 요청한 리소스가 존재하지 않는 경우 없는 id가 아닌 전혀 다른 요청에도 대비하여 404 page로 redirect 시키기
+  
+  * `$router.push`와 마찬가지로 name을 이용하여 이동할 수 있음
+
+```javascript
+// router/index.js
+const routes = [
+  ...
+  {
+    path: '*',
+    redirect: { name: 'NotFound404' }
+  }
+]
+```
