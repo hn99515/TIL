@@ -176,7 +176,7 @@
 
 ## ▶ Why routing?
 
-* 그럼 동작에 따라 URL이 반드시 바뀌어야 하나?
+* 그럼 동작에 따라 URL이 반드시 바뀌어야 하나❓
   
   * 그렇지는 않다! 단, 유저의 사용자 관점에서는 필요함❗
 
@@ -186,9 +186,9 @@
   
   * *페이지가 무엇을 렌더링 중인지에 대한 상태를 알 수 없음*
     
-    * 새로고침 시 처음 페이지로 돌아감
+    * *새로고침 시 처음 페이지로 돌아감*
     
-    * **링크를 공유할 시 처음 페이지만 공유 가능**
+    * *링크를 공유할 시 처음 페이지만 공유 가능*
   
   * *브라우저의 뒤로 가기 기능을 사용할 수 없음*
 
@@ -211,6 +211,8 @@
   * SSR 방식으로 렌더링
 
 ## ▶ Vue Router 시작하기
+
+> 프로젝트 시작할 때 진행하는 것을 적극 권장
 
 **`vue create vue-router-app`** = Vue 프로젝트 생성
 
@@ -289,6 +291,8 @@
 > **주어진 URL에 대해 일치하는 컴포넌트를 렌더링하는 컴포넌트**
 
 * **<mark>실제 component가 DOM에 부착되어 보이는 자리를 의미</mark>**
+  
+  * 해당 위치에 지정된 컴포넌트가 보임
 
 * **router-link를 클릭하면 routes에 매핑된 컴포넌트를 렌더링**
 
@@ -352,15 +356,17 @@
 
 ![](Router_assets/2022-11-09-10-25-17-image.png)
 
-* **<mark>동적인 값을 사용하기 때문에 `v-bind`를 사용</mark>해야 정상적으로 작동**
+* **<mark>동적인 값을 사용하기 때문에 `v-bind`(`:`)를 사용</mark>해야 정상적으로 작동**
 
 ![](Router_assets/2022-11-09-10-27-11-image.png)
 
 ### 2️⃣ **프로그래밍 방식 네비게이션❗**
 
+> JavaScript 코드로 이동
+
 * **Vue 인스턴스 내부에서 <mark>라우터 인스턴스에 `$router`로 접근할 수 있음</mark>**
 
-* **<mark>다른 URL로 이동하려면 `this.$router.push`를 사용</mark>**
+* **<mark>다른 URL로 이동하려면 `this.$router.push({ 경로 정보 })`를 사용</mark>**
   
   * **<mark>history stack에 이동할 URL을 넣는(push) 방식</mark>**
   
@@ -374,7 +380,7 @@
 
 ## ▶ Dynamic Route Matching
 
-> 동적 인자 전달
+> **동적 인자 전달**
 
 * URL의 특정값을 변수처럼 사용할 수 있음
   
@@ -524,6 +530,8 @@ const routes = [
   * **모든 파일을 한 번에 로드하지 않아도 되기 때문에 <mark>최초에 로드하는 시간이 빨라짐</mark>**
   
   * **<mark>당장 사용하지 않을 컴포넌트는 먼저 로드하지 않는 것이 핵심</mark>❗**
+    
+    * import 시점을 필요할 때 로딩하도록 유도
 
 # Navigation Guard
 
@@ -537,7 +545,7 @@ const routes = [
 
 * 2️⃣ **라우터 가드** = 특정 URL에서만 동작
 
-* 3️⃣ **컴포넌트 가드** = 라우터 컴포넌트 안에 정의
+* 3️⃣ **컴포넌트 가드** = 라우터 컴포넌트 안(특정 공간)에 정의
 
 # 전역 가드
 
@@ -565,7 +573,7 @@ const routes = [
 
 * **변경된 URL로 라우팅하기 위해서는 `next()`를 호출해줘야 함**
   
-  * **<mark>`next()`가 호출되기 전까지 화면이 전환되지 않음</mark>**
+  * **<mark>`next()`가 호출되기 전까지 화면이 전환되지 않음❗</mark>**
 
 ## ▶ 실습
 
@@ -583,7 +591,7 @@ router.beforeEach((to, from, next) => {
 })
 ```
 
-* **`next()`가 호출되어야 화면이 전환됨**
+* **`next()`가 호출되어야 화면이 전환됨❗**
 
 * About으로 이동하면,
   
@@ -631,13 +639,13 @@ const routes = [
   <div id="app">
     <nav>
       ...
-      <router-link :to="{ name: 'login' }">Login</login_link> |
+      <router-link :to="{ name: 'login' }">Login</router_link> |
     </nav>
 ```
 
 * HelloView에 로그인을 해야만 접근할 수 있도록 만들기
   
-  * 로그인 여부에 대한 임시 변수 생성 => 실제로는 서버(Django)에서 데이터를 받은 후 사용
+  * 로그인 여부에 대한 임시 변수 생성 => 실제로는 서버(Django)에서 토큰 데이터를 받은 후 사용
   
   * **`const isLoggedIn = true/false`**
 
@@ -660,7 +668,7 @@ const routes = [
 ```javascript
 // router/index.js
 router.beforeEach((to, from, next) => {
-
+  // 로그인이 필요한 페이지 && 로그인이 되어있지 않다면 
   if (isAuthRequired && !isLoggedIn) {
       console.log('Login으로 이동!')
       next({ name: 'login' })
@@ -681,7 +689,7 @@ router.beforeEach((to, from, next) => {
 
 * 비로그인 상태에서 Home => Login으로 이동했는데 console창에 log가 2개가 찍힌 이유
   
-  * **첫 번째 출력은 `/hello/harr/`로 접속 시도 후 (전역 가드에 막힘) 전역 가드에서 login으로 이동 요청할 때 출력**
+  * **첫 번째 출력은 `/hello/harry/`로 접속 시도 후 (전역 가드에 막힘) 전역 가드에서 login으로 이동 요청할 때 출력**
   
   * **두 번째 출력은 `/login`으로 이동 요청할 때 출력**
 
@@ -707,6 +715,7 @@ router.beforeEach((to, from, next) => {
 router.beforeEach((to, from, next) => {
   ...
   // const authPages = ['hello', 'home', 'about']
+  // 로그인 하지 않아도 되는 페이지 
   const allowAllpages = ['login']
 
   // const isAuthRequired = authPages.includes(to.name)
@@ -730,7 +739,7 @@ router.beforeEach((to, from, next) => {
 
 ## ▶ Login 여부에 따른 라우팅 처리
 
-> **이미 로그인 되어있는 경우 HomeView로 이동하기**
+> **<mark>이미 로그인 되어있는 경우 HomeView로 이동</mark>하기**
 
 * 로그인 여부에 대한 임시 변수 생성
 
@@ -760,7 +769,7 @@ const routes = [
 ]
 ```
 
-* **isLoggedIn = true 인 경우 (로그인 상태)**
+* isLoggedIn = true 인 경우 (로그인 상태)
   
   * **`/login`으로 접속을 시도하면 Home으로 이동**
 
@@ -776,7 +785,7 @@ const routes = [
 
 * <mark>**`beforeRouteUpdate()`**</mark>
   
-  * **해당 컴포넌트를 렌더링하는 경로가 변경될 때 실행**
+  * **해당 컴포넌트를 <mark>렌더링하는 경로가 변경될 때 실행</mark>**
 
 ## ▶Params 변화 감지
 
@@ -784,7 +793,7 @@ const routes = [
 
 * **navbar에 있는 Hello를 눌러 harry에게 인사하는 페이지로 이동**
   
-  * *Hello page에서 Hello 를 클릭하면 URL은 변했지만 페이지는 변하지 않음*
+  * 예) *Hello page에서 Hello 를 클릭하면 URL은 변했지만 페이지는 변하지 않음❗*
 
 ![](Router_assets/2022-11-09-13-50-17-image.png)
 
@@ -854,15 +863,15 @@ const routes = [
 ]
 ```
 
-* **이렇게 직접 요청하는 방식이 아닌, 요청한 리스크가 존재하지 않을 때 404로 이동하도록 하려면 어떻게 해야 할까**❓
+* **이렇게 직접 요청하는 방식이 아닌, 요청한 리소스가 존재하지 않을 때 404로 이동하도록 하려면 어떻게 해야 할까**❓
 
 ## ▶ 요청한 리소스가 존재하지 않는 경우
 
-* 모든 경로에 대해서 404 page로 redirect 시키기
+* 존재하지 않는 모든 경로에 대해서 404 page로 redirect 시키기
   
   * 기존에 명시한 경로가 아닌 모든 경로가 404 page로 redirect 됨
   
-  * **이 때, <mark>routes에 최하단부에 작성</mark>해야 함**
+  * **이 때, <mark>routes에 최하단부에 작성</mark>해야 함❗**
 
 ```javascript
 // router/index.js
@@ -878,11 +887,11 @@ const routes = [
 
 ## ▶ 형식은 유효하지만 특정 리소스를 찾을 수 없는 경우
 
-> = 주소는 틀리지 않았지만 리소스가 없는 경우
+> = 주소형식은 틀리지 않았지만 리소스가 없는 경우
 
 * 예) Django에게 articles/1/로 요청을 보냈지만, 1번 게시글이 삭제된 상태
   
-  * 이 때는 path: '*' 를 만나 *404 page가 렌더링 되는 것이 아니라* **기존에 명시한 `articles/:id/` 에 대한 components가 렌더링됨**
+  * 이 때는 `path: '*' 를 만나 404 page가 렌더링 되는 것이 아니라` **기존에 명시한 `articles/:id/` 에 대한 components가 렌더링됨**
   
   * *하지만 데이터가 존재하지 않기 때문에 정상적으로 렌더링이 되지 않음*
 
@@ -891,10 +900,10 @@ const routes = [
   * **데이터가 없음을 명시하고 404 page로 이동해야 함**
 
 * axios 설치 = `npm i axios`
-
-* DogView 컴포넌트 작성
-
-* routes에 등록 = '*'보다 상단에 등록
+  
+  * DogView 컴포넌트 작성
+  
+  * routes에 등록 = '*'보다 상단에 등록
 
 ```javascript
 
