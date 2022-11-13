@@ -1231,51 +1231,140 @@ export default {
 
 ## ▶ window.localStorage
 
-* 브라우저에서 제공하는 저장공간 중 하나인 Local Storage에 관련된 속성
+> 브라우저에서 제공하는 저장공간 중 하나인 Local Storage에 관련된 속성
 
-* 만료되지 않고 브라우저를 종료하고 다시 실행해도 데이터가 보존됨
+* **<mark>만료되지 않고 브라우저를 종료하고 다시 실행해도 데이터가 보존됨</mark>**
 
-* 데이터가 문자열 형태로 저장됨
+* **데이터가 문자열 형태로 저장됨**
 
 * 관련 메서드
   
-  * `setItem(key, value)` = key, value 형태로 데이터 저장
+  * **`setItem(key, value)`** = key, value 형태로 데이터 저장
   
-  * `getItem(key)` = key에 해당하는 데이터 조회
+  * **`getItem(key)`** = key에 해당하는 데이터 조회
 
 ## ▶ Local Storage 실습
 
 > todos 배열을 Local Storage에 저장하기
 
-* **데이터가 문자열 형태로 저장되어야 하기 때문에 `JSON.stringify`를 사용해 문자열로 변환해주는 과정 필요**
+* **<mark>데이터가 문자열 형태로 저장되어야 하기 때문</mark>에 `JSON.stringify`를 사용해 문자열로 변환해주는 과정 필요**
 
-* state를 변경하는 작업이 아니기 때문에 mutations가 아닌 actions에 작성
-
-```javascript
-
-```
-
-* todo 생성, 삭제, 수정 시에 모두 `saveTodosLocalStorage` action 메서드가 실행되도록 함
+* **state를 변경하는 작업이 아니기 때문에 mutations가 아닌 actions에 작성**
 
 ```javascript
+// index.js
+actions: {
+    ...
+    // 새로고침하더라도 데이터가 남아있게 하기 = local storage에 저장
+    // 작성, 삭제, 수정 시 이 메서드를 호출해야 함!
+    saveTodosToLocalStorage(context) {
+      const jsonTodos = JSON.stringify(context.state.todos)
+      // (key, value) 형으로 local storage에 저장
+      localStorage.setItem('todos', jsonTodos)
+    },
 
+modules: {
+}
 ```
 
-d
+* **todo 생성, 삭제, 수정 시에 모두 `saveTodosLocalStorage` action 메서드가 실행되도록 함**
 
-d
+```javascript
+actions: {
+    // Todo 객체 만드는 함수: 받아온 데이터(이름은 맘대로) 사용
+    createTodo(context, todoTitle) {
+      const todoItem = {
+        title: todoTitle,
+        isCompleted: false,
+      }
+      // console.log(todoItem)
+      // 이제는 mutations 를 호출: 위에서 만든 객체를 데이터로 전달
+      context.commit('CREATE_TODO', todoItem)
+      // 새로고침하더라도 데이터 보존하기 위해 메서드 호출
+      // actions는 다른 action을 호출할 수 있음
+      context.dispatch('saveTodosToLocalStorage')
+    },
+    // 삭제할 때는 별다른 역할이 없으므로 생략 후
+    // 컴포넌트 메서드에서 바로 commit 하여 mutations 호출 가능
+    deleteTodo(context, todo) {
+      context.commit('DELETE_TODO', todo)
+      context.dispatch('saveTodosToLocalStorage')
+    },
+    // 삭제와 동일한 논리구조
+    updateTodoStatus(context, todoData) {
+      context.commit('UPDATE_TODO_STATUS', todoData)
+      context.dispatch('saveTodosToLocalStorage')
+    },
+```
 
-d
+* 하지만 아직 Local Stoarge에 있는 todo 목록을 불러오는 것이 아니기 때문에 페이지 새로고침 이후 목록이 모두 사라짐
 
-d
+* 불러오기 버튼을 누르면 Local Stoarge에 저장된 데이터를 가져오기
+  
+  * 불러오기 버튼 생성 > loadTodos 메서드 생성 > loadTodos action 메서드 생성 > LODAD_TODOS mutations 메서드 생성
 
-d
+```javascript
+// App.vue
+<template>
+  <div id="app">
+    ...
+    <!-- Local Storeage에 저장된 데이터를 사용하기 -->
+    <!-- <button @click="loadTodos">Todo 불러오기</button> -->
+  </div>
+</template>
+
+
+<script>
+...
+export default {
+  name: 'App',
+  components: {
+    TodoForm,
+    TodoList,
+  },
+  ...
+  methods: {
+    loadTodos() {
+      this.$store.dispatch('loadTodos')
+    }
+  }
+}
+</script>
+```
+
+```javascript
+// index.js
+actions: {
+    ...
+    // 새롭게 데이터를 저장해야 하므로 mutations 호출!
+    loadTodos(context) {
+      context.commit('LOAD_TODOS')
+    }
+  },
+
+modules: {
+}
+```
+
+* **문자열 데이터를 다시 object 타입으로 변환 (`JSON.parse`)하여 저장**
+
+```javascript
+mutations: {
+    ...
+    // 저장된 데이터 불러와 업데이트(문자열 형태이므로 역으로 parse 해야 함!)
+    LOAD_TODOS(state) {
+      const localStorageTodos = localStorage.getItem('todos')
+      const parsedTodos = JSON.parse(localStorageTodos)
+      state.todos = parsedTodos
+    },
+  },
+```
 
 ## ▶ Vuex-persistedstate
 
-> Vuex state를 자동으로 브라우저의 Local Storage에 저장해주는 라이브러리 중 하나
+> **Vuex state를 자동으로 브라우저의 Local Storage에 저장해주는 라이브러리 중 하나**
 
-* 페이지가 새로고침 되어도 Vuex state를 유지시킴
+* **페이지가 새로고침 되어도 Vuex state를 유지시킴**
 
 * Local Storage에 저장된 data를 자동으로 state로 불러옴
 
@@ -1327,11 +1416,11 @@ export default new Vuex.Store({
 
 ## ▶ Vuex, 그럼 언제 사용해야 하나?
 
-* Vuex는 공유된 상태 관리를 처리하는 데 유용하지만, 개념에 대한 이해와 시작하는 비용이 큼
+* **Vuex는 공유된 상태 관리를 처리하는 데 유용하지만, 개념에 대한 이해와 시작하는 비용이 큼**
 
 * 애플리케이션이 단순하다면 Vuex가 없는 것이 더 효율적일 수 있음
 
-* 그러나 중대형 규모의 SPA를 구축하는 경우 Vuex는 자연스럽게 선택할 수 있는 단계가 오게 됨
+* **그러나 중대형 규모의 SPA를 구축하는 경우 Vuex는 자연스럽게 선택할 수 있는 단계가 오게 됨**
 
 * 결과적으로 역할에 적절한 상황에서 활용했을 때 Vuex 라이브러리 효용을 극대화할 수 있음
   
