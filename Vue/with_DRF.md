@@ -338,7 +338,7 @@ export default {
 
 > 동일 출처 정책
 
-* **불러온 문서나 스크립트가 다른 출처에서 가져온 리소스와 상호작용 하는 것을 제한하는 보안 방식**
+* **<mark>불러온 문서나 스크립트가 다른 출처에서 가져온 리소스와 상호작용 하는 것을 제한</mark>하는 보안 방식**
 
 * *잠재적으로 해로울 수 잇는 문서를 분리함으로써 공격받을 수 있는 경로를 줄임*
 
@@ -350,7 +350,7 @@ export default {
   
   * `http://localhost:3000/posts/3`
   
-  * `scheme/protocol`  // `Host` : `Port` 가 일치하는 경우에만 동일 출처로 인정
+  * `scheme=protocol`  // `Host` : `Port` 가 일치하는 경우에만 동일 출처로 인정
 
 ![](with%20DRF_assets/2022-11-14-11-13-09-image.png)
 
@@ -664,7 +664,7 @@ export default {
 
 * *비효율적인 부분이 존재*
   
-  * **전체 게시글 정보를 요청해야 새로 생성된 게시글을 확인할 수 있음**
+  * *전체 게시글 정보를 요청해야 새로 생성된 게시글을 확인할 수 있음*
   
   * 만약 vuex state를 통해 전체 게시글 정보를 관리하도록 구성한다면❓
     
@@ -689,17 +689,39 @@ export default {
   * id를 동적 인자로 입력 받아 특정 게시글에 대한 요청
 
 ```javascript
+import DetailView from '@/views/DetailView'
 
+Vue.use(VueRouter)
+
+const routes = [
+  ...,
+  {
+    path: '/:id',
+    name: 'DetailView',
+    component: DetailView,
+  },
+]
 ```
 
 * **`components/ArticleListItem.vue`**
   
-  * router-link를 통해 특정 게시글의 id값을 동적 인자로 전달
+  * **router-link를 통해 특정 게시글의 id값(전달할 데이터)을 동적 인자로 전달**
   
   * 게시글 상세 정보를 server에 요청
 
 ```html
-
+<template>
+  <div>
+    <h5>{{ article.id }}</h5>
+    <p>작성자 : {{ article.username }}</p>
+    <p>{{ article.title }}</p>
+    <!-- 각 게시글의 DETAIL이 들어갈 수 있음 (해당 값이 어떤 것인지 포함해서 보냄) -->
+    <router-link :to="{ name: 'DetailView', params: { id: article.id} }">
+      [DETAIL]
+    </router-link>
+    <hr>
+  </div>
+</template>
 ```
 
 * **`views/DetailView.vue`**
@@ -707,7 +729,36 @@ export default {
   * **`this.$route.params`를 활용해 컴포넌트가 create될 때, 넘겨받은 id로 상세 정보 AJAX 요청**
 
 ```javascript
-
+export default {
+  name: 'DetailView',
+  data() {
+    return {
+      article: null,
+    }
+  },
+  // 인스턴스가 생성될 때 단일 게시글에 대한 조회를 바로 요청하기 위함
+  created() {
+    this.getArticleDetail()
+  },
+  methods: {
+    // 상세 게시글 달라는 메서드
+    getArticleDetail() {
+      axios({
+        method: 'get',
+        // 동적 인자인 id를 불러 올 수 있음
+        url: `${API_URL}/api/v1/articles/${this.$route.params.id}`
+      })
+        .then((res) => [
+          // console.log(res)
+          // article에 각 게시물 상세 데이터 저장
+          this.article = res.data
+        ])
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }
+}
 ```
 
 * 게시글 상세 정보 요청 결과 확인
@@ -722,21 +773,28 @@ export default {
   
   * data에 담기까지 시간이 걸리므로 optional chaining을 활용해 데이터 표기
 
-```javascript
-
+```html
+<template>
+  <div>
+    <h1>Detail</h1>
+    <p>글 번호 : {{ article?.id }}</p>
+    <p>제목 : {{ article?.title }}</p>
+    <p>내용 : {{ article?.content }}</p>
+    <p>작성시간 : {{ article?.created_at }}</p>
+    <p>수정시간 : {{ article?.updated_at }}</p>
+  </div>
+</template>
 ```
 
 * 최종 결과 확인
-
-이미지
 
 # DRF Auth System
 
 ## ▶ Authentication - 인증, 입증
 
-> 자신이라고 주장하는 사용자가 누구인지 확인하는 행위
+> **자신이라고 주장하는 사용자가 누구인지 확인하는 행위**
 
-* **모든 보안 프로세스의 첫 번째 단계 = 가장 기본 요소**
+* **<mark>모든 보안 프로세스의 첫 번째 단계 = 가장 기본 요소</mark>**
   
   * 내가 누구인지를 확인하는 과정
 
@@ -837,7 +895,7 @@ export default {
   
   * Django의 Remote user 방식을 사용할 때 활용하는 인증 방식
 
-* **`TokenAuthentication`**
+* <mark>**`TokenAuthentication`**</mark>
   
   * 매우 간단하게 구현할 수 있음
   
@@ -845,7 +903,7 @@ export default {
   
   * 다양한 외부 패키지가 있음
 
-* **(중요) settings.py 에서 `DEFAULT_AUTHENTICATION_CLASSES`를 정의**
+* **(중요) settings.py 에서 `DEFAULT_AUTHENTICATION_CLASSES`를 정의**❗
   
   * **`TokenAuthentication` 인증 방식을 사용할 것임을 명시**
 
@@ -881,13 +939,11 @@ print(token.key)
     
     * 삽입해야 할 문자열은 각 인증 방식마다 다름
   
-  * **주의❗) Token 문자열과 발급받은 실제 token 사이를 `' '(공백)`으로 구분**
+  * **주의❗) Token 문자열과 발급받은 실제 token 사이를 <mark>`' '(공백)`으로 구분</mark>**
 
-* Authorization HTTP headers 작성 방법 (예시)
+* Authorization HTTP headers 작성 방법 예 (띄어쓰기 유의❗)
 
-```python
-Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
-```
+`Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b`
 
 ## ▶ 토론 생성 및 관리 문제점
 
@@ -913,7 +969,7 @@ Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
 
 * 주의❗) *`django-rest-auth`는 더 이상 업데이트를 지원하지 않음*
   
-  * **`dj-rest-auth` 사용❗**
+  * **<mark>`dj-rest-auth` 사용</mark>❗**
 
 ## ▶ dj-rest-auth 사용 방법
 
@@ -928,10 +984,12 @@ INSTALLED_APPS = [
 
     # Auth
     'rest_framework.authtoken',
-    'dj_rest_auth',',
+    'dj_rest_auth',
+    ...,
+]
 ```
 
-3️⃣ url 등록
+3️⃣ url 등록 = 라이브러리의 url 사용
 
 ```python
 urlpatterns = [
@@ -941,11 +999,11 @@ urlpatterns = [
 
 ## ▶ 시작하기 전...
 
-* 시작하기 전, auth.User를 accounts.User로 변경 필요
+* 시작하기 전, `auth.User`를 **`accounts.User`로 변경 필요**
   
-  * auth.User로 설정된 DB 제거
+  * auth.User로 설정된 DB 제거 = 초기화
 
-* `my_api/settings.py`
+* **`my_api/settings.py`**
 
 ```python
 INSTALLED_APPS = [
@@ -987,7 +1045,9 @@ urlpatterns = [
   
   * `/accounts/`로 이동
   
-  * 회원가입 기능 없음
+  * *회원가입 기능은 없음* = Token 을 생성해야 하므로❗
+  
+  ![](with_DRF_assets/2022-11-15-00-42-18-image.png)
 
 * Github 재확인
   
@@ -995,11 +1055,13 @@ urlpatterns = [
 
 * 공식문서로 이동
   
-  * Registration (optional) 확인
+  * `Registration (optional)` 확인
 
 ## ▶ Registration
 
-* Registration 기능을 사용하기 위해 추가 기능 등록 및 설치 필요
+> 회원 가입 기능을 추가하기 위함 (사전준비)
+
+* **Registration 기능을 사용하기 위해 추가 기능 등록 및 설치 필요**
   
   * dj-rest-auth는 소셜 회원가입을 지원
   
@@ -1041,7 +1103,7 @@ urlpatterns = [
 ]
 ```
 
-* allauth 추가에 대한 migrate
+* **allauth 추가에 대한 migrate 진행**
 
 * **`/accounts/signup/` 페이지 확인**
   
@@ -1069,7 +1131,7 @@ urlpatterns = [
 
 * **`/accounts/password/change/` 기능 확인**
   
-  * 로그인 되어 있거나, 인증이 필요한 기능
+  * **로그인 되어 있거나, 인증이 필요한 기능**
   
   * DRF 자체 제공 HTML form에서는 토큰을 입력할 수 있는 공간이 없음
   
@@ -1078,10 +1140,10 @@ urlpatterns = [
 * [참고] Raw data에서 직접 headers 추가 기능
 
 ```python
-{{
-  "ㅗ"
-}
-  "ㅗ"
+{
+  "headers": {"Authorization": "Token token"},
+  "new_password1": "new password",
+  "new_password2": "new password",
 }
 ```
 
@@ -1095,9 +1157,8 @@ urlpatterns = [
 
 * 그럼에도 실패한 이유는❓
   
-  * 인증 방법이 입증되지 않음
-
-* **`my_api/settings.py`**
+  * *인증 방법이 입증되지 않음* = global 하게 Token 을 쓴다고 선언해야 함
+  * **`my_api/settings.py`**
 
 ```python
 REST_FRAMEWORK = {
@@ -1116,15 +1177,17 @@ REST_FRAMEWORK = {
   
   * DRF 공식 문서 > API Guide > Permissions 확인
 
-* 권한 세부 설정
+* **권한 세부 설정**
   
-  1️⃣ 모든 요청에 대해 인증을 요구하는 설정
+  1️⃣ **모든 요청에 대해 인증을 요구하는 설정**
   
-  2️⃣ 모든 요청에 대해 인증이 없어도 허용하는 설정
+  * settings.py 에서 사용
+  
+  2️⃣ **모든 요청에 대해 인증이 없어도 허용하는 설정**
 
-* 설정 위치 == 인증 방법을 설정한 곳과 동일
+* 설정 위치 = 인증 방법을 설정한 곳과 동일
   
-  * 우선 모든 요청에 대해 허용 설정
+  * 우선 모든 요청에 대해 허용 설정 = 로그인만 하면 모든 view 함수 허용
 
 * **`my_api/settings.py`**
 
@@ -1148,7 +1211,7 @@ REST_FRAMEWORK = {
 
 * **`articles/views.py`**
 
-* 게시글 조회 및 생성 요청 시 인증된 경우만 허용하도록 권한 부여 = decorator 활용❗
+* **게시글 조회 및 생성 요청 시 인증된 경우만 허용하도록 권한 부여 = <mark>decorator</mark> 활용**❗
 
 ```python
 # permission Decorators
@@ -1173,14 +1236,14 @@ def article_list(request):
 ```
 
 * `/articles/` 조회 요청 확인
-
-* 게시글 조회 시 로그인 필요
+  
+  * 게시글 조회 시 로그인 필요
 
 ## ▶ Article Create
 
 * `/articles/` 생성 요청 확인
   
-  * Postman으로 진행
+  * Postman으로 진행 (Headers에 Token을 넣어야지만 생성 성공)
 
 * 결과 확인 = 게시글 생성 성공
 
@@ -1214,7 +1277,7 @@ def article_list(request):
 
 ## ▶ Vue server 요청 정상 작동 여부 확인
 
-* 정상 작동하던 게시글 전체 조회 요청이 작동하지 않음
+* *정상 작동하던 게시글 전체 조회 요청이 작동하지 않음* = Token이 필요해
   
   * 401 status code 확인
   
@@ -1224,9 +1287,546 @@ def article_list(request):
 
 ## ▶ SignUp Page
 
+* `views/SignUpView.vue`
+  
+  * server에서 정의한 field명 확인 후 진행
+
+```html
+<template>
+  <div>
+    <h1>Sign Up Page</h1>
+    <form @submit.prevent="signUp">
+      <label for="username">username : </label>
+      <input type="text" id="username" v-model="username"><br>
+
+      <label for="password1"> password : </label>
+      <input type="password" id="password1" v-model="password1"><br>
+
+      <label for="password2"> password confirmation : </label>
+      <input type="password" id="password2" v-model="password2">
+      
+      <input type="submit" value="SignUp">
+    </form>
+  </div>
+</template>
+```
+
+```javascript
+<script>
+export default {
+  name: 'SignUpView',
+  data() {
+    return {
+      username: null,
+      password1: null,
+      password2: null,
+    }
+  },
+}
+</script>
+```
+
+* `router/index.js` 에서 SignUpView 설정
+
+* `src/App.vue` 에 회원가입으로 갈 수 있게 설정
+
+```html
+<template>
+  <div id="app">
+    <nav>
+      <router-link :to="{ name: 'ArticleView' }">Articles</router-link> | 
+      <router-link :to="{ name: 'SignUpView' }">SignUpPage</router-link> | 
+    </nav>
+    <router-view/>
+  </div>
+</template>
+```
+
 ## ▶ SignUp Request
 
-* 회원가입을 완료 시 응답 받을 정보 Token을 store에서 관리할 수 있도록 actions를 활용하여 요청 후, state에 
+* **회원가입 완료 시 응답 받을 정보 Token을 store에서 관리할 수 있도록 actions를 활용하여 요청 후, state에 저장할 로직 작성**
+  
+  * 회원가입이나 로그인 후 얻을 수 있는 Token은 server 구성 방식에 따라 매 요청마다 요구할 수 있으므로, 다양한 컴포넌트에서 쉽게 접근할 수 있도록 중앙 상태 저장소인 vuex에서 관리
+
+* **`views/SignUpView.vue`**
+
+```javascript
+<script>
+export default {
+  ...,
+  },
+  methods: {
+    signUp() {
+      const username = this.username
+      const password1 = this.password1
+      const password2 = this.password2
+
+      const payload = {
+        // username,
+        // password1,
+        // password2,
+        username: username,
+        password1: password1,
+        password2: password2,
+      }
+      this.$store.dispatch('signUp', payload)
+```
+
+* **`store/index.js`**
+  
+  * **payload가 가진 값을 각각 할당**
+  
+  * AJAX 요청으로 응답 받은 데이터는 다수의 컴포넌트에서 사용해야 함
+  
+  * state에 저장할 것
+
+```javascript
+actions: {
+    signUp(context, payload) {
+      axios({
+        method: 'post',
+        url: `${API_URL}/accounts/signup/`,
+        data: {
+          username: payload.username,
+          password1: payload.password1,
+          password2: payload.password2,
+        }
+      })
+        .then((res) => {
+          // console.log(res)
+          context.commit('SAVE_TOKEN', res.data.key)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+```
+
+* **muations 작성**
+
+```javascript
+export default new Vuex.Store({
+  state: {
+    articles: [],
+    token: null,
+  },
+  mutations: {
+    // 둘 다 키를 저장해야 하는 것이므로 같은 이름 하나로 재사용!
+    // SIGN_UP(state, token) {
+    //   state.token = token
+    // },
+    // 회원가입 && 로그인
+    SAVE_TOKEN(state, token) {
+      state.token = token
+      router.push({ name: 'ArticleView' })
+    }
+  },
+```
+
+## ▶ 토큰 관리
+
+* *게시물 전체 조회와 달리, 인증 요청의 응답으로 받은 Token은 매번 요청하기 힘듦*
+  
+  * 비밀번호를 항상 보관하고 있을 수 없음
+  
+  * localStorage에 token 저장을 위해 `vuex-persistedstate` 활용
+
+* `npm install vuex-persistedstate` = 설치
+
+* **`store/index.js`**
+
+```javascript
+import createPersistedstate from 'vuex-persistedstate'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  plugins: [
+    createPersistedstate()
+  ],
+```
+
+### 📌 [참고] User 인증 정보를 localStorage 에 저장해도 될까❓
+
+> 안전한 방법은 아님
+
+* `vuex-persistedstate`는 아래의 2가지 방법을 제공
+  
+  1. 쿠키를 사용하여 관리
+  
+  2. 로컬 저장소를 난독화하여 관리
+
+# Login Request
+
+* **`views/LogInView.vue`**
+  
+  * 회원가입 로직과 동일
+  
+  * server에서 정의한 field명 확인
+    
+    * username, password
+
+```html
+<template>
+  <div>
+    <h1>LogIn Page</h1>
+    <form @submit.prevent="logIn">
+      <label for="username">username : </label>
+      <input type="text" id="username" v-model="username"><br>
+
+      <label for="password"> password : </label>
+      <input type="password" id="password" v-model="password"><br>
+
+      <input type="submit" value="logIn">
+    </form>
+  </div>
+</template>
+```
+
+* **`router/index.js`** 에 `LoginView` 등록
+
+* **`src/App.vue`**
+  
+  * 파이프 라인 등을 활용하여 링크간 공간 확보
+
+```html
+<template>
+  <div id="app">
+    <nav> 
+      <router-link :to="{ name: 'SignUpView' }">SignUpPage</router-link> | 
+      <router-link :to="{ name: 'LogInView' }">LogInPage</router-link>
+    </nav>
+    <router-view/>
+  </div>
+</template>
+```
+
+## ▶ Login Request
+
+* **signUp과 다른 점은 password1, password2 가 password로 바뀐 것 뿐**
+
+* **요청을 보내고 응답을 받은 Token을 state에 저장하는 것 까지도 동일**
+  
+  * mutations가 처리해야 하는 업무 동일
+  
+  * SIGN_UP mutations를 `SAVE_TOKEN` mutations로 통일(대체 가능)❗
+
+* **`views/LogInView.vue`**
+  
+  * 사용자 입력 값을 하나의 객체 payload에 담아 전달
+
+```javascript
+<script>
+export default {
+  name: 'LogInView',
+  data() {
+    return {
+      username: null,
+      password: null,
+    }
+  },
+  methods: {
+    logIn() {
+      const username = this.username
+      const password = this.password
+      
+      const payload = {
+        username: username,
+        password: password,
+      }
+      this.$store.dispatch('logIn', payload)
+    }
+  }
+}
+</script>
+```
+
+* **`store/index.js`**
+  
+  * payload가 가진 값을 각각 할당
+  
+  * AJAX 요청으로 응답 받은 데이터는 다수의 컴포넌트에서 사용해야 함
+  
+  * state 에 저장할 것
+
+```javascript
+actions: {
+    ...,
+    logIn(context, payload) {
+      axios({
+        method: 'post',
+        url: `${API_URL}/accounts/login/`,
+        data: {
+          username: payload.username,
+          password: payload.password,
+        }
+      })
+        .then((res) => {
+          // console.log(res)
+          context.commit('SAVE_TOKEN', res.data.key)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  },
+```
+
+* 최종 결과 확인
+
+# IsAuthenticated in Vue
+
+* **회원가입, 로그인 요청에 대한 처리 후 state에 저장된 Token을 직접 확인하기 전까지 인증 여부 확인이 불가**
+
+* 인증되지 않았을 시 게시글 정보를 확인할 수 없으나 이유를 알 수 없음
+  
+  * *로그인 여부를 확인할 수 있는 수단이 없음*
+
+* **`store/index.js`**
+  
+  * 로그인 여부 판별 메서드 = Token이 있으면 true, 없으면 false 반환
+
+```javascript
+export default new Vuex.Store({
+  ...,
+  getters: {
+    // 로그인 되어 있으면 true, 로그아웃이라면 false (토큰 값 유무에 따라)
+    isLogin(state) {
+      return state.token ? true : false
+    }
+  },
+```
+
+* **`views/ArticleView.vue`**
+  
+  * **`isLogin` 정보를 토대로 게시글 정보를 요청할 것인지, LogInView로 이동 시킬 것인지 결정**
+
+```javascript
+<script>
+export default {
+  ...,
+  computed:{
+    isLogin() {
+      return this.$store.getters.isLogin
+    }
+  },
+  methods: {
+    getArticles() {
+      if (this.isLogin === true) {
+        this.$store.dispatch('getArticles')
+      } else {
+        alert('로그인이 필요한 서비스입니다.')
+        this.$router.push({ name: 'LogInView' })
+      }
+    }
+  }
+}
+</script>
+```
+
+* **`store/index.js`**
+  
+  * *단, `store/index.js`에서는 $router 에 접근할 수 없음*
+    
+    * **router를 import 해야 함**❗
+
+```javascript
+import router from '@/router'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  ...,
+  mutations: {
+    // 둘 다 키를 저장해야 하는 것이므로 같은 이름 하나로 재사용!
+    // SIGN_UP(state, token) {
+    //   state.token = token
+    // },
+    // 회원가입 && 로그인
+    SAVE_TOKEN(state, token) {
+      state.token = token
+      router.push({ name: 'ArticleView' })
+    }
+  },
+```
+
+## ▶ 로그인 후, Articles 에서는...?
+
+* 인증은 받았지만 게시글 조회 시 인증 정보를 담아 보내고 있지 않음
+  
+  * `401 Unauthorized` 발생
+
+* 원인❓
+  
+  * *로그인은 했으나 Django에서는 로그인한 것으로 인식 못함*
+  
+  * *발급 받은 token을 요청으로 보내지 않았기 때문❗*
+
+# Request with Token
+
+> headers HTTP에 Token을 담아 요청을 보내면 된다.
+
+## ▶ Article List Read with Token
+
+* **`store/index.js`**
+  
+  * **headers에 Authorizations 와 token 추가**
+
+```javascript
+actions: {
+    getArticles(context) {
+      axios({
+        method: 'get',
+        // 전체 게시글 조회 페이지 주소 (Django url에서 확인 필요!)
+        url: `${API_URL}/api/v1/articles/`,
+        headers: {
+          Authorization: `Token ${context.state.token}`
+        }
+      })
+        .then((res) => {
+          // console.log(res, context)
+          // console.log(res.data)
+          context.commit('GET_ARTICLES', res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+```
+
+* 결과 확인
+  
+  * 404 발생한 경우 게시글이 없기 때문에 `get_list_or_404` 메서드 중 404가 실행!
+
+## ▶ Article Create with Token
+
+* **`views/CreateView.vue`**
+  
+  * headers에 Authorization 과 token 추가
+
+```javascript
+export default {
+  ...,
+  methods: {
+    // 게시글 작성 안됨 = 401 응답 = 매 요청마다 토큰 보내줘야 함
+    createArticle() {
+      ...,
+      // 장고로 생성된 데이터 보내기
+      axios({
+        ...,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`
+        }
+      })
+        .then(() => {
+          // console.log(res)
+          // 생성 완료되면 ArticleView로 이동시키기
+          this.$router.push({ name: 'ArticleView'})
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }
+}
+```
+
+## ▶ Create Article with User
+
+* **`articles/models.py`**
+  
+  * 게시글을 작성 시 User 정보를 포함하여 작성하도록 수정
+  
+  * User 정보를 Vue에서도 확인 가능하도록 정보 제공
+
+```python
+from django.db import models
+from django.conf import settings
+
+# Create your models here.
+class Article(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    ...
+```
+
+* **makemigrations & migrate**
+  
+  * 기존 게시글에 대한 User 정보 default 값 설정
+
+* **`articles/serializers.py`** 수정
+  
+  * ArticleListSerializer에서 user는 사용자가 작성하지 않음 => fields에 추가
+  
+  * AritcleSerializer에서 user는 읽기 전용으로 제공
+  
+  * username을 확인할 수 있도록 username field 정의 필요
+    
+    * comment_count field 정의 방법 참고
+
+```python
+class ArticleListSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Article
+        # fields = ('id', 'title', 'content')
+        fields = ('id', 'title', 'content', 'user', 'username')
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        read_only_fields = ('article',)
+
+
+class ArticleSerializer(serializers.ModelSerializer):
+    comment_set = CommentSerializer(many=True, read_only=True)
+    comment_count = serializers.IntegerField(source='comment_set.count', read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Article
+        fields = '__all__'
+        read_only_fields = ('user', )
+```
+
+* **`articles/views.py`** 수정
+  
+  * 게시글 생성 시 user 정보 저장
+
+```python
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def article_list(request):
+    if request.method == 'GET':
+        ...
+
+    elif request.method == 'POST':
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+```
+
+* **`components/ArticleListItem.vue`**
+  
+  * article이 가지고 있을 user 정보 표현
+
+```html
+<template>
+  <div>
+    <h5>{{ article.id }}</h5>
+    <p>작성자 : {{ article.username }}</p>
+    <p>{{ article.title }}</p>
+    ...
+    <hr>
+  </div>
+</template>
+```
 
 # drf-spectacular
 
