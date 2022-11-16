@@ -1151,11 +1151,11 @@ urlpatterns = [
   
   * body/form-data에 값 입력
 
-* headers에 Token 입력
+* **headers에 Token 입력**
   
-  * `Authorization: Token { your token }` 형식에 맞춰 입력
+  * **`Authorization: Token { your token }` 형식에 맞춰 입력**
 
-* 그럼에도 실패한 이유는❓
+* 그럼에도 실패한 이유는❓ (403 error)
   
   * *인증 방법이 입증되지 않음* = global 하게 Token 을 쓴다고 선언해야 함
   * **`my_api/settings.py`**
