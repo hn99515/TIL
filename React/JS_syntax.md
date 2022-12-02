@@ -582,7 +582,6 @@ let person = {
 
 person.say();
 person["say"]();
-
 ```
 
 * **메서드 내 Template leteral 사용 가능**
@@ -607,3 +606,266 @@ person.say();
 * in 연산자를 통해 객체 내 프로퍼티가 있는지 없는지 확인 가능
 
 # 배열
+
+> 비원시자료형 = 동시에 여러 개의 데이터를 가질 수 있음
+
+- 키와 속성들을 담고 있는 참조 타입의 객체
+
+- **순서를 보장하는 특징**
+
+- **주로 `[]`를 이용하여 생성하고, 0을 포함한 양의 정수 인덱스로 특정 값에 접근 가능**
+
+- **배열의 길이는 `array.length` 형태로 접근 가능**
+
+- (참고) **배열의 마지막 원소는 `array.length - 1`로 접근**
+
+```javascript
+// 배열 리터럴를 통해 배열 생성
+let arr = []; 
+
+// 모든 자료형 담기 가능
+let arr2 = [1, "2", true, null, undefined, {}, [], function () {}];
+console.log(arr);
+```
+
+```javascript
+let arr = [1,2,3,4,5];
+
+// index 접근 가능
+console.log(arr[0]);
+console.log(arr[1]);
+console.log(arr[2]);
+console.log(arr[3]);
+console.log(arr[4]);
+
+// push
+arr.push(6);
+arr.push({ key: "value" });
+console.log(arr) // [1,2,3,4,5,6,Object(key:"value")]
+
+// 배열의 길이
+console.log(arr.length); // 7
+```
+
+## ▶️ 배열 내장함수
+
+* **`forEach`** = 새로운 배열에 결과값을 넣으려면 새롭게 만들어서 진행해야 함
+
+```javascript
+const arr = [1,2,3,4];
+const newArr = [];
+
+arr.forEach(function (elm) {
+    newArr.push(elm * 2);
+});
+
+console.log(newArr); // [2, 4, 6, 8]
+```
+
+* **`map`** = 새로운 배열을 생성한 후 반환
+
+```javascript
+const arr = [1,2,3,4];
+const newArr = arr.map((elm) => {
+    return elm * 2;
+});
+
+console.log(newArr) // [2, 4, 6, 8]
+```
+
+* **`includes`** = 주어진 객체, 배열 등이 찾고자하는 값이 들어있다면 `true`, 없다면 `false`
+
+```javascript
+const arr = [1,2,3,4];
+let number = 3;
+
+console.log(arr.includes(number)); // true
+```
+
+* **`indexOf`** = 찾고자하는 값이 들어있다면 그 값의 인덱스를 출력, 없다면 -1을 출력
+
+```javascript
+const arr = [1,2,3,4];
+let number = "3";
+
+console.log(arr.indexOf(number)); // -1
+```
+
+* **`findIndex(콜백)`**
+  
+  * 객체 배열 시 찾고자하는 값이 들어있다면 그 첫 번째 값의 인덱스를 출력
+
+```javascript
+const arr = [
+    { color: "red" },
+    { color: "black" },
+    { color: "blue" },
+    { color: "green" },
+];
+
+console.log(arr.findIndex((elm) => {
+    return elm.color === "red"; // 0
+    })
+);
+```
+
+```javascript
+const idx = arr.findIndex((elm) => {
+    return elm.color === "blue";
+});
+
+console.log(arr[idx]) // color: "blue"
+```
+
+* **`find(콜백)`** = 조건에 일치하는 값을 호출
+
+```javascript
+const arr = [
+    { color: "red" },
+    { color: "black" },
+    { color: "blue" },
+    { color: "green" },
+];
+
+const element = arr.find((elm) => {
+    return elm.color === "blue";
+});
+
+console.log(element); // color: "blue"
+```
+
+* **`filter(콜백)`** = 원하는 조건에 충족하는 객체만 불러오기
+
+```javascript
+const arr = [
+    { num: 1, color: "red" },
+    { num: 2, color: "black" },
+    { num: 3, color: "blue" },
+    { num: 4, color: "green" },
+    { num: 5, color: "blue" },
+];
+
+// 색상이 blue인 객체를 모두 불러오기
+console.log(arr.filter((elm) => elm.color === "blue"));
+
+```
+
+* **`slice(시작인덱스, 끝인덱스+1)`** = 원하는 인덱스까지 잘라서 객체 불러오기 (새로운 배열로 반환)
+
+```javascript
+// 원하는 인덱스 범위만 추출
+console.log(arr.slice(0, 2)); // num 1, 2 만 나옴!
+```
+
+* **`concat`** = 배열 붙이기 (새로운 배열로 반환)
+
+```javascript
+const arr = [
+    { num: 1, color: "red" },
+    { num: 2, color: "black" },
+    { num: 3, color: "blue" },
+];
+
+const arr2 = [
+    { num: 4, color: "green" },
+    { num: 5, color: "blue" },
+]
+
+console.log(arr1.concat(arr2));
+```
+
+* **`sort`** = 배열 정렬하기
+
+```javascript
+let chars = ["나", "다", "가"];
+
+// 원본 배열 자체를 정렬시킴
+chars.sort();
+console.log(chars); // ["가", "나", "다"]
+```
+
+```javascript
+let nums = [0, 1, 3, 2, 10, 30, 20];
+
+// sort는 문자열 기준으로 정렬하기 때문에 순서가 이상하게 나온다.
+nums.sort();
+console.log(nums); // [0, 1, 10, 2, 20, 3, 30]
+```
+
+```javascript
+const compare = (a, b) => {
+    // 1. 같다.
+    // 2. 크다 = 큰 값을 뒤로 (1)
+    // 3. 작다 = 작은 값은 앞으로 (-1)
+    if (a > b) {
+        return 1;
+    }
+    if (a < b) {
+        return -1;
+    }
+
+    return 0;
+};
+
+nums.sort(compare);
+console.log(nums); // [0, 1, 2, 3, 10, 20, 30]
+```
+
+* **숫자를 오름차순하고 싶은 경우, 3가지 조건을 가진 비교 함수가 필요!**
+  
+  * **반대로 적용하면 내림차순!**
+
+* **`join`** = 구분자를 통해 배열 내 원소를 결합
+
+```javascript
+const arr = ["이동욱", "님", "안녕하세요", "또왔네요"];
+
+console.log(arr.join()); // 이동욱,님,안녕하세요,또왔네요 (기본=쉼표로 구분)
+console.log(arr.join(' ')); // 이동욱 님 안녕하세요 또왔네요
+```
+
+# 반복문
+
+> **특정 조건에서는 반복해서 진행하는 코드**
+
+* **`for`**
+  
+  * 배열 내 모든 원소를 인덱스로 순회할 때 주로 사용
+
+```javascript
+// 초기식 = 변수 설정; 조건문; 반복이 수행될 때마다 진행할 연산
+for (let i = 1; i <= 100; i++) {
+    // 반복 수행할 명령
+    console.log("ukey");
+}
+```
+
+```javascript
+const arr = ["a", "b", "c"]
+
+for (let i = 0; i <= arr.length; i++) {
+    // 반복 수행할 명령
+    console.log(arr[i]); // a b c
+}
+```
+
+```javascript
+let person = {
+    name: "이동욱",
+    age: 31,
+    tall: 170,
+};
+
+const personKeys = Object.keys(person); // 배열로 키값만 추출 가능
+console.log(personKeys); // ["name", "age", "tall"]
+const personValues = Object.values(person);
+console.log(personValues); // 이동욱 31 170
+
+for (let i=0; i < personKeys.length; i++) {
+    console.log(personKeys[i]) // name age tall
+
+    const curKey = personKeys[i];
+    const curValue = person[curKey];
+    console.log(`${curKey} : ${curValue}`); // name : 이동욱 age: 31 tall : 170
+}
+```
