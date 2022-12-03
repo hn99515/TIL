@@ -73,5 +73,3 @@
   * ③ `Count`와 `Width`, `Gutter`, `Offset` 도 본인이 원하는 대로 설정
 
 * 그리드 숨기기/보이기 단축키 = (win) `Shift + G` / (mac) `Cmd + G`
-
-
