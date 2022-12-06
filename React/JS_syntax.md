@@ -747,7 +747,6 @@ const arr = [
 
 // 색상이 blue인 객체를 모두 불러오기
 console.log(arr.filter((elm) => elm.color === "blue"));
-
 ```
 
 * **`slice(시작인덱스, 끝인덱스+1)`** = 원하는 인덱스까지 잘라서 객체 불러오기 (새로운 배열로 반환)

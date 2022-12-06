@@ -6,9 +6,9 @@
 | B   |     |     |
 | C   |     |     |
 
-* **행(row) - 데이터 한 개를 의미** - A - -
+* **행(row) : 데이터 한 개를 의미** - `A - -`
 
-* **열(column) - 데이터의 특성을 표현** - 이름
+* **열(column) : 데이터의 특성을 표현** - `이름`
 
 # 2. 원하는 데이터 불러오기
 
@@ -18,11 +18,11 @@
 SELECT * FROM customers
 ```
 
-**`SELECT` - 가져오기**
+**`SELECT` : 가져오기**
 
 **`*` - 전체**
 
-**`FROM <table명>` - table로부터**
+**`FROM <table명>` : table로부터**
 
 * 필요한 컬럼만 추출 가능
   
@@ -53,7 +53,7 @@ OR city LIKE 'u%'
 
 # 3. 조건에 맞는 데이터 검색
 
-✔**비교연산자 (`=`, `<`, `>`, `>=`, `<=`)**
+## ▶️ **비교연산자 (`=`, `<`, `>`, `>=`, `<=`)**
 
 * **특정 컬럼이 특정 값을 가지는 데이터만 불러오기 위해서 사용!**
 
@@ -62,11 +62,19 @@ SELECT * FROM customers WHERE country = 'Germany'
 SELECT * FROM customers WHERE customername < 'B' AND country = 'Germany'
 ```
 
-**`customername < 'B'` - 손님 이름이 A로 시작하는 사람**
+**`customername < 'B'` : 손님 이름이 A로 시작하는 사람**
 
-✔ **논리연산자 (`AND`, `OR`)**
+## ▶️ **논리연산자 (`AND`, `OR`)**
 
-**✔ `LIKE` - 문자열의 패턴을 찾는 역할 (일부분을 비교하는 부분 검색)**
+```sql
+SELECT * FROM customers WHERE country = 'Germany' OR country = 'France'
+-- 동일한 문장 
+SELECT * FROM customers WHERE country IN ('Germany', 'France')
+```
+
+## ▶️ **`LIKE` : 문자열의 패턴을 찾는 역할**
+
+> **일부분을 비교하는 부분 검색**
 
 ```sql
 SELECT * FROM customers WHERE country LIKE 'Br%'
@@ -75,22 +83,26 @@ SELECT * FROM customers WHERE country LIKE 'B_____'
 SELECT * FROM customers WHERE country LIKE '%r%'
 ```
 
-**`LIKE 'Br%'` - 'Br'로 시작하는 단어를 찾는다.**
+* **`LIKE 'Br%'` : 'Br'로 시작하는 단어를 찾는다.**
 
-**`LIKE '%r%'` - 앞뒤로 무슨 글자가 오든 중간에 'r'이 들어간 단어를 찾는다.**
+* **`LIKE '%r%'` : 앞뒤로 무슨 글자가 오든 중간에 'r'이 들어간 단어를 찾는다.**
 
-**`%`** - 무엇이든 상관없음을 의미
+* **`%`** : 무엇이든 상관없음을 의미
 
-**`=`** - 찾고 싶은 키워드가 명확할 때 사용! **(속도가 `LIKE`에 비해 빠르다!)**
+* **`_`** : 문자 수를 지정하여 찾는다.
 
-❓ **데이터 내 `%` 나 `_`를 찾고 싶을 때** ❓
+* **`=`** : 찾고 싶은 키워드가 명확할 때 사용! **(속도가 `LIKE`에 비해 빠르다!)**
+
+* *데이터 내 `%` 나 `_`를 찾고 싶을 때는 어떻게?*
+  
+  * `\` (역슬래시)를 사용! = escape
 
 ```sql
 SELECT * FROM customers
 WHERE discount LIKE '__\%' --역슬래시를 사용 (두자릿수 %를 찾음!)
 ```
 
-**✔ `NOT LIKE a%` - a로 시작하지 않는 ~**
+**✔ `NOT LIKE a%` : a로 시작하지 않는 ~**
 
 ```sql
 SELECT DISTINCT city FROM station
@@ -102,14 +114,16 @@ AND city NOT LIKE 'u%'
 AND city NOT LIKE '%a'
 ```
 
-**✔ `IN` - 결과에 포함시키고자 하는 값 목록을 지정**
+## ▶️ **`IN` - 결과에 포함시키고자 하는 값 목록을 지정**
 
 ```sql
 SELECT * FROM customers
 WHERE country IN ('Germany', 'France', 'Korea')
 ```
 
-**✔ `BETWEEN` - 특정 범위 내에 있는 행만 선택**
+## ▶️ **`BETWEEN` - 특정 범위 내에 있는 행만 선택**
+
+> **`AND` 연산자와 쌍을 이루며 시작값, 끝값을 포함**
 
 ```sql
 SELECT * FROM customers
@@ -122,7 +136,7 @@ SELECT * FROM orders
 WHERE customerorder BETWEEN '2019-01-01' AND '2020-01-01';
 ```
 
-**✔`IS NULL` - 테이블에 값이 없는 경우를 찾을 때** **(반대 - `IS NOT NULL`)**
+## ▶️ **`IS NULL` - 테이블에 값이 없는 경우를 찾을 때** **(반대 - `IS NOT NULL`)**
 
 ```sql
 SELECT * FROM customers
@@ -131,25 +145,27 @@ WHERE customerID IS NULL
 
 # 4. 데이터 정렬
 
-**✔ `ORDER BY` - 데이터를 정렬한다. (default = 오름차순)** 
+## ▶️ **`ORDER BY` : 데이터를 정렬한다.**
+
+> **default = ASC(오름차순)**
 
 ```sql
 SELECT * FROM customers
 ORDER BY customerid DESC --내림차순--
 ```
 
-* **순서 - SELECT ~ FROM ~ WHERE ~ ORDER BY ~**
+* **순서 : SELECT ~ FROM ~ WHERE ~ ORDER BY ~**
 
 ```sql
 SELECT name FROM employee
-WHERE months < 10         --조건 1--
-AND salary > 2000         --조건 2--
+WHERE months < 10     --조건 1--
+AND salary > 2000     --조건 2--
 ORDER BY employee_id
 ```
 
 * **데이터를 가져와서 보여줄 때만 순서 변경됨❗ = 원본 데이터는 변경 ❌**
 
-**✔ 다중 정렬 - 정렬 기준이 2개 이상일 때 (`,`로 연결)**
+## ▶️ **다중 정렬 - 정렬 기준이 2개 이상일 때 (`,`로 연결)**
 
 ```sql
 /* ORDER BY ~ 조건 1, 조건 2 */
@@ -161,6 +177,8 @@ ORDER BY RIGHT(name, 3), id
 
 # 5. 문자열 자르기
 
+> **MySQL 기준**
+
 **✔ `LEFT(컬럼명 또는 문자열, 문자열의 길이)`**
 
 **✔ `RIGHT(컬럼명 또는 문자열, 문자열의 길이)`**
@@ -171,10 +189,12 @@ ORDER BY RIGHT(name, 3), id
 SELECT LEFT("20140323", 4) --2014--
 SELECT RIGHT("20140323", 4) --0323--
 SUBSTR("20140323", 1, 4)  --2014--
-SUBSTR("20140323", 5)     --0323 (5에서 끝까--
+SUBSTR("20140323", 5)     --0323 (5에서 끝까지)
 ```
 
 # 6. 소수점 처리
+
+> **MySQL 기준**
 
 **✔ `CEIL() - 올림`**
 
