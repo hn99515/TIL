@@ -95,7 +95,7 @@ function App() {
   let name = '이동욱'
 
   return (
-  // 최상위 태그를 삭재할 경우 에러가 발생 (반드시 1개의 최상위 태그가 있어야 한다.)
+  // 최상위 태그를 삭제할 경우 에러가 발생 (반드시 1개의 최상위 태그가 있어야 한다.)
   <React.Fragment>
       {/* 생성한 파일 사용하기 */}
       <MyHeader />
@@ -375,11 +375,11 @@ import React, { useState } from 'react'
 const Counter =  ({initialValue}) => {
 
   const [count, setCount] = useState(initialValue);
-  
+
   const onIncrease = () => {
     setCount(count + 1)
   }
-  
+
   const onDecrease = () => {
     setCount(count - 1)
   }
@@ -414,7 +414,7 @@ import OddEvenResult from './OddEvenResult';
 const Counter =  ({initialValue}) => {
 
   const [count, setCount] = useState(initialValue);
-  
+
   ...
 
   return (
