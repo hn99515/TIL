@@ -207,3 +207,49 @@ SELECT CEIL(5.5)         --6--
 SELECT FLOOR(5.5)        --5--
 SELECT ROUND(5.556901, 4)--5.5569--
 ```
+
+# 7. 집계 함수
+
+## ▶️ 데이터의 개수 세기 - COUNT()
+
+* 테이블에 총 몇 개의 데이터가 있는지?
+  
+  **`SELECT COUNT(*) FROM <table_name>`**
+
+* 특정 기준을 만족하는 데이터는 몇 개인지?
+  
+  **`SELECT COUNT(*) FROM <table_name> WHERE <column_name> >= 10`**
+  
+  **`SELECT COUNT(DISTINCT <column_name>) FROM <table_name>`**
+  
+  * 기준: 금액, 날짜, 성별 등
+
+* *데이터에 `null` 이 있다면?*
+  
+  * **`COUNT(*)` 의 경우, `null` 값도 포함**
+  
+  * **`COUNT(<column_name>)` 의 경우, 특정 컬럼의 null 값은 제외**
+
+## ▶️ 합계 & 평균 - SUM(), AVG()
+
+* 총 매출액은 얼마인가?
+  
+  **`SELECT SUM(<column_name>) FROM <table_name>`**
+
+* 평균 결제 금액은 얼마인가?
+  
+  **`SELECT AVG(<column_name>) FROM <table_name>`**
+
+* *데이터에 `null`이 있다면?*
+  
+  * *null 이 정말 null 인지, 0으로 해석해야 하는지 주의해야 함*
+  
+  * **특정 컬럼의 SUM과 AVG인 경우, null 값을 제외하고 계산!**
+  
+  * null 값을 포함하여 계산하려면 나누는 개수를 `COUNT(*)` 해야 원하는 데이터를 구할 수 있음
+
+## ▶️ 최소값 & 최대값 - MIN(), MAX()
+
+* 결제 금액이 가장 작었던 것과 가장 컸던 금액을 출력?
+  
+  **`SELECT MIN(total_bill), MAX(total_bill) FROM <table_name>`**
