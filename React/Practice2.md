@@ -235,7 +235,6 @@ const DiaryList = ({ diaryList }) => {
 ...
 
 export default DiaryList;
-
 ```
 
 **③ 감정 필터 생성 및 필터링에 맞게 정렬**
@@ -506,4 +505,435 @@ const DiaryItem = ({ id, emotion, content, date }) => {
 };
 
 export default DiaryItem;
+```
+
+# 새로운 일기 생성 페이지 - Create
+
+> **일기 쓰기 버튼 클릭 시 이동하는 페이지 (/new)**
+
+## ▶️ 최상단 헤더
+
+> **MyHeader + MyButton 활용!**
+
+**① MyHeader 를 불러와 제목으로 사용 + MyButton 을 불러와 뒤로가기 버튼 사용**
+
+```javascript
+import { useNavigate } from "react-router-dom";
+import MyHeader from "../components/MyHeader";
+import MyButton from "../components/MyButton";
+
+const New = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <MyHeader
+        headText={"새 일기 쓰기"}
+        leftChild={
+          <MyButton text={"< 뒤로가기"} onClick={() => navigate(-1)} />
+        }
+      />
+    </div>
+  );
+};
+
+export default New;
+```
+
+## ▶️ 오늘은 언제인가요? - section
+
+> **일기 생성 시 가장 먼저 작성할 날짜를 받을 예정**
+
+**① 날짜를 입력할 수 있는 월 입력창 생성**
+
+* 원하는 형태로 출력하기 위해 **`toISOString().slice(0, 10)`** 이용
+
+```javascript
+import { useState } from "react";
+...
+
+// 기본값으로 오늘의 날짜를 년-월-일 형태로 반환하는 함수
+const getStringDate = (date) => {
+  return date.toISOString().slice(0, 10);
+};
+
+const New = () => {
+  // 연도-월-일 매핑할 state
+  const [date, setDate] = useState(getStringDate(new Date()));
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      ...
+      <div>
+        <section>
+          <h4>오늘은 언제인가요?</h4>
+          <div className="input-box">
+            {/* 연도-월-일을 받을 수 있는 입력창 생성 */}
+            <input
+              className="input-date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              type="date"
+            />
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default New;
+```
+
+**② 수정하기 페이지와 같은 형태를 띄고 있기에 별도의 컴포넌트로 만들어 준다!** 
+
+* components/`DiaryEditor.js` 생성
+  
+  * 위에서 작성한 코드 옮기기
+
+```javascript
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import MyHeader from "./MyHeader";
+import MyButton from "./MyButton";
+
+// 기본값으로 오늘의 날짜를 년-월-일 형태로 반환하는 함수
+const getStringDate = (date) => {
+  return date.toISOString().slice(0, 10);
+};
+
+const DiaryEditor = () => {
+  // 연도-월-일 매핑할 state
+  const [date, setDate] = useState(getStringDate(new Date()));
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <MyHeader
+        headText={"새 일기 쓰기"}
+        leftChild={
+          <MyButton text={"< 뒤로가기"} onClick={() => navigate(-1)} />
+        }
+      />
+      <div>
+        <section>
+          <h4>오늘은 언제인가요?</h4>
+          <div className="input-box">
+            {/* 연도-월-일을 받을 수 있는 입력창 생성 */}
+            <input
+              className="input-date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              type="date"
+            />
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default DiaryEditor;
+```
+
+```javascript
+import DiaryEditor from "../components/DiaryEditor";
+
+const New = () => {
+  return (
+    <div>
+      <DiaryEditor />
+    </div>
+  );
+};
+
+export default New;
+```
+
+## ▶️ 오늘의 감정 - section2
+
+> **일기 작성 시 오늘의 감정 1 ~ 5 를 선택하는 부분**
+
+**① 오늘의 감정 5가지 이미지와 문구 불러오기**
+
+* 감정은 하나씩 선택될 수 있고 각 상태별로 저장해야 하므로 컴포넌트로 분리
+
+```javascript
+const EmotionItem = ({ emotion_id, emotion_img, emotion_descript }) => {
+  return (
+    <div>
+      <img src={emotion_img} />
+      <span>{emotion_descript}</span>
+    </div>
+  );
+};
+
+export default EmotionItem;
+```
+
+```javascript
+...
+import EmotionItem from "./EmotionItem";
+
+// 오늘의 감정을 받기 위한 배열 생성
+const emotionList = [
+  {
+    emotion_id: 1,
+    emotion_img: process.env.PUBLIC_URL + `/assets/emotion1.png`,
+    emotion_descript: "완전 좋음",
+  },
+  {
+    emotion_id: 2,
+    emotion_img: process.env.PUBLIC_URL + `/assets/emotion2.png`,
+    emotion_descript: "좋음",
+  },
+  {
+    emotion_id: 3,
+    emotion_img: process.env.PUBLIC_URL + `/assets/emotion3.png`,
+    emotion_descript: "그럭저럭",
+  },
+  {
+    emotion_id: 4,
+    emotion_img: process.env.PUBLIC_URL + `/assets/emotion4.png`,
+    emotion_descript: "나쁨",
+  },
+  {
+    emotion_id: 5,
+    emotion_img: process.env.PUBLIC_URL + `/assets/emotion5.png`,
+    emotion_descript: "끔찍함",
+  },
+];
+
+...
+
+const DiaryEditor = () => {
+  // 연도-월-일 매핑할 state
+  const [date, setDate] = useState(getStringDate(new Date()));
+  const navigate = useNavigate();
+
+  return (
+    <div className="DiaryEditor">
+      ...
+        <section>
+          <h4>오늘의 감정</h4>
+          <div className="input_box emotion_list_wrapper">
+            {emotionList.map((it) => (
+              <EmotionItem key={it.emotion_id} {...it} />
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default DiaryEditor;
+```
+
+**② 각 감정마다 클릭 활성화**
+
+* 감정이 활성화된 것은 같은 색상으로 배경색 표기
+
+* 비활성화된 것은 회색
+
+```javascript
+const EmotionItem = ({
+  emotion_id,
+  emotion_img,
+  emotion_descript,
+  onClick,
+  isSelected,
+}) => {
+  return (
+    <div
+      onClick={() => onClick(emotion_id)}
+      className={[
+        "EmotionItem",
+        isSelected ? `EmotionItem_on_${emotion_id}` : `EmotionItem_off`,
+      ].join(" ")}
+    >
+      <img src={emotion_img} />
+      <span>{emotion_descript}</span>
+    </div>
+  );
+};
+
+export default EmotionItem;
+```
+
+```javascript
+...
+import EmotionItem from "./EmotionItem";
+
+// 오늘의 감정을 받기 위한 배열 생성
+const emotionList = [
+  ...
+];
+
+...
+
+const DiaryEditor = () => {
+  // 오늘의 감정을 매핑할 state
+  const [emotion, setEmotion] = useState(3);
+  ...
+
+  // 감정을 클릭했을 때 매핑시켜줄 함수
+  const handleClickEmote = (emotion) => {
+    setEmotion(emotion);
+  };
+
+  const navigate = useNavigate();
+  return (
+    <div className="DiaryEditor">
+     ...
+        <section>
+          <h4>오늘의 감정</h4>
+          <div className="emotion_list_wrapper">
+            {emotionList.map((it) => (
+              <EmotionItem
+                key={it.emotion_id}
+                {...it}
+                onClick={handleClickEmote}
+                isSelected={it.emotion_id === emotion}
+              />
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default DiaryEditor;
+```
+
+## ▶️ 오늘의 일기 - section 3
+
+> **작성할 일기의 내용**
+
+* **텍스트를 받을 수 있게 세팅**
+
+```javascript
+import { useState, useRef } from "react";
+...
+
+...
+
+const DiaryEditor = () => {
+  // 오늘의 일기를 매핑할 state
+  const contentRef = useRef(); // focus 기능을 위함
+  const [content, setContent] = useState("");
+  ...
+
+  const navigate = useNavigate();
+  return (
+    <div className="DiaryEditor">
+      ...
+        <section>
+          <h4>오늘의 일기</h4>
+          <div className="input_box text_wrapper">
+            <textarea
+              placeholder="오늘은 어땠나요?"
+              ref={contentRef}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default DiaryEditor;
+```
+
+## ▶️ 버튼 2개 - section 4
+
+> **취소하기 + 작성완료 버튼**
+
+```javascript
+...
+
+...
+
+const DiaryEditor = () => {
+  ...
+
+  const navigate = useNavigate();
+  return (
+    <div className="DiaryEditor">
+      ...
+        <section>
+          <div className="control_box">
+            <MyButton text={"취소하기"} onClick={() => navigate(-1)} />
+            <MyButton text={"작성완료"} type={"positive"} onClick={() => {}} />
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default DiaryEditor;
+```
+
+* 작성완료 버튼 클릭 시 유효성 검사 먼저 진행
+  
+  * 컨텐츠의 길이가 적절한가?
+
+* **앱 컴포넌트의 데이터에 새로운 일기를 추가 = `onCreate` 함수 실행이 필요!**
+  
+  * 작성 완료 시 뒤로가기가 안먹히도록 옵션 필수 = `{ replace: true }`
+
+```javascript
+import { useState, useRef, useContext } from "react";
+...
+import { DiaryDispatchContext } from "../App";
+
+...
+
+...
+
+const DiaryEditor = () => {
+  ...
+
+  // onCreate 함수 받아오기
+  const { onCreate } = useContext(DiaryDispatchContext);
+
+  ...
+
+  // 작성 완료 버튼 클릭 시 실행할 함수
+  const handleSubmit = () => {
+    if (content.length < 1) {
+      contentRef.current.focus();
+      return;
+    }
+
+    onCreate(date, content, emotion);
+    navigate("/", { replace: true });
+  };
+
+  const navigate = useNavigate();
+  return (
+    <div className="DiaryEditor">
+      ...
+        <section>
+          <div className="control_box">
+            <MyButton text={"취소하기"} onClick={() => navigate(-1)} />
+            <MyButton
+              text={"작성완료"}
+              type={"positive"}
+              onClick={handleSubmit}
+            />
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default DiaryEditor;
 ```
