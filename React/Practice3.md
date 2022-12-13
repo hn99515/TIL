@@ -347,4 +347,137 @@ const Diary = () => {
 export default Diary;
 ```
 
+# 흔히 발생하는 버그 수정하기
 
+> **React 사용 시 자주 만날 수 있는 버그**
+
+1️⃣ **2개의 일기 작성 후 Error 발생 = 테스트 데이터 생성할 경우 항상 조심!**
+
+* *console 창에 `Encountered two children with the same key`*
+  
+  * 두 개가 같은 키를 가지고 있다는 의미
+  
+  * **더미 데이터의 id 는 1부터 시작하며, 초기값은 `const dataId = useRef(0)` 로 설정**
+    
+    * 데이터의 id를 6번부터 시작하도록 설정
+    
+    * `const dataId = useRef(6)`
+
+```javascript
+import React, { useReducer, useRef } from "react";
+
+...
+
+...
+
+// 일기 리스트 dummy data 만들기
+const dummyData = [
+  {
+    id: 1,
+    emotion: 1,
+    content: "오늘의 일기 1번",
+    date: 1670747737741,
+  },
+  {
+    id: 2,
+    emotion: 2,
+    content: "오늘의 일기 2번",
+    date: 1670747839883,
+  },
+  {
+    id: 3,
+    emotion: 3,
+    content: "오늘의 일기 3번",
+    date: 1670747922786,
+  },
+  {
+    id: 4,
+    emotion: 4,
+    content: "오늘의 일기 4번",
+    date: 1670747936736,
+  },
+  {
+    id: 5,
+    emotion: 5,
+    content: "오늘의 일기 5번",
+    date: 1670747985168,
+  },
+];
+
+function App() {
+  // state 생성
+  const [data, dispatch] = useReducer(reducer, dummyData);
+
+  // 현재 시간(ms)를 구하기 위해 출력해보기
+  // console.log(new Date().getTime());
+
+  const dataId = useRef(6);
+  ...
+
+  return (
+    ...
+  );
+}
+
+export default App;
+```
+
+2️⃣**오타가 난 경우 - TypeScript 는 오타를 방지함**
+
+* *원하던 대로 작동이 되지 않는 기능이 있다.*
+  
+  * 관련 코드로 이동한 후 오타가 없는지 체크
+
+3️⃣ **12월 31일에 일기를 쓴 경우에는 화면에 뜨지 않음**
+
+* 데이터 배열에는 들어가 있음!
+  
+  * Why? `lastDay` 에는 시간도 적어주어야 함
+  
+  * `23, 59, 59` ( 23시 59분 59초)
+
+```javascript
+import { useContext, useEffect, useState } from "react";
+import { DiaryStateContext } from "../App";
+
+...
+
+const Home = () => {
+  ...
+  // 날짜를 저장하는 state
+  const [curDate, setCurDate] = useState(new Date());
+  // 년월 표기
+  const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
+
+  // 월이 바뀔 때마다 해당 일기만 불러와야 함
+  useEffect(() => {
+    // 일기 리스트가 있을 때만 보여줘
+    if (diaryList.length >= 1) {
+      // 해당 월의 가장 첫 날과 마지막날을 호출
+      const firstDay = new Date(
+        curDate.getFullYear(),
+        curDate.getMonth(),
+        1
+      ).getTime();
+
+      const lastDay = new Date(
+        curDate.getFullYear(),
+        curDate.getMonth() + 1,
+        0,
+        23,
+        59,
+        59
+      ).getTime();
+      // 해당 월에 있는 일기만 필터
+      setData(
+        diaryList.filter((it) => firstDay <= it.date && it.date <= lastDay)
+      );
+    }
+    // diaryList 가 추가/수정/삭제 시 리렌더링 되어야 하므로 추가
+  }, [diaryList, curDate]);
+
+  ...
+};
+
+export default Home;
+```
