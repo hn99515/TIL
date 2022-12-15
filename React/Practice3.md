@@ -481,3 +481,207 @@ const Home = () => {
 
 export default Home;
 ```
+
+# LocalStorage를 일기 데이터베이스로 사용하기
+
+> ***새로고침 시 작성된 일기 데이터는 모두 사라지고 기존 더미 데이터만 남음***
+
+* **휘발성 메모리 : 데이터가 초기화 되기 때문에 DB에 저장이 되어야 함**
+  
+  * **DB 없이 Web Storage API 를 사용하여 브라우저에서 키/값 쌍을 쿠키보다 훨씬 직관적으로 저장할 수 있는 방법**
+
+1️⃣ **`sessionStorage`**
+
+* 각각의 출처에 대해 독립적인 저장 공간을 페이지 세션이 유지되는 동안(브라우저가 열려있는 동안) 제공
+  
+  * *세션에 한정해, 즉 브라우저 또는 탭이 닫힐 때까지만 데이터를 저장*
+  
+  * *데이터를 절대 서버로 전송하지 않음*
+  
+  * 저장 공간이 쿠키보다 큼
+
+2️⃣ **`localStorage`**
+
+* **`sessionStorage`와 동일하지만, 브라우저를 닫았다 열어도 데이터가 남아 있음**
+  
+  * *유효기간 없이 데이터를 저장하고, JavaScript 를 사용하거나 브라우저 캐시 또는 로컬 저장 데이터를 지워야만 사라짐*
+  
+  * 저장 공간이 셋 중 제일 큼
+
+## ▶️ 생성된 일기 데이터 저장
+
+* **숫자, 문자열, 객체 모두 저장 가능함**
+  
+  * **단, 객체는 직렬화를 통해 문자열 형으로 변경한 후 저장 가능**
+
+```javascript
+useEffect(() => {
+    localStorage.setItem("item1", 10);
+    localStorage.setItem("item2", "20");
+    localStorage.setItem("item3", JSON.stringify({ value: 30 }));
+  }, []);
+```
+
+* **key 를 통해 값을 불러와 상수에 저장 가능**
+  
+  * *단, 불러올 때 모두 문자열 형태로 변경됨*
+  
+  * 숫자의 경우 `parseInt` 를 사용하여 불러와야 하며 객체는 `JSON.parse` 를 통해 복원 필요!
+
+```javascript
+useEffect(() => {
+    const item1 = localStorage.getItem("item1");
+    const item2 = localStorage.getItem("item2");
+    const item3 = JSON.parse(localStorage.getItem("item3"));
+    console.log(item1, item2, item3);
+  }, []);
+```
+
+* **실시간으로 생성/수정/삭제된 데이터를 localStorage에 저장!**
+  
+  * 새로 고침을 눌러도 데이터가 서버 DB에 있는 것처럼 보여야 함
+
+**① `dummyData` 모두 삭제**
+
+* 기본값은 빈 배열로 설정
+
+* **일기 데이터가 변경되는 로직은 `reducer` 를 거쳐가게 되어 있음!**
+  
+  * 생성, 수정, 삭제 등이 모두 `reducer`를 거쳐감
+
+```javascript
+import React, { useReducer, useRef } from "react";
+
+...
+
+// reducer 함수
+const reducer = (state, action) => {
+  let newState = [];
+  switch (action.type) {
+    case "INIT": {
+      return action.data;
+    }
+    case "CREATE": {
+      newState = [action.data, ...state];
+      break;
+    }
+    case "REMOVE": {
+      newState = state.filter((it) => it.id !== action.targetId);
+      break;
+    }
+    case "EDIT": {
+      newState = state.map((it) =>
+        it.id === action.data.id ? { ...action.data } : it
+      );
+      break;
+    }
+    default:
+      return state;
+  }
+  // localStorage 에 변경되는 데이터 저장
+  localStorage.setItem("diary", JSON.stringify(newState));
+  return newState;
+};
+
+export const DiaryStateContext = React.createContext();
+export const DiaryDispatchContext = React.createContext();
+
+function App() {
+  // state 생성
+  const [data, dispatch] = useReducer(reducer, []);
+
+  ...
+}
+
+export default App;
+```
+
+**② 수정하기 페이지에 삭제 버튼 생성**
+
+* `DiaryEditor.js` 수정
+  
+  * `localStorage` 에서도 데이터 삭제됨
+
+```javascript
+import { useState, useEffect, useRef, useContext } from "react";
+...
+
+const DiaryEditor = ({ isEdit, originData }) => {
+  ...
+  // onCreate, onEdit, onRemove 함수 받아오기
+  const { onCreate, onEdit, onRemove } = useContext(DiaryDispatchContext);
+
+  ...
+  // 일기 삭제하기 버튼 클릭 시
+  const handleRemove = () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      onRemove(originData.id);
+      navigate("/", { replace: true });
+    }
+  };
+
+  ...
+  return (
+    <div className="DiaryEditor">
+      <MyHeader
+        headText={isEdit ? "일기 수정하기 " : "새 일기 쓰기"}
+        leftChild={
+          <MyButton text={"< 뒤로가기"} onClick={() => navigate(-1)} />
+        }
+        rightChild={
+          isEdit && (
+            <MyButton
+              text={"삭제하기"}
+              type={"negative"}
+              onClick={handleRemove}
+            />
+          )
+        }
+      />
+      ...
+    </div>
+  );
+};
+
+export default DiaryEditor;
+```
+
+**③ 아직 localStorage 에는 데이터가 들어가지만 App component와는 연결이 안되어 있는 상태**
+
+* 연결을 시켜줘야 한다!
+  
+  * `useEffect()` 를 사용
+  
+  * 새로 고침을 해도 데이터가 유지되어야 함
+
+```javascript
+import React, { useEffect, useReducer, useRef } from "react";
+
+...
+
+...
+
+function App() {
+  // state 생성
+  const [data, dispatch] = useReducer(reducer, []);
+
+  useEffect(() => {
+    const localData = localStorage.getItem("diary");
+    // 데이터가 있을 때만 화면에 보여주기
+    if (localData) {
+      // 내림차순으로 정렬해야 가장 위에 값이 높은 값
+      const diaryList = JSON.parse(localData).sort(
+        (a, b) => parseInt(b.id) - parseInt(a.id)
+      );
+      // 그 다음 저장할 id
+      dataId.current = parseInt(diaryList[0].id) + 1;
+      // 초기값으로 설정
+      dispatch({ type: "INIT", data: diaryList });
+    }
+  });
+
+  ...
+}
+
+export default App;
+```
