@@ -75,3 +75,169 @@ GROUP BY id
 SELECT DISTINCT <column1>, <column2>
 FROM <table_name>
 ```
+
+# JOIN
+
+> **2개 이상의 테이블을 결합해서 사용하는 경우**
+
+* 여러 테이블의 흩어져 있는 정보를 모아서 저장하고 싶은 경우
+  
+  * 예) 유저의 아이디, 연락처, 배송 주소, 구매한 상품의 이름, 상품의 가격, 구매한 개수 등을 확인할 때 한 테이블에 모두 저장할 경우 낭비되는 값이 너무 많이 발생
+  
+  * 구매한 상품의 이름, 상품의 가격, 구매한 개수 등은 주문정보 테이블을 별도로 생성하여 저장
+  
+  * **이후 필요할 때 `JOIN` 을 활용하여 정보 획득**
+    
+    * `Primay Key`를 기준으로 연결 가능
+
+## ▶️ INNER JOIN
+
+> **2개 이상의 테이블에서 교집합인 부분을 조회하고 싶은 경우**
+
+* *구식 방법*
+  
+  * 예) 2개 테이블 전체의 경우의 수를 모두 구한 후 해당 데이터만 조회
+
+```sql
+SELECT *
+FROM Customers, Orders
+WHERE Customers.CustomerId = Orders.CustomerId
+```
+
+* **`JOIN` 사용 방법**
+  
+  * **예) 2개 테이블을 묶어줄 수 있는 컬럼을 `ON` 으로 지정**
+  
+  * 2개 이상의 테이블을 묶는 것 가능함 (연이어 `JOIN` 사용)
+
+```sql
+SELECT *
+FROM Cutomers
+    INNER JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+    INNER JOIN Shippers ON Orders.ShipperID = Shippers.ShipperID
+```
+
+* *한 테이블의 NULL 값으로 구성되어 있는 경우, 조회된 결과에서 제외*
+
+## ▶️ OUTER JOIN
+
+> **INNER JOIN 을 제외한 모든 JOIN 은 OUTER JOIN!**
+
+1️⃣ **`LEFT JOIN`**
+
+* `JOIN`하고자 하는 테이블의 레코드가 NULL 값으로 구성되어 있어도 조회 가능
+  
+  * **예) 고객 정보는 있고, 주문 정보가 없는 경우도 함께 출력됨**
+
+```sql
+SELECT *
+FROM Customers
+    LEFT JOIN Orders ON Customers.CustomerId = Orders.CustomerId
+```
+
+* 예 2) 고객 정보는 있지만 주문 정보만 없는 레코드 조회
+
+```sql
+SELECT *
+FROM Customers
+    LEFT JOIN Orders ON Customers.CustomerId = Orders.CustomerId
+WHERE OrderId IS NULL
+```
+
+2️⃣ **`RIGHT JOIN`**
+
+* **`LEFT JOIN` 의 반대여서 보통은 `LEFT JOIN` 으로만 사용! (기준=FROM 테이블)**
+  
+  * 헷갈리기 쉬우므로 `LEFT JOIN`만 사용
+
+# Self JOIN
+
+> **자기 자신의 테이블끼리 JOIN**
+
+```sql
+SELECT *
+FROM <table_name>
+INNER JOIN <table_name> AS <tn> ON <table_name>.<column> = <tn>.<column_2>
+WHERE <조건>
+```
+
+* 자기 자신과의 연결이 되는 테이블은 별칭 설정 및 기준 컬럼을 잘 연결시켜줘야 함
+  
+  * 날짜 데이터 컬럼끼리 연결해야 하는 경우 아래 참조
+
+# 날짜 데이터 연산
+
+> **날짜형 데이터의 더하기, 빼기**
+
+* **`DATE_ADD(기준날짜, INTERVAL)`**
+  
+  ```sql
+  SELECT DATE_ADD(NOW(), INTERVAL 1 SECOND)
+  SELECT DATE_ADD(NOW(), INTERVAL 1 MINUTE)
+  SELECT DATE_ADD(NOW(), INTERVAL 1 HOUR)
+  SELECT DATE_ADD(NOW(), INTERVAL 1 DAY)
+  SELECT DATE_ADD(NOW(), INTERVAL 1 MONTH)
+  SELECT DATE_ADD(NOW(), INTERVAL 1 YEAR)
+  SELECT DATE_ADD(NOW(), INTERVAL -1 YEAR)
+  ```
+
+* **`DATE_SUB(기준날짜, INTERVAL)`**
+  
+  ```sql
+  SELECT DATE_SUM(NOW(), INTERVAL 1 SECOND)
+  ```
+
+# UNION
+
+> **위, 아래로 데이터 이어붙이기**
+
+* 같은 정보의 과거 테이블과 현재의 테이블을 이어 붙여야 할 때 유용
+  
+  * *중복된 요소는 하나로만 표현*
+
+## ▶️ UNION ALL
+
+* **중복된 요소가 있더라도 전부 다 표현**
+
+```sql
+SELECT *
+FROM Products
+WHERE price <= 5
+OR price >= 200
+```
+
+```sql
+SELECT *
+FROM Products
+WHERE price <= 5
+
+UNION
+
+SELECT *
+FROM Products
+WHERE price >= 200
+```
+
+* **회원의 주문 정보와 비회원의 주문 정보를 함께 조회하고자 할 때!** = 전체 정보 조회
+  
+  * **`LEFT JOIN` + `RIGHT JOIN` + `UNION` = `FULL OUTER JOIN`**
+    
+    * 단, MySQL 에서 `FULL OUTER JOIN` 은 사용 불가
+
+```sql
+SELECT *
+FROM Customers
+    LEFT JOIN Orders ON Customers.Id = Orders.CustomerId
+
+UNION
+
+SELECT *
+FROM Customers
+    RIGHT JOIN Orders ON Customers.Id = Orders.CustomerId
+```
+
+## 📌 [참고] 차집합 연산
+
+> **ORACLE 에서는 MINUS, EXCEPT 를 지원**
+> 
+> **MySQL 은 지원 X**
