@@ -239,4 +239,50 @@ function App() {
 
 # 배포하기
 
-> DEPLOY 2
+> **Firebase 로 프로젝트 배포하기**
+
+* **`Firebase` console 에서 새로운 프로젝트 추가**
+  
+  * 프로젝트 이름 지정 후 생성
+
+* **Hosting 페이지로 이동**
+  
+  * 시작하기 - Firebase CLI 설치
+    
+    * **`npm install -g firebase-tools`**
+  
+  * 프로젝트 초기화
+    
+    * 터미널 창에서 웹/앱의 루트 디렉토리로 이동하거나 루트 디렉토리 생성
+    
+    * **구글에 로그인 : `firebase login`**
+    
+    * **프로젝트 시작 : `firebase init`**
+  
+  * `Firebase` 호스팅에 배포
+    
+    * 콘솔로 이동한 후 다른 사이트를 추가 : `원하는 Domain 형태로` 추가
+
+# Open Graph
+
+> **메타 데이터를 수정(링크 공유할 때 사용) = index.html 파일만 수정하면 된다.**
+
+1️⃣ **링크 공유 시 썸네일 지정**
+
+```html
+<meta property='og:image' content='%PUBLIC_URL%/thumbnail.png' />
+```
+
+2️⃣ **링크 공유 시 사이트 이름이 무엇으로 보일지 결정**
+
+```html
+<meta property='og:site_name' content='감정 일기장' />
+```
+
+3️⃣ **링크 공유 시 상대에게 보여지는 부분을 결정**
+
+```html
+<meta property='og:description' content='나만의 작은 감정 일기장' />
+```
+
+* 빌드 재 완료 후 **`firebase deploy`** 진행
