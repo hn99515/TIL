@@ -70,9 +70,7 @@
 
 * **`state`** : 성능 최적화를 위해 관리가 필요
 
-* 상태 관리의 기본 개념을 제대로 이해해야 함
-
-# 
+* 상태 관리의 기본 개념을 제대로 이해해야 함 
 
 # React 앱 생성
 
@@ -118,11 +116,25 @@ export default App;
 
 # JSX
 
-> HTML with JavaScript
+> **XML/HTML with JavaScript**
 
 * **Component 를 만드는 데 아주 유용한 문법**
 
-* 닫힌 태그가 반드시 필요!
+* **`React.createElement()` 의 결과로 객체가 생성됨 = React element**
+  
+  * type, [props], [...children] 의 파라미터(유형, 속성, 자식 엘리먼트)를 가짐
+
+* **장점**
+  
+  * 간결한 코드 작성 가능
+  
+  * 가독성 향상
+    
+    * 버그를 발견하기 쉬움
+  
+  * Injection Attacks 방어 (해킹 방어에 유리)
+
+* **닫힌 태그가 반드시 필요!**
   
   * 단, `a`태그 나 `image` 태그 등 닫힌 태그가 필요없었던 태그들은 self closed tag로 표현
   
@@ -279,6 +291,54 @@ export default App;
   
   * **`{ number } 는 : { number % 2 === 0 ? "짝수" : "홀수" }`**
 
+## ▶️ JSX 코드 예시
+
+```javascript
+import React from "react";
+
+function Book(props) {
+  return (
+    <div>
+      <h1>{`이 책의 이름은 ${props.name}입니다.`}</h1>
+      <h2>{`이 책은 ${props.numOfPage}페이지로 이루어져 있습니다.`}</h2>
+    </div>
+  );
+}
+
+export default Book;
+```
+
+```javascript
+import React from "react";
+import Book from "./Book";
+
+function Library(props) {
+  return (
+    <div>
+      <Book name="처음 만난 파이썬" numOfPage={300} />
+      <Book name="처음 만난 AWS" numOfPage={400} />
+      <Book name="처음 만난 리액트" numOfPage={500} />
+    </div>
+  );
+}
+
+export default Library;
+```
+
+```javascript
+import React from "react";
+...
+
+import Library from "./chapter_03/Library";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <Library />
+  </React.StrictMode>
+);
+```
+
 # State - 상태
 
 > **계속해서 변화하는(동적으로) 특정 상태**
@@ -355,9 +415,200 @@ const Counter =  () => {
 export default Counter;
 ```
 
+# Elements
+
+> **리액트 앱을 구성하는 가장 작은 블록들**
+
+* **React Elements = Virtual DOM**
+  
+  * **render 하면 DOM Elements인 Browser DOM**
+  
+  * 화면에서 보이는 것들을 기술
+  
+  * 자바스크립트 객체 형태로 존재
+
+* **특징**
+  
+  * **immutable (불변성) : 한 번 생성된 element는 변하지 않음**
+    
+    * *Elements 생성 후에는 children이나 attributes를 바꿀 수 없음!*
+    
+    * **변경된 화면을 나타내기 위해서는 새로운 Element를 만든 후 기존과 바꿔야 함**
+
+* **Elements 렌더링하기**
+  
+  * 화면에 보여주기 위함 (Virtual DOM => Brower DOM 으로 이동)
+  
+  * **렌더링된 Elements를 업데이트 하려면?**
+    
+    * 새로운 Element 를 생성하여 기존의 것을 업데이트함
+
+## ▶️ 실습 : 시계 만들기
+
+```javascript
+import React from "react";
+
+function Clock(props) {
+  return (
+    <div>
+      <h1>안녕, 리액트</h1>
+      <h2>현재 시간: {new Date().toLocaleTimeString()}</h2>
+    </div>
+  );
+}
+
+export default Clock;
+```
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom/client";
+...
+
+import Clock from "./chapter_04/Clock";
+
+setInterval(() => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Clock />
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
+}, 1000);
+```
+
+# Components
+
+> **리액트는 컴포넌트 기반 라이브러리이며, 컴포넌트들을 모아서 개발**
+
+* 작은 컴포넌트들이 모여서 하나의 컴포넌트로 구성되며 결국 하나의 페이지로 이어짐
+
+* **React Component는 함수처럼 하나의 입력을 받아 하나의 출력을 보여줌**
+  
+  * **입력은 `Props`, 출력은 `React element` 가 되는 것**
+  
+  * 그들의 Props에 관해서는 Pure 함수 같은 역할을 해야 함
+    
+    * **Props를 직접 바꿀 수 없고, 같은 Props에 대해서는 항상 같은 결과를 보여줌**
+
+* 1️⃣ **Function Component**
+  
+  * 지금은 함수 컴포넌트를 대다수 사용
+    
+    * **Hook 을 사용할 수 있게 됨**
+
+```javascript
+function Welcome(props) {
+  return <h1> Hi, {props.name}</h1>
+}
+```
+
+* 2️⃣ **Class Component**
+  
+  * `React.Component`를 상속받아서 생성
+
+```javascript
+class Welcome extends React.Component {
+  render() {
+    return <h1> Hi, {this.props.name}</h1>
+  }
+}
+```
+
+* **Component 이름은 항상 대문자로 시작해야 함**
+  
+  * *소문자로 할 경우 HTML 의 DOM 태그로 인식*
+
+* Component가 렌더링 되려면 Element를 생성한 후 Element를 렌더링 함
+
+## ▶️ Component 함성
+
+> 여러 개의 컴포넌트를 합쳐 하나의 컴포넌트로 사용
+
+* Component 안에 또 다른 Component를 쓸 수 있음
+  
+  * **복잡한 화면을 여러 개의 Component로 나눠서 구현 가능!**
+
+```javascript
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>
+}
+
+function App(props) {
+  return (
+    <div>
+      <Welcome name="Mike" />
+      <Welcome name="Steve" />
+      <Welcome name="Jane" />
+    </div>  
+  )
+}
+```
+
+## ▶️ Component 추출
+
+> 복잡한 컴포넌트를 쪼개서 여러 개로 나눌 수도 있음
+
+* 컴포넌트의 재사용성을 올릴 수 있음
+
+* 개발속도 향상
+  
+  * 재사용 가능한 Component를 많이 가지고 있을수록 개발 속도가 빨라진다!!
+
+```javascript
+import React from "react";
+
+function Comment(props) {
+  return (
+    <div>
+      <h1>제가 만든 첫 컴포넌트입니다.</h1>
+    </div>
+  );
+}
+
+export default Comment;
+```
+
+```javascript
+import React from "react";
+import Comment from "./Comment";
+
+function CommentList(props) {
+  return (
+    <div>
+      <Comment />
+    </div>
+  );
+}
+
+export default CommentList;
+```
+
+
+
 # Props
 
-> **컴포넌트에 데이터를 전달하는 방법**
+> **컴포넌트에 데이터(입력)를 전달하는 방법** = Component의 속성
+> 
+> **컴포넌트에 전달할 다양한 정보를 담고있는 자바스크립트 객체**
+
+## ▶️ JavaScript 함수의 속성
+
+* 2가지 속성
+  
+  * 입력값을 변경하지 않으면 같은 입력값에 대해서는 항상 같은 출력값을 리턴 = pure
+  
+  * 입력값을 변경하는 것 = impure
+
+## ▶️ 특징
+
+* **읽기 전용 (Read-Only)**
+  
+  * 값을 변경할 수 없다는 의미
+  
+  * *새로운 값으로 변경하려면?*
+    
+    * **새로운 값을 컴포넌트에 전달하여 새로운 Element를 생성해야 함**
 
 * `App` Component의 데이터를 하위인 `Counter` Component에서 사용하려면?
   
