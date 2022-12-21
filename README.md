@@ -68,10 +68,10 @@
 -----
 
 ### ✅ React
-1. [JavaScript_문법(기초)](./React/JS_syntax.md)
-2. [JavaScript_문법(고급)](./React/JS_syntax_adv.md)
-3. [Node.js(기초)](./React/Node_js.md)
+1. [JavaScript 기초문법](./React/JS_syntax.md)
+2. [JavaScript 고급문법](./React/JS_syntax_adv.md)
+3. [Node.js](./React/Node_js.md)
 4. [Sync & Async](./React/sync_async.md)
 5. [React_CRUD](./React/React_CRUD.md)
-6. [React_문법(기초)](./React/React_basic.md)
-7. [React_문법(고급)](./React/React_adv.md)
+6. [React 기초문법](./React/React_basic.md)
+7. [React 고급문법](./React/React_adv.md)
