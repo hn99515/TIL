@@ -3,6 +3,8 @@
 > **React의 컴포넌트는 생명주기를 가진다.**
 
 * **생명 주기에 따른 제어를 추가적으로 할 수 있음**
+  
+  * Component가 계속 존재하는 것이 아니라, 시간의 흐름에 따라 생성되고 업데이트 되다가 사라짐
 
 * Class React Component Only: *클래스형 컴포넌트에서만 사용 가능! (함수형 컴포넌트는 X)*
 
@@ -20,13 +22,13 @@
 
 * 예) 예외 처리 작업
 
-3️⃣ **UnMount : 화면에서 사라지는 것**
+3️⃣ **UnMount : 화면에서 사라지는 것 (상위 컴포넌트에서 현재 컴포넌트를 더이상 화면에 표시하지 않는 경우)**
 
 * mehod = **`ComponentWillUnmount`**
 
 * 예) 메모리 정리 작업
 
-## ▶️ React Hooks
+# React Hooks
 
 > **클래스형 컴포넌트에서만 사용할 수 있는 기능을 함수형 컴포넌트에서도 사용할 수 있도록 함**
 
@@ -36,17 +38,62 @@
   
   * *중복 코드, 가독성 문제 등을 해결하기 위해 등장한 개념*
 
+## ▶️ 규칙
+
+1️⃣ **Hook은 무조건 최상위 레벨에서만 호출해야 함**
+
+* Hook은 컴포넌트가 렌더링될 때마다 매번 같은 순서로 호출되어야 함
+
+2️⃣ **리액트 함수 컴포넌트에서만 Hook을 호출해야 함**
+
+### [참고] eslint-plugin-react-hooks
+
+> 리액트 컴포넌트가 Hook 의 규칙을 따르는지 확인해주는 플러그인
+
+* https://www.npmjs.com/package/eslint-plugin-react-hooks
+
+## ▶️ useState
+
+> **state를 사용하기 위한 Hook**
+
+* 사용법
+  
+  * **`const [변수명, set함수명] = useState(초기값);`**
+  
+  * 변수 각각에 대해 set함수가 따로 존재!
+
+```javascript
+import React, { useState } from "react";
+
+function Counter(props) {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>Total : {count} Clicked!</p>
+      <button onClick={()=> setCount(count+1)}>Click</button>
+    </div>
+  );
+}
+```
+
 ## ▶️ useEffect
 
 > **Lifecycle 을 제어하기 위한 React Hooks**
 
-* **사용법**
+* 사용법
+  
+  * **`useEffect(이펙트 함수, 의존성 배열);`**
   
   * **`//todo...` : callback 함수를 넣어 하고자 하는 동작을 표현**
   
   * **`[]`** : Dependency Array (의존성 배열)
     
     * **이 배열 내에 들어있는 값이 변화하면 콜백 함수가 수행됨**
+
+* **`useEffect(이펙트 함수, []);` : 빈 배열인 경우 이펙트 함수가 mount, unmount 시에 단 한 번씩만 실행**
+
+* **`useEffect(이펙트 함수);` : 의존성 배열을 생략하면 컴포넌트가 업데이트될 때마다 호출됨**
 
 ```javascript
 import React, { useEffect } from "react";
@@ -58,7 +105,7 @@ useEffect(() => {
 
 * **Mount: 화면이 나타날 때 특정 행동을 실행**
   
-  * 콜백함수의 2번째 인자로 `[]` 빈 배열을 넣으면 mount 시점을 의미
+  * 콜백함수의 2번째 인자로 `[]` 빈 배열을 넣으면 mount와 unmount 시 단 한 번씩만 실행
 
 ```javascript
 import React, { useEffect, useState } from "react";

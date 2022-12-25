@@ -341,7 +341,19 @@ root.render(
 
 # State - 상태
 
-> **계속해서 변화하는(동적으로) 특정 상태**
+> Component의 변경 가능한 데이터를 의미하며, **계속해서 변화하는(동적으로) 특정 상태**
+> 
+> JavaScript 객체임
+
+* state는 개발자가 정의함
+  
+  * **렌더링이나 데이터 흐름에 사용되는 값만 state에 포함시켜야 함!**
+  
+  * *WHY? 불필요한 경우에 component를 재렌더링하게 되면 성능 저하*
+
+* *state는 직접 수정할 수 없음 (수정하면 안됨!)*
+  
+  * setState 를 통해 수정해야 함
 
 * 상태에 따라 각각 다른 동작을 설정할 수 있음
   
@@ -583,8 +595,6 @@ function CommentList(props) {
 
 export default CommentList;
 ```
-
-
 
 # Props
 
