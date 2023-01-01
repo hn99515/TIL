@@ -630,6 +630,7 @@ export default CommentList;
 - `App` Component의 데이터를 하위인 `Counter` Component에서 사용하려면?
 
   - `Prop` 기능을 통해 자식 컴포넌트에서 데이터를 활용할 수 있음
+  - `Prop` 으로 데이터를 전송한다고 해서 바로 적용되는 것이 아니라 직접 받아서 사용해야 적용되는 것
 
 ```javascript
 // 생성한 파일 불러오기
@@ -809,3 +810,16 @@ export default Container;
 ```
 
 - `children` 으로 데이터를 전달받아 그 주변을 CSS inline으로 꾸며줄 수 있음
+
+- Prop 종류에 따라 적합한 자료형의 데이터가 들어갈 수 있도록 도와주는 **`PropTypes`라는 패키지가 존재!**
+
+  - 원하는 대로 Prop 종류를 지정하고, 리액트에게 알려주어 혹시라도 다른 자료형이 입력되면 콘솔창에 warning를 띄어줌!
+
+```javascript
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>;
+
+Btn.propTypes = {
+  text: PropTypes.string.isRequired,
+  fontSize: PropTypes.number,
+};
+```
