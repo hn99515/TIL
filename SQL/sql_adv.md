@@ -62,7 +62,6 @@ FROM (
   FROM <table_name>
   GROUP BY col1
 ) AS '별칭'
-
 ```
 
 - **`WITH` 사용법 : FROM 절 서브쿼리 시 WITH 문으로 표현하는 경우가 많음** (가독성 높음)
