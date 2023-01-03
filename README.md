@@ -20,6 +20,8 @@
 2. [SQL 중급문법](./SQL/sql_mid.md)
 3. [Database(RDB, SQL, DDL, SQLite Data types, Constraints, DML)](./SQL/Database.md)
 4. [Data Modeling(Entity, Attribute, Relation, Identifiers)](./SQL/SQLD_data_model.md)
+5. [RFM 분석](./SQL/RFM.md)
+6. [Revenu 분석](./SQL/Revenu.md)
 
 -----
 
