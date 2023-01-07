@@ -22,6 +22,7 @@
 4. [Data Modeling(Entity, Attribute, Relation, Identifiers)](./SQL/SQLD_data_model.md)
 5. [RFM 분석](./SQL/RFM.md)
 6. [Revenu 분석](./SQL/Revenu.md)
+7. [Retention 분석](./SQL/Retention.md)
 
 -----
 
