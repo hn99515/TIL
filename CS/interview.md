@@ -13,3 +13,7 @@
 # SPA가 무엇인가?
 
 `SPA`는 Single page application으로 기존 웹페이지를 개발할 때에는 각각의 페이지마다 뷰(View)파일을 가졌다면 `SPA`의 구조는 하나의 뷰(View)파일에 컴포넌트를 배치하는 방식으로 페이지를 구성하는 개념 입니다.
+
+# ORM 에 대해 설명하기
+
+`ORM`은 Object Relational Mapping의 약자로 기존에는 SQL문을 사용하여 데이터베이스를 제어 하였다면 ORM은 객체를 데이터베이스와 직접 맵핑하여 제어하는 개념입니다.
