@@ -107,3 +107,37 @@ SELECT t1.col1
 FROM <table_name> t1
 ORDER BY t1.col2 DESC
 ```
+
+# 윈도우 함수의 활용
+
+## **집계함수**
+
+> **SUM(), AVG(), COUNT() 등에서 많이 사용**
+
+* 비즈니스 예
+  
+  * 중분류 카테고리 매출액이 대분류 카테고리 안에서 비율은 얼마나 되는지
+  
+  * 전체 매출 대비 비율은 얼마나 되는지
+
+## RANK
+
+> **ROW_NUMBER(), RANK(), DENSE_RANK()**  
+
+* 비즈니스 예
+  
+  * 성연령별로 인기있는 컨텐츠 10개씩 뽑기
+
+![](https://datarian.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F108f46de-cdd5-438e-a356-1e292cbcf2a0%2F%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2022-02-23_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.41.05.png?id=68944bd6-0ca0-44fc-9792-8da066811146&table=block&spaceId=11c85bfb-b51c-4dbb-b3cd-3c97ba001bc4&width=1920&userId=&cache=v2)
+
+## LEAD, LAG
+
+> **LEAD(), LAG()**
+
+* 비즈니스 예
+  
+  * 세셴 정의하기 등 연속된 로그 안에서 패턴 찾기
+  
+  * 택배 차량이 배송 중간에 정차하는 것을 최소화하고 싶은데, 지금 하루 배송 중에 몇 번 정차하는지, 한 번 정차할 때마다 평균적으로 몇 박스 정도 배송하는지
+  
+  * 사람들이 한 세션 안에 평균적으로 몇 번 클릭하는지, 특정 기능을 몇 번 사용하는지 
