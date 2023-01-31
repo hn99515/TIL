@@ -23,7 +23,7 @@
 5. [RFM 분석](./SQL/RFM.md)
 6. [Revenu 분석](./SQL/Revenu.md)
 7. [Retention 분석](./SQL/Retention.md)
-8. [Funnel 분석](./SQL/Funnel Analysis.md)
+8. [Funnel 분석](./SQL/Funnel_Analysis.md)
 9. [Google Analysis](./SQL/GA.md)
 10. [simulation](./SQL/simulation.md)
 
