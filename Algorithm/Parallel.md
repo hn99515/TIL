@@ -126,6 +126,68 @@
 > 
 > - 머신 Mi 마다 mapper가 하나씩 수행되고 mapper는 map 함수를 각 라인 하나마다 차례대로 호출함
 
-![](Parallel_assets/2023-02-20-13-50-50-image.png)
+## 1️⃣ 맵 페이즈
+
+![](Parallel_assets/2023-02-21-12-39-31-image.png)
 
 * 텍스트 문서의 각 라인마다 map 함수가 호출되고 문서를 스캔하면서 각 단어마다 그 단어를 KEY로 하고 값 1을 VALUE로 해서 (KEY, VALUE) 쌍을 출력함
+  
+  * 출력한 (KEY, VALUE) 쌍의 KEY에 따라서 해시 함수를 이용해서 여러 머신에 분산 시켜 보냄 
+
+![](Parallel_assets/2023-02-21-12-41-21-image.png)
+
+## 2️⃣ 셔플링 페이즈
+
+![](Parallel_assets/2023-02-21-12-42-53-image.png)
+
+* 각 KEY마다 그 KEY를 가진 VALUE들을 모아서 밸류-리스트를 만들어 (KEY, VALUE-LIST) 형태를 출력
+
+## 3️⃣ 리듀스 페이즈
+
+![](Parallel_assets/2023-02-21-12-44-30-image.png)
+
+* `머신 Mi` 마다 `Reducer`가 하나씩 수행되고 Reducer 는 Reduce 함수를 (KEY, VALUE-LIST) 쌍 마다 차례대로 호출함
+
+# Combine 함수
+
+> **맵리듀스 알고리즘 디자인에서 사용하는 것이 좋음**
+
+* Map 함수의 결과 크기를 줄여줌
+
+* 각각의 머신에서 Reduce 함수를 이용하는 것처럼 수행됨
+
+* 셔플링 비용을 줄여줌
+
+![](Parallel_assets/2023-02-21-12-50-06-image.png)
+
+![](Parallel_assets/2023-02-21-12-50-26-image.png)
+
+![](Parallel_assets/2023-02-21-12-52-49-image.png)
+
+## MapReduce 개요
+
+* **Mapper & Reducer**
+  
+  * 각 머신에서 독립적으로 수행
+  
+  * `Mapper는 Map 함수`를, `Reducer는 Reduce 함수`를 각각 수행
+
+* **Combine functions**
+  
+  * 각 머신에서 Map 함수가 끝난 다음에 Reduce 함수가 하는 일을 부분적으로 수행
+  
+  * 셔플링 비용과 네트워크 트래픽을 감소시킴
+
+* **Mapper와 Reducer는 필요하다면 setup() & cleanup()를 수행할 수 있음**
+  
+  * **`setup()` : 첫 Map 함수나 Reduce 함수가 호출되기 전에 맨 먼저 수행**
+    
+    * 모든 Map 함수들에게 Braodcast해서 전달해야 할 파라미터들 정보를 Main 함수에서 받아오는데 사용
+    
+    * 모든 Map 함수들이 공유하는 자료구조를 초기화하는데 사용
+  
+  * **`cleanup()` : 마지막 Map 함수나 Reduce 함수가 끝나고 나면 수행**
+    
+    * 모든 Map 함수들이 공유하는 자료구조의 결과를 출력하는데 사용
+
+* **한 개의 MapReduce Job을 수행할 때에 Map 페이즈만 수행하고 중단할 수도 있음**
